@@ -1,137 +1,234 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<style>
-canvas {
-    border:1px solid #d3d3d3;
-    background-color: #f1f1f1;
+    <title>Google Console Search</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 16px;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            text-align: center;
+        }
+        #console {
+            border: 1px solid #0f0;
+            padding: 10px;
+            height: 200px;
+            overflow: auto;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px #0f0;
+        }
+        #console input[type="text"] {
+            background-color: transparent;
+            border: none;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+        }
+        #todo {
+            border: 1px solid #0f0;
+            padding: 10px;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #0f0;
+        }
+        #todo input[type="text"] {
+            background-color: transparent;
+            border: none;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+        }
+        #todo ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #todo li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        #todo li button {
+            margin-left: 10px;
+            margin-right: -10px;
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #random-pic {
+            border: 1px solid #0f0;
+            padding: 10px;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #0f0;
+        }
+        #random-pic img {
+            max-width: 100%;
+            height: auto;
+        }
+        #book {
+            border: 1px solid #0f0;
+            padding: 10px;
+            box-shadow: 0 0 10px #0f0;
+        }
+        #book img {
+            max-width: 100%;
+            height: auto;
+        }
+        #book-image {
+    width: 50%;
+    height: 0;
+    padding-bottom: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #fff;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px #0f0;
 }
-</style>
+        #book p {
+            margin: 0;
+            padding-top: 5px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -10px;
+        }
+        .col {
+            flex: 1;
+            padding: 10px;
+        }
+    </style>
 </head>
-<body onload="startGame()">
-<script>
+<body>
+    <h1 id="datetime"></h1>
+    <div id="console">
+        <span style="color: #0f0;">C:\&gt;</span>
+        <input type="text" id="query" placeholder="Enter a search query...">
+    </div>
+    <div class="row">
+        <div class="col" id="todo">
+            <input type="text" id="task" placeholder="Enter a task...">
+            <ul id="task-list"></ul>
+            <button id="save-btn">Save Tasks</button>
+        </div>
+        <div class="col" id="random-pic">
+            <img src="https://picsum.photos/500/500/?random" alt="Random Picture">
+        </div>
+        <div class="col" id="book">
+            <div id="book-image"></div>
+            <p>Title: Example Book</p>
+            <p>Author: John Doe</p>
+            <p>Published: January 2022</p>
+        </div>
+        
+    </div>
+    <script>
+        var input = document.getElementById('query');
+        input.addEventListener('keyup', function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                searchGoogle();
+            }
+        });
 
-var myGamePiece;
-var myObstacles = [];
-var myScore;
+        function searchGoogle() {
+            var query = document.getElementById('query').value;
+            if (query) {
+                var url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                window.open(url, '_blank');
+            }
+        }
 
-function startGame() {
-    myGamePiece = new component(30, 30, "red", 10, 120);
-    myGamePiece.gravity = 0.05;
-    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
-    myGameArea.start();
-}
+        var taskInput = document.getElementById('task');
+        var taskList = document.getElementById('task-list');
+        var saveBtn = document.getElementById('save-btn');
+        taskInput.addEventListener('keyup', function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            addTask();
+        }
+    });
 
-var myGameArea = {
-    canvas : document.createElement("canvas"),
-    start : function() {
-        this.canvas.width = 480;
-        this.canvas.height = 270;
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.frameNo = 0;
-        this.interval = setInterval(updateGameArea, 20);
-        },
-    clear : function() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-}
-
-function component(width, height, color, x, y, type) {
-    this.type = type;
-    this.score = 0;
-    this.width = width;
-    this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;    
-    this.x = x;
-    this.y = y;
-    this.gravity = 0;
-    this.gravitySpeed = 0;
-    this.update = function() {
-        ctx = myGameArea.context;
-        if (this.type == "text") {
-            ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
-            ctx.fillText(this.text, this.x, this.y);
-        } else {
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
+    function addTask() {
+        var task = taskInput.value;
+        if (task) {
+            var li = document.createElement('li');
+            li.textContent = task;
+            var button = document.createElement('button');
+            button.textContent = 'Remove';
+            button.addEventListener('click', function() {
+                taskList.removeChild(li);
+            });
+            li.appendChild(button);
+            taskList.appendChild(li);
+            taskInput.value = '';
         }
     }
-    this.newPos = function() {
-        this.gravitySpeed += this.gravity;
-        this.x += this.speedX;
-        this.y += this.speedY + this.gravitySpeed;
-        this.hitBottom();
-    }
-    this.hitBottom = function() {
-        var rockbottom = myGameArea.canvas.height - this.height;
-        if (this.y > rockbottom) {
-            this.y = rockbottom;
-            this.gravitySpeed = 0;
+
+    saveBtn.addEventListener('click', function() {
+        var tasks = [];
+        var lis = taskList.getElementsByTagName('li');
+        for (var i = 0; i < lis.length; i++) {
+            tasks.push(lis[i].textContent);
         }
-    }
-    this.crashWith = function(otherobj) {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            crash = false;
-        }
-        return crash;
-    }
+        var filename = 'tasks-' + new Date().toISOString().slice(0, 10) + '.txt';
+        var file = new Blob([tasks.join('\n')], {type: 'text/plain'});
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = filename;
+        a.click();
+    });
+    function updateTime() {
+			var now = new Date();
+			var hours = now.getHours();
+			var minutes = now.getMinutes();
+			var ampm = hours >= 12 ? 'PM' : 'AM';
+			hours = hours % 12;
+			hours = hours ? hours : 12;
+			minutes = minutes < 10 ? '0' + minutes : minutes;
+			var timeString = hours + ':' + minutes + ' ' + ampm;
+			document.getElementById("time").textContent = timeString;
+		}
+
+		setInterval(updateTime, 1000);
+    function updateBook() {
+    var bookImg = document.getElementById('book').getElementsByTagName('img')[0];
+    var bookTitle = document.getElementById('book').getElementsByTagName('p')[0];
+    var bookAuthor = document.getElementById('book').getElementsByTagName('p')[1];
+    var bookPublished = document.getElementById('book').getElementsByTagName('p')[2];
+    var apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=robotic';
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            var books = data.items;
+            var randomBook = books[Math.floor(Math.random() * books.length)];
+            var bookInfo = randomBook.volumeInfo;
+            var bookCover = bookInfo.imageLinks.thumbnail;
+            var bookTitleText = 'Title: ' + bookInfo.title;
+            var bookAuthorText = 'Author: ' + bookInfo.authors[0];
+            var bookPublishedText = 'Published: ' + bookInfo.publishedDate;
+            bookImg.src = bookCover;
+            bookTitle.textContent = bookTitleText;
+            bookAuthor.textContent = bookAuthorText;
+            bookPublished.textContent = bookPublishedText;
+        })
+        .catch(error => console.log(error));
 }
 
-function updateGameArea() {
-    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
-    for (i = 0; i < myObstacles.length; i += 1) {
-        if (myGamePiece.crashWith(myObstacles[i])) {
-            return;
-        } 
-    }
-    myGameArea.clear();
-    myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(150)) {
-        x = myGameArea.canvas.width;
-        minHeight = 20;
-        maxHeight = 200;
-        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-        minGap = 50;
-        maxGap = 200;
-        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-        myObstacles.push(new component(10, height, "green", x, 0));
-        myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
-    }
-    for (i = 0; i < myObstacles.length; i += 1) {
-        myObstacles[i].x += -1;
-        myObstacles[i].update();
-    }
-    myScore.text="SCORE: " + myGameArea.frameNo;
-    myScore.update();
-    myGamePiece.newPos();
-    myGamePiece.update();
-}
-
-function everyinterval(n) {
-    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
-    return false;
-}
-
-function accelerate(n) {
-    myGamePiece.gravity = n;
-}
+updateBook();
+setInterval(updateBook, 10000);
+updateTime();
 </script>
-<br>
-<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
-<p>Use the ACCELERATE button to stay in the air</p>
-<p>How long can you stay alive?</p>
-</body>
-</html>
