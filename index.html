@@ -1,234 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Mohamed Abdelhady</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Resume</title>
     <style>
         body {
-            background-color: #000;
-            color: #0f0;
-            font-family: monospace;
-            font-size: 16px;
+            font-family: Arial, sans-serif;
+            margin: 20px;
             padding: 20px;
-            margin: 0;
         }
-        h1 {
-            font-size: 48px;
-            margin: 0;
-            text-align: center;
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
         }
-        #console {
-            border: 1px solid #0f0;
-            padding: 10px;
-            height: 200px;
-            overflow: auto;
-            margin-bottom: 10px;
-            box-shadow: 0 0 10px #0f0;
+
+        section {
+            margin-bottom: 20px;
         }
-        #console input[type="text"] {
-            background-color: transparent;
-            border: none;
-            color: #0f0;
-            font-family: monospace;
-            font-size: 16px;
-            outline: none;
-            width: 100%;
-        }
-        #todo {
-            border: 1px solid #0f0;
-            padding: 10px;
-            margin-right: 10px;
-            box-shadow: 0 0 10px #0f0;
-        }
-        #todo input[type="text"] {
-            background-color: transparent;
-            border: none;
-            color: #0f0;
-            font-family: monospace;
-            font-size: 16px;
-            outline: none;
-            width: 100%;
-        }
-        #todo ul {
+
+        ul {
             list-style-type: none;
             padding: 0;
-            margin: 0;
         }
-        #todo li {
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-        #todo li button {
-            margin-left: 10px;
-            margin-right: -10px;
-            background-color: #0f0;
-            color: #000;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        #random-pic {
-            border: 1px solid #0f0;
-            padding: 10px;
-            margin-right: 10px;
-            box-shadow: 0 0 10px #0f0;
-        }
-        #random-pic img {
-            max-width: 100%;
-            height: auto;
-        }
-        #book {
-            border: 1px solid #0f0;
-            padding: 10px;
-            box-shadow: 0 0 10px #0f0;
-        }
-        #book img {
-            max-width: 100%;
-            height: auto;
-        }
-        #book-image {
-    width: 50%;
-    height: 0;
-    padding-bottom: 50%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #fff;
-    margin-bottom: 10px;
-    box-shadow: 0 0 10px #0f0;
-}
-        #book p {
-            margin: 0;
-            padding-top: 5px;
-        }
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: -10px;
-        }
-        .col {
-            flex: 1;
-            padding: 10px;
+
+        li {
+            margin-bottom: 10px;
         }
     </style>
 </head>
+
 <body>
-    <h1 id="datetime"></h1>
-    <div id="console">
-        <span style="color: #0f0;">C:\&gt;</span>
-        <input type="text" id="query" placeholder="Enter a search query...">
-    </div>
-    <div class="row">
-        <div class="col" id="todo">
-            <input type="text" id="task" placeholder="Enter a task...">
-            <ul id="task-list"></ul>
-            <button id="save-btn">Save Tasks</button>
-        </div>
-        <div class="col" id="random-pic">
-            <img src="https://picsum.photos/500/500/?random" alt="Random Picture">
-        </div>
-        <div class="col" id="book">
-            <div id="book-image"></div>
-            <p>Title: Example Book</p>
-            <p>Author: John Doe</p>
-            <p>Published: January 2022</p>
-        </div>
-        
-    </div>
-    <script>
-        var input = document.getElementById('query');
-        input.addEventListener('keyup', function(event) {
-            event.preventDefault();
-            if (event.keyCode === 13) {
-                searchGoogle();
-            }
-        });
 
-        function searchGoogle() {
-            var query = document.getElementById('query').value;
-            if (query) {
-                var url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-                window.open(url, '_blank');
-            }
-        }
+    <header>
+        <h1>Your Name</h1>
+        <p>Web Developer</p>
+    </header>
 
-        var taskInput = document.getElementById('task');
-        var taskList = document.getElementById('task-list');
-        var saveBtn = document.getElementById('save-btn');
-        taskInput.addEventListener('keyup', function(event) {
-        event.preventDefault();
-        if (event.keyCode === 13) {
-            addTask();
-        }
-    });
+    <section>
+        <h2>Contact Information</h2>
+        <ul>
+            <li>Email: your.email@example.com</li>
+            <li>Phone: (123) 456-7890</li>
+            <li>LinkedIn: linkedin.com/in/yourname</li>
+            <li>GitHub: github.com/yourusername</li>
+        </ul>
+    </section>
 
-    function addTask() {
-        var task = taskInput.value;
-        if (task) {
-            var li = document.createElement('li');
-            li.textContent = task;
-            var button = document.createElement('button');
-            button.textContent = 'Remove';
-            button.addEventListener('click', function() {
-                taskList.removeChild(li);
-            });
-            li.appendChild(button);
-            taskList.appendChild(li);
-            taskInput.value = '';
-        }
-    }
+    <section>
+        <h2>Summary</h2>
+        <p>A passionate web developer with a focus on front-end technologies and a strong background in HTML, CSS, and JavaScript. Dedicated to creating responsive and user-friendly websites.</p>
+    </section>
 
-    saveBtn.addEventListener('click', function() {
-        var tasks = [];
-        var lis = taskList.getElementsByTagName('li');
-        for (var i = 0; i < lis.length; i++) {
-            tasks.push(lis[i].textContent);
-        }
-        var filename = 'tasks-' + new Date().toISOString().slice(0, 10) + '.txt';
-        var file = new Blob([tasks.join('\n')], {type: 'text/plain'});
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(file);
-        a.download = filename;
-        a.click();
-    });
-    function updateTime() {
-			var now = new Date();
-			var hours = now.getHours();
-			var minutes = now.getMinutes();
-			var ampm = hours >= 12 ? 'PM' : 'AM';
-			hours = hours % 12;
-			hours = hours ? hours : 12;
-			minutes = minutes < 10 ? '0' + minutes : minutes;
-			var timeString = hours + ':' + minutes + ' ' + ampm;
-			document.getElementById("time").textContent = timeString;
-		}
+    <section>
+        <h2>Education</h2>
+        <p><strong>Bachelor of Science in Computer Science</strong></p>
+        <p>University Name, Graduation Year</p>
+    </section>
 
-		setInterval(updateTime, 1000);
-    function updateBook() {
-    var bookImg = document.getElementById('book').getElementsByTagName('img')[0];
-    var bookTitle = document.getElementById('book').getElementsByTagName('p')[0];
-    var bookAuthor = document.getElementById('book').getElementsByTagName('p')[1];
-    var bookPublished = document.getElementById('book').getElementsByTagName('p')[2];
-    var apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=robotic';
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            var books = data.items;
-            var randomBook = books[Math.floor(Math.random() * books.length)];
-            var bookInfo = randomBook.volumeInfo;
-            var bookCover = bookInfo.imageLinks.thumbnail;
-            var bookTitleText = 'Title: ' + bookInfo.title;
-            var bookAuthorText = 'Author: ' + bookInfo.authors[0];
-            var bookPublishedText = 'Published: ' + bookInfo.publishedDate;
-            bookImg.src = bookCover;
-            bookTitle.textContent = bookTitleText;
-            bookAuthor.textContent = bookAuthorText;
-            bookPublished.textContent = bookPublishedText;
-        })
-        .catch(error => console.log(error));
-}
+    <section>
+        <h2>Skills</h2>
+        <ul>
+            <li>HTML5, CSS3</li>
+            <li>JavaScript (ES6+)</li>
+            <li>Responsive Web Design</li>
+            <li>Version Control (Git)</li>
+            <li>Web Accessibility</li>
+        </ul>
+    </section>
 
-updateBook();
-setInterval(updateBook, 10000);
-updateTime();
-</script>
+    <section>
+        <h2>Experience</h2>
+        <p><strong>Web Developer Intern</strong></p>
+        <p>Company Name, Internship Period</p>
+        <ul>
+            <li>Assisted in the development of responsive and visually appealing websites.</li>
+            <li>Collaborated with the team to implement new features and functionalities.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Projects</h2>
+        <p><strong>Portfolio Website</strong></p>
+        <p>Developed a personal portfolio website showcasing various web development projects.</p>
+    </section>
+
+    <section>
+        <h2>References</h2>
+        <p>Available upon request.</p>
+    </section>
+
+</body>
+
+</html>
