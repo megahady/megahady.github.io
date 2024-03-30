@@ -1,333 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Resume</title>
+    <title>Home</title>
     <style>
-        body {
-            font-family: "Times New Roman", Times, serif;
-            margin: 0;
-            padding: 0;
+        .search-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
         }
 
-        nav {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding-right: 5%; /* Add right padding */
+        .search-box {
+            flex: 1;
+            margin-right: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
-        nav ul {
+        .search-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .column {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #ccc;
+        }
+
+        .column:last-child {
+            border-right: none;
+        }
+
+        .column ul {
             list-style-type: none;
             padding: 0;
+        }
+
+        .column li {
+            margin-bottom: 10px;
             display: flex;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
+            align-items: center;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        nav li {
-            margin-left: 20px;
-        }
-
-        nav a {
+        .column li a {
             text-decoration: none;
             color: #333;
-            font-size: 16px;
-            transition: color 0.3s ease, font-size 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #555;
-            font-size: 20px;
-        }
-
-        section {
-            background-color: rgba(169, 169, 169, 0.2); /* Gray background with 0.7 opacity */
-            border-radius: 15px; /* Rounded corners */
-            margin: 20px;
-            display:none;
-            position: relative;
-            overflow: hidden; /* Hide overflowing content */
-            box-shadow: 10px 0 15px -5px #000; /* Left shadow effect */
-        }
-
-        section.active {
-            display: block;
-            padding: 2%;
-        }
-
-        section h2 {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-        span{
-            font:larger;
-            font-size: 1.2em;
-            font-weight: 900;
+            margin-left: 5px;
         }
     </style>
 </head>
-
 <body>
-
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#research">Research</a></li>
-            <li><a href="#education">Teaching</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#cv">C.V</a></li>
-        </ul>
-    </nav>
-
-    <div id="mainMe" style="margin: 4em;">
-        <img src="logo.png" style="width:8%; margin-right: 3em; float: left; border-radius: 0.5em;border-color:#555;">
-        <h2 style=" justify-self: start; font-family:'Courier New', Courier, monospace, serif;"> 
-        I'm Committing to crafting pioneering therapy tools and solutions for individuals affected by mobility disorders and paralysis,
-        my endeavors aim to seamlessly integrate state-of-the-art technology with a profound expertise in robotic engineering.
-        My work is dedicated to delivering impactful solutions that push the boundaries of rehabilitation robotics. 
-        </h2>
-        <h3 style="font-family:Snell Roundhand, cursive;margin-left: 520px;" >
-         Mohamed Abdelhady
-        </h3>
-<dive style="margin: 10%;">
-            <img src="/EXO.svg" style="width:80%;; border-radius: 0.5em;border-color:#555;">
-</dive>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" onkeydown="search(event)" placeholder="Search Google...">
+        <button onclick="searchGoogle()" class="search-button">Search</button>
     </div>
-
-
-    <section id="research" style="margin: 4em;">
-        <h2>Research</h2>
-        <ul>
-            <li><a href="#ccf">Cleveland Clinc Foundation</a></li>
-            <li><a href="#csu">Cleveland State University</a></li>
-            <li><a href="#ford">Ford Motor Company</a></li>
-        </ul>
-    </section>
-
-    <section id="cv" style="margin: 4em;">
-        <h2>Education</h2>
-        <p style="font-stretch: extra-expanded;font-size:1.1em;">
-
-            Doctor of Philosophy, Cleveland State University, USA
-            <br>Dissertation: “Codesign Development and Control of Smart Prostheses”
-            <br>Major: Electrical Engineering 
-            <br>Specialization: Robotic Control 
-        </p>
-        <p style="font-stretch: extra-expanded;font-size:1.1em;">
-            Master of Science, Minia University, Minia, Egypt
-            <br>Thesis Title:“Deep Insight in Control of Twin Rotor MIMO Helicopter Lab System”
-            <br>Major: Electrical Engineering 
-            <br>Specialization: Robotic Control 
-        </p>
-        <p style="font-stretch: extra-expanded;font-size:1.1em;">
-            Bachelor of Science, Magna Cum Laude, Aswan University, Aswan, Egypt
-            <br>Specialization: Computer Engineering 
-            <br>Major: Electrical Engineering 
-        </p>
-
-        <h2>Experience</h2>
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    National Institutes of Health, Bethesda, MD, USA	2022 to now
-                </span>
-                <br>Postdoc Fellow and Associate Investigator, Clinical Center 
-                <br>Advisor: Dr. Thomas Bulea
-                <br>Develop an design advanced pediatric exoskeleton with aid of functional electrical muscle stimulation, and develop a personalized exoskeleton control using deep and reinforcement learning.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Cleveland Clinic, Cleveland, OH, USA	2021 to 2022
-                </span>
-                <br>Postdoc Fellow, Biomedical Engineering Dept.
-                <br>Advisor: Dr. Margot Damaser
-                <br>Novel estimate approaches for detrusor activities using ensemble decision trees.
-                <br>Accurate data acquisition for invasive wireless pressure sensor. 
-            </spa>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    US. Department of Veteran Affaires, Cleveland, OH, USA	2021 to 2022
-                </span>
-                <br>Research Engineer, Advanced Platform Technology Center (APT)
-                <br>Assist in Vivo data analysis for bladder detrusor estimation
-            </p>
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Doctoral Dissertation, Cleveland State University, Cleveland, Ohio, USA	2022
-                </span>
-                <br>Prof. Dan Simon
-                <br>Develop a wearable sensor network for lower limb prostheses.
-                <br>Develop a learning-based control paradigm for lower limb prostheses.
-                <br>Hardware-in-the-loop testing for an active lower-limb prosthesis.
-                <br>Design and optimize prosthesis prototypes using an additive manufacturing technique.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    SIEMENS Co., Stuttgart, Germany 	2011
-                </span>
-                <br>Engineering Intern
-                <br>Advisor: Dr. Ivan Fischer
-                <br>Augmenting human assistive robotics: Cooperation with Festo Co.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Master thesis, Minia University, Minia, Egypt	2010
-                </span>
-                <br>Advisor: Dr. Elsayed Mohamed
-                <br>Develop control scheme for MIMO system using evolutionary computing algorithms.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Graduation Project, Aswan University, Aswan, Egypt	2001
-                </span>
-                <br>Graduation project: Robust speech recognition method based on radial basis neural network.
-            </p>
-
-
-    <h2>Honors and Awards</h2>
-        <ul>
-        <li>
-            Cleveland Clinic Travel Garnet	2022
-            <br>Support travel to American Urology Association Conference 
-        </li>
-        <li>
-            Cleveland Clinic Fellowship	2022
-            <br>Machine learning and signal processing to estimate bladder biometrics
-        </li>
-        <li>
-            Student Research Award 	2021
-            <br>Awarded to the best Ph.D. candidate with outstanding research work. 
-        </li>
-        <li>
-            ICCR Conference Excellent Oral Presentation	2020
-        </li>
-        <li>
-            Dean Travel Award	2017
-            <br>Given to support conference publication 
-        </li>
-        <li>
-            Graduate School Award	2017
-            <br>Support publishing in high ranked conferences (ACC2017)
-        </li>
-        <li>
-            Egyptian Government Scholarship	2014
-            <br>Given to outstanding scholar support education in USA  
-        </li>
-    </ul>
-
-
-    <h2>Patents</h2>
-        <ol>
-            <li>
-                M. Abdelhady, S. Majerus, M. Damaser, “Event-Driven Detrusor Pressure Estimation for Single Catheter Use,” IDF# 2022-041.
-            </li>
-            <li>
-                Damaser, Margot S., Steve Majerus, and Mohamed Abdelhady. "Detrusor Pressure Estimation from Single Channel Bladder Pressure Recordings." U.S. Patent No. 17/880,109.
-            </li>
-        </ol>	
-
-
-
-    <h2>Presentation and Invented Lectures</h2>
-    <ol>
-    <li>
-        Paper Presentation, “Hardware-In- the loop simulation for active prosthesis,” ICCR Tokyo, 2020.
-    </li>
-    <li>
-        Paper Presentation, “Neural Network Controller for MIMO Combustion Engine Model,” Ford Artificial Intelligence and Machine Learning Conference, 2020
-    </li>
-    <li>
-        Public Seminar, “An Embedded Hardware and Software Codesign Environment for Prostheses Control,” Cleveland CHMS Seminar, 2018.
-    </li>
-    <li>
-        Public Seminar, “An Embedded Hardware and Software Codesign Environment for Prostheses Control,” Cleveland CHMS Seminar, 2018.
-    </li>
-    <li>
-        Public Seminar, “Data acquisition benchmark for intensive prosthesis learning based control” Cleveland CHMS Seminar, 2017.
-    </li>
-    <li>
-        Paper Presentation, “System identification and control for lower-limb prothesis,” American Control Conference 2017.
-    </li>
-    <li>
-        Public Seminar, “Neural Network Controller for Active Powered Knee,” Cleveland CHMS Seminar, 2016.
-    </li>
-</ol>
-
-<h2>Professional Training</h2>
-<ol>
-    <li>
-        Model predictive control workshop, American Control Conference, Seattle 	2017 
-    </li>
-    <li>
-        NSF proposal writing workshop, Cleveland State University 			2016
-    </li>
-    <li>
-        NIH information security awareness, National Institutes of Health		2022
-    </li>
-    <li>
-        Biomed 101, CITI Program, National Institutes of Health				2023
-    </li>
-</ol>
-
-
-        <p>Email: megahady@gmail.com</p>
-        <p>Phone: +1 (216) 553-8555</p>
-        <p>LinkedIn: <a href="www.linkedin.com/in/megahady" style="text-decoration: none;">www.linkedin.com/in/megahady</a></p>
-        <p>GitHub: <a href=https://github.com/megahady style="text-decoration: none;">https://github.com/megahady</a></p>
-        <a href="#more">..see more</a>
-
-
-
-    </section>
-
-    <!-- Add other sections associated with menu items -->
-
     <script>
-        // JavaScript to handle section visibility based on menu item click
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector('#mainMe').style.display = 'none';
-                // Hide all sections
-                document.querySelectorAll('section').forEach(section => {
-                    section.classList.remove('active');
-                });
+        function search(event) {
+            if (event.keyCode === 13) {
+                searchGoogle();
+            }
+        }
 
-                // Show the selected section
-                const targetSectionId = this.getAttribute('href').substring(1);
-                document.getElementById(targetSectionId).classList.add('active');
+        function searchGoogle() {
+            let searchTerm = document.getElementById('searchInput').value;
+            let searchUrl = `https://www.google.com/search?q=${searchTerm}`;
+            window.location.href = searchUrl;
+        }
+
+        async function fetchConfigFile() {
+            try {
+                const response = await fetch('Config.txt');
+                if (!response.ok) {
+                    throw new Error('Error fetching Config.txt');
+                }
+                const text = await response.text();
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                createColumns(lines);
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        function createColumns(lines) {
+            lines.forEach(line => {
+                if (line.startsWith('#')) {
+                    const columnTitle = line.substring(1).trim();
+                    const column = document.createElement('div');
+                    column.className = 'column';
+                    column.innerHTML = `<h2>${capitalizeFirstLetter(columnTitle)}</h2><ul></ul>`;
+                    document.body.appendChild(column);
+                } else {
+                    const lastColumn = document.querySelector('.column:last-child ul');
+                    if (lastColumn) {
+                        const parts = line.split('_');
+                        if (parts.length >= 2) {
+                            const siteName = parts[0].trim();
+                            const siteLink = parts[1].trim();
+                            const listItem = document.createElement('li');
+                            const link = document.createElement('a');
+                            link.href = 'https://' + siteLink;
+                            link.target = '_self'; // Open links in the same tab (self)
+                            link.textContent = siteName; // Use site name as link text
+                            listItem.appendChild(link); // Append link to list item
+                            lastColumn.appendChild(listItem);
+                        } else {
+                            const siteLink = line.trim();
+                            const siteName = getLastWord(siteLink);
+                            const listItem = document.createElement('li');
+                            const link = document.createElement('a');
+                            link.href = 'https://' + siteLink;
+                            link.target = '_self'; // Open links in the same tab (self)
+                            link.textContent = siteName; // Use site name as link text
+                            listItem.appendChild(link); // Append link to list item
+                            lastColumn.appendChild(listItem);
+                        }
+                    }
+                }
             });
-        });
+        }
+
+        function getLastWord(str) {
+            const words = str.split('/');
+            const lastWord = words[words.length - 1];
+            return capitalizeFirstLetter(lastWord.substring(0, lastWord.lastIndexOf('.')));
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        window.addEventListener('load', fetchConfigFile);
     </script>
-
 </body>
-
 </html>
