@@ -1,0 +1,19 @@
+#Personal Accounts
+My Gmail_mail.google.com
+My CV_megahady.github.io
+My Linkedin_www.linkedin.com
+My Github_www.Github.com/megahady
+#Data Sources
+Kaggel_www.kaggle.com
+American Online_www.aol.com
+
+#AI Writing Tool
+ChatGPT_chat.openai.com
+Gemini_gemini.google.com
+Webcatalog_webcatalog.io
+Quillbot_quillbot.com
+
+
+#Books and Papers
+IEEExplore_ieeexplore.ieee.org
+
