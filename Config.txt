@@ -1,6 +1,6 @@
 #Personal Accounts
 My Gmail_mail.google.com
-My CV_megahady.github.io
+My CV_megahady.github.io/MyCV.html
 My Linkedin_www.linkedin.com
 My Github_www.Github.com/megahady
 #Data Sources
