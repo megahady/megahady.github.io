@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
         .search-container {
             width: 80%;
             max-width: 600px;
@@ -34,43 +42,58 @@
             cursor: pointer;
         }
 
-        .column {
-            float: left;
-            width: 20%;
-            padding: 10px;
+        .card-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-right: 1px solid #ccc;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
         }
 
-        .column:last-child {
-            border-right: none;
+        .card {
+            width: 300px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease;
         }
 
-        .column ul {
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .card ul {
             list-style-type: none;
             padding: 0;
+            margin-top: 10px; /* Add margin to separate title from list */
         }
 
-        .column li {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
+        .card li {
+            margin-bottom: 5px;
         }
 
-        .column li a {
+        .card a {
+            color: #007bff;
             text-decoration: none;
-            color: #333;
-            margin-left: 5px;
+        }
+
+        /* Hover effect */
+        .card:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-box" onkeydown="search(event)" placeholder="Search Google...">
-        <button onclick="searchGoogle()" class="search-button">Search</button>
+    <div>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" onkeydown="search(event)" placeholder="Search Google...">
+            <button onclick="searchGoogle()" class="search-button">Search</button>
+        </div>
+        <h1 style="display: flex; justify-content: center; animation: blinkGlow 2s infinite; transition: text-shadow 0.3s ease;">Dr. Mayar Abdelhady</h1>
+        <div class="card-container" id="cardsContainer"></div>
     </div>
+
     <script>
         function search(event) {
             if (event.keyCode === 13) {
@@ -83,7 +106,6 @@
             let searchUrl = `https://www.google.com/search?q=${searchTerm}`;
             window.location.href = searchUrl;
         }
-
         async function fetchConfigFile() {
             try {
                 const response = await fetch('Config.txt');
@@ -92,23 +114,24 @@
                 }
                 const text = await response.text();
                 const lines = text.split('\n').filter(line => line.trim() !== '');
-                createColumns(lines);
+                createCards(lines);
             } catch (error) {
                 console.error(error.message);
             }
         }
 
-        function createColumns(lines) {
+        function createCards(lines) {
+            const cardsContainer = document.getElementById('cardsContainer');
             lines.forEach(line => {
                 if (line.startsWith('#')) {
-                    const columnTitle = line.substring(1).trim();
-                    const column = document.createElement('div');
-                    column.className = 'column';
-                    column.innerHTML = `<h2>${capitalizeFirstLetter(columnTitle)}</h2><ul></ul>`;
-                    document.body.appendChild(column);
+                    const cardTitle = line.substring(1).trim();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<h2>${capitalizeFirstLetter(cardTitle)}</h2><ul></ul>`;
+                    cardsContainer.appendChild(card);
                 } else {
-                    const lastColumn = document.querySelector('.column:last-child ul');
-                    if (lastColumn) {
+                    const lastCard = cardsContainer.querySelector('.card:last-child ul');
+                    if (lastCard) {
                         const parts = line.split('_');
                         if (parts.length >= 2) {
                             const siteName = parts[0].trim();
@@ -119,7 +142,7 @@
                             link.target = '_self'; // Open links in the same tab (self)
                             link.textContent = siteName; // Use site name as link text
                             listItem.appendChild(link); // Append link to list item
-                            lastColumn.appendChild(listItem);
+                            lastCard.appendChild(listItem);
                         } else {
                             const siteLink = line.trim();
                             const siteName = getLastWord(siteLink);
@@ -129,7 +152,7 @@
                             link.target = '_self'; // Open links in the same tab (self)
                             link.textContent = siteName; // Use site name as link text
                             listItem.appendChild(link); // Append link to list item
-                            lastColumn.appendChild(listItem);
+                            lastCard.appendChild(listItem);
                         }
                     }
                 }
