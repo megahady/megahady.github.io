@@ -1,19 +1,27 @@
 #Personal Accounts
 My Gmail_mail.google.com
-My CV_megahady.github.io/MyCV
+megahady.github.io/MyCV
 My Linkedin_www.linkedin.com
 My Github_www.Github.com/megahady
-#Data Sources
-Kaggel_www.kaggle.com
-American Online_www.aol.com
 
 #AI Writing Tool
 ChatGPT_chat.openai.com
+SamWell_Samwell.ai
+Jenni_jenni.ai
 Gemini_gemini.google.com
 Webcatalog_webcatalog.io
-Quillbot_quillbot.com
+SCISPACE_typeset.io
+Tavily_app.tavily.com
+Paperbrain_www.paperbrain.org
 
+
+#Data Sources
+NIH Open Access Biomedical Image Search_openi.nlm.nih.gov/
+Kaggel_www.kaggle.com
+Exoskeleton Dataset_www.epic.gatech.edu/opensource-biomechanics-camargo-et-al/
 
 #Books and Papers
-IEEExplore_ieeexplore.ieee.org
+Explain Paper_www.explainpaper.com
+Liberary Genesis_libgen.li
+Sci-Hub_sci-hub.se
 
