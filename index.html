@@ -12,12 +12,18 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            /* margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #151515; */
         }
+
         .search-container {
             width: 80%;
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
+            margin-top: 0;
             background-color: #f0f0f0;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -31,6 +37,8 @@
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+
         }
 
         .search-button {
@@ -40,6 +48,8 @@
             background-color: #007bff;
             color: #fff;
             cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+
         }
 
         .card-container {
@@ -51,10 +61,10 @@
 
         .card {
             width: 300px;
-            padding: 20px;
-            background-color: #222;
+            padding: 5px;
+            background-color: #0a0101;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
             text-align: center;
             transition: transform 0.3s ease;
         }
@@ -64,7 +74,7 @@
         }
 
         .card ul {
-            list-style-type: none;
+            list-style-type:none ;
             padding: 0;
             margin-top: 10px; /* Add margin to separate title from list */
         }
@@ -85,12 +95,13 @@
     </style>
 </head>
 <body>
+    <div class="score"></div>
+
     <div>
         <div class="search-container">
             <input type="text" id="searchInput" class="search-box" onkeydown="search(event)" placeholder="Search Google...">
             <button onclick="searchGoogle()" class="search-button">Search</button>
         </div>
-        <h1 style="display: flex; justify-content: center; animation: blinkGlow 2s infinite; transition: text-shadow 0.3s ease;">Dr. Mayar Abdelhady</h1>
         <div class="card-container" id="cardsContainer"></div>
     </div>
 
@@ -103,8 +114,14 @@
 
         function searchGoogle() {
             let searchTerm = document.getElementById('searchInput').value;
-            let searchUrl = `https://www.google.com/search?q=${searchTerm}`;
-            window.location.href = searchUrl;
+            if(searchTerm =="HHH"){
+                alert("This is Work")
+            }
+            else{
+                let searchUrl = `https://www.google.com/search?q=${searchTerm}`;
+                window.location.href = searchUrl;
+            }
+
         }
         async function fetchConfigFile() {
             try {
