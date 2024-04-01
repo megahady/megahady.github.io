@@ -1,6 +1,6 @@
 #Personal Accounts
 My Gmail_mail.google.com
-megahady.github.io/MyCV
+CV_megahady.github.io/MyCV
 My Github_www.Github.com/megahady
 My Linkedin_www.linkedin.com
 
@@ -25,7 +25,6 @@ NIH Open Access Biomedical Image Search_openi.nlm.nih.gov/
 Kaggel_www.kaggle.com
 Exoskeleton Dataset_www.epic.gatech.edu/opensource-biomechanics-camargo-et-al/
 
-# Courses
-Access
-Biomedical
-ChatGPT
+# Thanks
+Dr. Mohamed Abdelhady_
+Dr. Mayar Abdelhady_
