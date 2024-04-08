@@ -20,6 +20,8 @@ Overleaf_www.Overleaf.com
 Explain Paper_www.explainpaper.com
 Liberary Genesis_libgen.li
 Sci-Hub_sci-hub.se
+Google Patents_patents.google.com/
+
 
 #Data Sources
 NIH Open Access Biomedical Image Search_openi.nlm.nih.gov/
