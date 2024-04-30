@@ -13,6 +13,7 @@ SamWell_Samwell.ai
 ChatGPT_chat.openai.com
 Webcatalog_webcatalog.io
 Paperbrain_www.paperbrain.org
+Citation-Finder_citation-finder.vercel.app
 
 #Books and Papers
 Overleaf_www.Overleaf.com
