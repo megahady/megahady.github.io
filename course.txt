@@ -1,0 +1,15 @@
+    Introduction to Linear Control Systems
+    Modeling of Dynamic Systems
+    Transfer Function Analysis
+    State-Space Representation
+    Time-Domain Analysis of Control Systems
+    Stability Analysis
+    Routh-Hurwitz Criterion
+    Root Locus Techniques
+    Frequency-Domain Analysis: Bode Plots
+    Frequency-Domain Analysis: Nyquist Criterion
+    Design of PID Controllers
+    Design of Lead and Lag Compensators
+    State Feedback and State Estimation
+    Introduction to Optimal Control Theory
+
