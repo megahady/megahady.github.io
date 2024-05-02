@@ -3,7 +3,7 @@ CV_megahady.github.io/MyCV
 My Github_www.Github.com/megahady
 My Linkedin_www.linkedin.com
 My GoogleScholar_scholar.google.com/citations?user=XvOnO9wAAAAJ&hl=en
-My Course_Course.html
+My Course_megahady.github.io/Course
 
 #AI Writing Tool
 Jenni_jenni.ai
@@ -14,7 +14,6 @@ SamWell_Samwell.ai
 ChatGPT_chat.openai.com
 Webcatalog_webcatalog.io
 Paperbrain_www.paperbrain.org
-Citation-Finder_citation-finder.vercel.app
 
 #Books and Papers
 Overleaf_www.Overleaf.com
@@ -22,6 +21,7 @@ Explain Paper_www.explainpaper.com
 Liberary Genesis_libgen.li
 Sci-Hub_sci-hub.se
 Google Patents_patents.google.com/
+Citation-Finder_citation-finder.vercel.app
 
 
 # Created By
