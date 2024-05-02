@@ -6,39 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Course Title</title>
     <style>
-        /* CSS for the top menu */
-        .top-menu {
-            background-color: #333;
-            /* Background color of the menu */
-            overflow: hidden;
-            /* Ensure content doesn't overflow */
-        }
+      .top-menu {
+    background-color: #333; /* Background color of the menu */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    margin: 0;
+    padding: 0; /* Add padding to space items */
+    list-style-type: none; /* Remove default list styles */
+    display: flex; /* Use flexbox for layout */
+}
 
-        .top-menu a {
-            float: left;
-            /* Float the menu items to the left */
-            display: block;
-            /* Display as block elements */
-            color: white;
-            /* Text color */
-            text-align: center;
-            /* Center text */
-            padding: 14px 16px;
-            /* Padding around text */
-            text-decoration: none;
-            /* Remove underline */
-        }
+.top-menu li {
+    margin-right: 10px; /* Add spacing between menu items */
+}
 
-        /* Change background color of active menu item */
-        .top-menu a.active {
-            background-color: #4CAF50;
-        }
+.top-menu a {
+    color: white; /* Text color */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    padding: 10px; /* Padding around text */
+    display: block; /* Display as block elements */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
 
-        /* On hover, add background color to menu items */
-        .top-menu a:hover {
-            background-color: #bbb3b3;
-            color: black;
-        }
+/* Change background color of active menu item */
+.top-menu a.active,
+.top-menu a:hover {
+    background-color: yellowgreen;
+}
+
+/* On hover, add background color to menu items */
+.top-menu a:hover {
+    color: black; /* Change text color on hover */
+}
 
         /* Container for the layout */
         .container {
@@ -183,16 +182,17 @@
 
 
     <div class="top-menu">
-        <a href="student_resources.html" target="_self">Student Resources</a>
         <a href="syllabus.pdf" target="_self">Course Syllabus</a>
-        <a href="student_outcomes.pdf" target="_self">Student Outcomes (SOs)</a>
         <a href="curriculum.pdf" target="_self">Curriculum Overview</a>
         <a href="peos.pdf" target="_self">Program Educational Objectives (PEOs)</a>
+        <a href="student_outcomes.pdf" target="_self">Student Outcomes (SOs)</a>
+        <a href="student_resources.html" target="_self">Student Resources</a>
+        <a href="https://nu.edu.eg/" target="_self">Nile University Resources</a>
     </div>
 
     <div style="color: #f0f0ff;background-color: #0d0101; border-width: 2px;border-radius: 200px;margin-left: 200px;margin-right: 200px;margin-bottom: 20px;margin-top: 10px;"
         class="hsection">
-        <img src="./logo.png" style="width: 20%; border-radius: 50%; border-color: #f0f0f0;border-width: 10px;" alt="Pic">
+        <img src="./ma.png" style="width: 20%; border-radius: 50%; border-color: #f0f0f0;border-width: 10px;" alt="Pic">
         <div>
             <h2 style="margin-left: 50px;display: flex;"> Fundamentals of Linear Control</h2>
 
