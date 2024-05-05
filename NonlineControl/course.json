@@ -1,0 +1,137 @@
+[
+  {
+    "title": "Lecture Table",
+    "subcategories": [
+      {
+        "index": "1",
+        "lecture": "Mathematical Review (Mathematical Review section)",
+        "slides": "slides/mathematical_review.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "2",
+        "lecture": "Introduction to Nonlinear Models (Chapters 1.1 - 1.4)",
+        "slides": "slides/intro_nonlinear_models.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "3",
+        "lecture": "Two-Dimensional Systems (Chapter 2)",
+        "slides": "slides/two_dimensional_systems.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "4",
+        "lecture": "Stability of Equilibrium Points (Chapter 3)",
+        "slides": "slides/stability_equilibrium_points.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "5",
+        "lecture": "Time-Varying and Perturbed Systems (Chapter 4)",
+        "slides": "slides/time_varying_perturbed.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "6",
+        "lecture": "Passivity and Memoryless Functions (Chapter 5.1)",
+        "slides": "slides/passivity_memoryless_functions.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "7",
+        "lecture": "Input-Output Stability and L Stability (Chapter 6)",
+        "slides": "slides/input_output_stability.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "8",
+        "lecture": "Stability of Feedback Systems (Chapter 7)",
+        "slides": "slides/stability_feedback_systems.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "9",
+        "lecture": "Special Nonlinear Forms (Chapter 8)",
+        "slides": "slides/special_nonlinear_forms.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "10",
+        "lecture": "State Feedback Stabilization (Chapter 9)",
+        "slides": "slides/state_feedback_stabilization.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "11",
+        "lecture": "Robust State Feedback Stabilization (Chapter 10)",
+        "slides": "slides/robust_state_feedback_stabilization.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "12",
+        "lecture": "Nonlinear Observers (Chapter 11)",
+        "slides": "slides/nonlinear_observers.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "13",
+        "lecture": "Output Feedback Stabilization (Chapter 12)",
+        "slides": "slides/output_feedback_stabilization.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      },
+      {
+        "index": "14",
+        "lecture": "Tracking and Regulation (Chapter 13)",
+        "slides": "slides/tracking_regulation.pdf",
+        "video": "",
+        "HW": "",
+        "code": "",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "title": "Message",
+    "content": "Welcome to the Nonlinear Control Systems course! Explore the lectures and resources. Contact us for any inquiries."
+  }
+]

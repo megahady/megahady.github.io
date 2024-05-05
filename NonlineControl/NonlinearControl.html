@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .navbar {
+    overflow: hidden;
+    background-color: #333;
+}
+
+.navbar a {
+    float: left; /* Use float for left alignment */
+    display: block;
+    color: white;
+    text-align:justify;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.dropdown {
+    float: right; /* Float the dropdown to the right */
+    position: relative;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 20px;
+    background-color: inherit;
+    margin: 0;
+    cursor: pointer;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: #ddd;
+    color: black;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    left: 0; /* Align the dropdown to the left */
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block; /* Display as block to appear vertically */
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+    /* Bio styles */
+    .bio {
+        display:flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f2f2f2;
+    }
+    .profile-pic {
+        margin-right: 20px;
+    }
+    .profile-pic img {
+        width: 7rem;
+        border-radius: 50%;
+    }
+    .rolling-container {
+        overflow: hidden;
+        white-space: nowrap;
+        background-color: #26272a;
+        padding: 0.5rem;
+        color: red;
+        font-size: large;
+    }
+    .rolling-text {
+        display: block;
+        animation: roll 20s linear infinite;
+    }
+    @keyframes roll {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .profile-pic img {
+            width: 7rem;
+        }
+        .rolling-container {
+            padding: 10%;
+        }
+        .bio-info p {
+            display: none;
+        }
+    }
+
+    /* Style for Lecture Table */
+    .table {
+        width: 80%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+        margin-left: 10%;
+
+    }
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .table th {
+        background-color: #333;
+        color: white;
+    }
+    .table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .bio{
+        /* background-color: #000; */
+        background: linear-gradient(45deg, #000, #010010);
+        border-radius: 10rem 2rem 2rem 10rem;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 1%;
+        /* height:20%; */
+        color: #f9f9f9;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        backdrop-filter: blur(10px);
+
+    }
+
+    .glass
+    {
+    margin-top: 10px;
+    /* background: linear-gradient(180deg, rgb(220, 248, 5), rgba(5, 243, 243, 0)); */
+    background: rgba(158,158, 58, 0.281);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 5px 32px 0 rgba(0, 0, 0, 0.2);
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    }
+    .glass1{
+    background-size:cover;
+    background-position: center;
+    border-radius: 3rem;margin: 1.5rem 4em;
+    -webkit-filter: blur(0.5px);
+    padding: 1rem;
+    background: rgba(158,158, 58, 0.281);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border:1px solid rgba(255, 255, 255, 0.18);
+    margin: 1% 10%;
+    }
+
+    .top-menu {
+    background-color: #333; /* Background color of the menu */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    margin: 0;
+    padding: 0; /* Add padding to space items */
+    list-style-type: none; /* Remove default list styles */
+    display: flex; /* Use flexbox for layout */
+}
+
+.top-menu li {
+    margin-right: 10px; /* Add spacing between menu items */
+}
+
+.top-menu a {
+    color: white; /* Text color */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    padding: 10px; /* Padding around text */
+    display: block; /* Display as block elements */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+/* Change background color of active menu item */
+.top-menu a.active,
+.top-menu a:hover {
+    background-color: yellowgreen;
+}
+
+/* On hover, add background color to menu items */
+.top-menu a:hover {
+    color: black; /* Change text color on hover */
+}
+
+</style>
+</head>
+<body>
+
+    <div class="top-menu">
+        <a href="syllabus.pdf" target="_self">Course Syllabus</a>
+        <a href="curriculum.pdf" target="_self">Curriculum Overview</a>
+        <a href="peos.pdf" target="_self">Program Educational Objectives (PEOs)</a>
+        <a href="student_outcomes.pdf" target="_self">Student Outcomes (SOs)</a>
+        <a href="student_resources.html" target="_self">Student Resources</a>
+        <!-- <a href="https://nu.edu.eg/" target="_self">Nile University Resources</a> -->
+    </div>
+
+
+<!-- Bio Section -->
+<section class="bio">
+    <div class="profile-pic">
+        <img src="ma.png" alt="Profile Picture">
+    </div>
+    <div class="bio-info">
+        <h2>Course Title: Long one</h2>
+        <p>Welcome, aspiring robotic engineers, to an exciting journey into the world of robotics and automation! I'm Mohamed Abdelhady, your instructor and guide in this innovative and dynamic field.</p>
+    </div>
+</section>
+
+<div class="glass">
+    <div class="rolling-text">
+        <div id="message"></div>
+    </div>
+</div>
+
+<!-- Lectures Table -->
+<table class="table" id="lecture-table"></table>
+
+<div class="glass1">
+    <h2>Course Objectives: Linear Control Systems</h2>
+    <div class="objective">
+        <strong>1. Understand Fundamentals:</strong> Gain a deep understanding of the fundamental concepts of linear control systems, including system modeling, stability, controllability, and observability.
+    </div>
+    <div class="objective">
+        <strong>2. Analyze System Behavior:</strong> Learn how to analyze the behavior of linear control systems using mathematical tools such as Laplace transforms, transfer functions, and state-space representations.
+    </div>
+    <div class="objective">
+        <strong>3. Design Control Systems:</strong> Develop skills in designing linear control systems to achieve desired performance specifications, such as stability, transient response, steady-state error, and robustness.
+    </div>
+    <div class="objective">
+        <strong>4. Implement Controllers:</strong> Learn to implement various control strategies, including proportional-integral-derivative (PID) controllers, state feedback controllers, and optimal control techniques like linear quadratic regulator (LQR) and optimal observers.
+    </div>
+    <div class="objective">
+        <strong>5. Stability Analysis:</strong> Perform stability analysis of linear control systems using methods like Routh-Hurwitz criterion, Nyquist stability criterion, and Bode plots.
+    </div>
+    <div class="objective">
+        <strong>6. Control System Optimization:</strong> Explore techniques for optimizing control system performance, such as tuning controller parameters, designing compensators, and applying frequency-domain and time-domain analysis tools.
+    </div>
+    <div class="objective">
+        <strong>7. System Response Analysis:</strong> Analyze the response of linear control systems to different inputs, disturbances, and initial conditions, and understand how system dynamics affect performance.
+    </div>
+    <div class="objective">
+        <strong>8. Real-world Applications:</strong> Apply control system concepts to real-world engineering problems and applications, including robotics, aerospace, automotive systems, industrial automation, and process control.
+    </div>
+    <div class="objective">
+        <strong>9. Simulation and Experimentation:</strong> Use simulation tools and experimental setups to validate control system designs, study system behavior, and gain practical insights into control system performance.
+    </div>
+    <div class="objective">
+        <strong>10. Problem-solving Skills:</strong> Develop problem-solving skills by solving mathematical problems, designing control systems for specific applications, and evaluating system performance through analysis and simulation.
+    </div>
+</div>
+
+<script>
+ // Function to create the table header
+function createTableHeader() {
+    const tableHeader = document.createElement('tr');
+    tableHeader.innerHTML = '<th></th><th>Lecture</th><th>Slides</th><th>HW</th><th>Code</th><th>Note</th>';
+    return tableHeader;
+}
+
+// Function to create a table row for a subcategory
+function createTableRow(subcategory) {
+    const tableRow = document.createElement('tr');
+    tableRow.innerHTML = `<td>${subcategory.index}</td>
+                          <td>${subcategory.lecture ? `<a style="text-decoration:none;" href="${subcategory.video}" target="_self">${subcategory.lecture}</a>` : ' '}</td>
+                          <td>${subcategory.slides ? `<a style="text-decoration:none;"  href="${subcategory.slides}" target="_blank">Slides${subcategory.index}</a>` : ' '}</td>
+                          <td>${subcategory.HW ? `<a style="text-decoration:none;"  href="${subcategory.HW}" target="_blank">HW${subcategory.index} </a>` : ' '}</td>
+                          <td>${subcategory.code ? `<a style="text-decoration:none;"  href="${subcategory.code}" target="_blank">code${subcategory.index}</a>` : ' '}</td>
+                          <td>${subcategory.note ? `<a style="text-decoration:none;"  href="www.google.com" target="_blank">${subcategory.note}</a>` : ""}</td>`;
+    return tableRow;
+}
+
+// Fetch JSON data
+fetch('./course.json')
+    .then(response => response.json())
+    .then(data => {
+        // Populate Lecture Table
+        const lectureTable = document.getElementById('lecture-table');
+        data.forEach(category => {
+            if (category.title === 'Lecture Table') {
+                // Create and append table header
+                lectureTable.appendChild(createTableHeader());
+
+                // Populate table rows for each subcategory
+                category.subcategories.forEach(subcategory => {
+                    lectureTable.appendChild(createTableRow(subcategory));
+                });
+            }
+        });
+
+        // Populate Message
+        const messageDiv = document.getElementById('message');
+        data.forEach(category => {
+            if (category.title === 'Message') {
+                messageDiv.textContent = category.content;
+            }
+        });
+    })
+    .catch(error => console.error('Error loading JSON:', error));
+</script>
+
+</body>
+</html>
