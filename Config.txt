@@ -4,7 +4,7 @@ My Github_www.Github.com/megahady
 My Linkedin_www.linkedin.com
 My GoogleScholar_scholar.google.com/citations?user=XvOnO9wAAAAJ&hl=en
 My Course_megahady.github.io/Course
-Nonlinear Control_megahady.github.io/NonlinearControl
+Nonlinear Control_megahady.github.io/NonlineControl/NonlinearControl
 
 #AI Writing Tool
 Jenni_jenni.ai
