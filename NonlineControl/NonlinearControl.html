@@ -13,6 +13,7 @@
     .navbar {
     overflow: hidden;
     background-color: #333;
+
 }
 
 .navbar a {
@@ -154,7 +155,7 @@
     {
     margin-top: 10px;
     /* background: linear-gradient(180deg, rgb(220, 248, 5), rgba(5, 243, 243, 0)); */
-    background: rgba(158,158, 58, 0.281);
+    background: rgba(213, 213, 103, 0.788);
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
     border:1px solid rgba(255, 255, 255, 0.18);
@@ -162,18 +163,7 @@
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     }
-    .glass1{
-    background-size:cover;
-    background-position: center;
-    border-radius: 3rem;margin: 1.5rem 4em;
-    -webkit-filter: blur(0.5px);
-    padding: 1rem;
-    background: rgba(158,158, 58, 0.281);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    border:1px solid rgba(255, 255, 255, 0.18);
-    margin: 1% 10%;
-    }
+   
 
     .top-menu {
     background-color: #333; /* Background color of the menu */
@@ -182,6 +172,7 @@
     padding: 0; /* Add padding to space items */
     list-style-type: none; /* Remove default list styles */
     display: flex; /* Use flexbox for layout */
+    justify-content: center;
 }
 
 .top-menu li {
@@ -218,9 +209,7 @@
         <a href="peos.pdf" target="_self">Program Educational Objectives (PEOs)</a>
         <a href="student_outcomes.pdf" target="_self">Student Outcomes (SOs)</a>
         <a href="student_resources.html" target="_self">Student Resources</a>
-        <!-- <a href="https://nu.edu.eg/" target="_self">Nile University Resources</a> -->
     </div>
-
 
 <!-- Bio Section -->
 <section class="bio">
@@ -228,8 +217,8 @@
         <img src="ma.png" alt="Profile Picture">
     </div>
     <div class="bio-info">
-        <h2>Course Title: Long one</h2>
-        <p>Welcome, aspiring robotic engineers, to an exciting journey into the world of robotics and automation! I'm Mohamed Abdelhady, your instructor and guide in this innovative and dynamic field.</p>
+        <h2>Nonlinear Control Systems</h2>
+        <p>Welcome, aspiring control and robotics engineers, to an exciting journey into the world of robotics and automation! I'm Mohamed Abdelhady, your instructor and guide in this innovative and dynamic field.</p>
     </div>
 </section>
 
@@ -241,8 +230,16 @@
 
 <!-- Lectures Table -->
 <table class="table" id="lecture-table"></table>
-<div Class="glass1" id="course-objectives">
-    <h2>Course Objectives</h2>
+
+
+
+<br>
+<br>
+<br>
+
+<div style="margin-left: 10%;margin-right: 10%;display: flex" >
+<div style="width: 50%;">
+    <h2>Course Objectives:</h2>
     <ul>
         <li>Understand the fundamentals of nonlinear control systems theory.</li>
         <li>Learn the analysis and design techniques for nonlinear control systems.</li>
@@ -259,6 +256,45 @@
         <li>Explore current trends and future directions in nonlinear control systems.</li>
     </ul>
 </div>
+<div style="background-color: #000;">
+|
+</div>
+<div style="margin-left: 2%;width: 50%;">
+    <h2>Resourses:</h2>
+    <h4 style="background-color: #eeee64;text-align: center;">Text/Reference Book</h4> 
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;"> 
+        <a style="padding-left: 1rem;text-decoration: none;" href="https://nasim.hormozgan.ac.ir/ostad/UploadedFiles/863740/863740-8707186354456456.pdf">Nonlinear Systems</a>
+    </li>
+
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;"> 
+        <a style="padding-left: 1rem;text-decoration: none;" href="https://www.barnesandnoble.com/w/introduction-to-nonlinear-control-christopher-m-kellett/1142039397"> Introduction to Nonlinear Control: Stability, Control Design, and Estimation 
+        </a>
+    </li>
+
+
+    <h4 style="background-color: #eeee64;text-align: center;">Similar Courses</h4> 
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;">
+        <a style="padding-left: 1rem;text-decoration: none;" href="https://aras.kntu.ac.ir/education/robotics/nonlinear-control-course-videos/">Iranian Course</a>
+    </li>
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;">
+        <a style="padding-left: 1rem;text-decoration: none;" href="https://www.bilibili.com/video/BV17t4y1v7F1?p=1">Chainees Course</a>
+    </li>
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;">
+        <a style="padding-left: 1rem;text-decoration: none;" style="padding-left: 1rem;text-decoration: none;" href="https://www.youtube.com/playlist?list=PLmwDtdfGY3-aXdKuRB5LIxdLO2qjTVZPJ">Dr. Ali Naser's Course</a>
+    </li>
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;">
+        <a style="padding-left: 1rem;text-decoration: none;" href="https://www.youtube.com/watch?v=AdXhhgRZydE&list=PLuUx6XeOa92jFi-1A9Z4TT0Wr-c19C_Xe&index=1&t=416s">Dr. Gamal Bymui's Course</a>
+    </li>
+
+    <h4 style="background-color: #eeee64;text-align: center;">Reading Sources</h4> 
+    <li style="list-style-type: none;padding-left: 1rem;text-decoration: none;"> 
+        <a style="padding-left: 1rem;text-decoration: none;" href="https://link.springer.com/content/pdf/10.1007/978-94-011-5094-1_1.pdf">Practical Approaches to Nonlinear Control</a>
+    </li>
+</div>
+
+</div>
+
+
 
 
 <script>
@@ -282,7 +318,7 @@ function createTableRow(subcategory) {
 }
 
 // Fetch JSON data
-fetch('course.json')
+fetch('./course.json')
     .then(response => response.json())
     .then(data => {
         // Populate Lecture Table
