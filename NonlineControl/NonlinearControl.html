@@ -202,7 +202,6 @@
 </style>
 </head>
 <body>
-
     <div class="top-menu">
         <a href="syllabus.pdf" target="_self">Course Syllabus</a>
         <a href="curriculum.pdf" target="_self">Curriculum Overview</a>
@@ -210,8 +209,6 @@
         <a href="student_outcomes.pdf" target="_self">Student Outcomes (SOs)</a>
         <a href="student_resources.html" target="_self">Student Resources</a>
     </div>
-
-<!-- Bio Section -->
 <section class="bio">
     <div class="profile-pic">
         <img src="ma.png" alt="Profile Picture">
@@ -227,16 +224,10 @@
         <div id="message"></div>
     </div>
 </div>
-
-<!-- Lectures Table -->
 <table class="table" id="lecture-table"></table>
-
-
-
 <br>
 <br>
 <br>
-
 <div style="margin-left: 10%;margin-right: 10%;display: flex" >
 <div style="width: 50%;">
     <h2>Course Objectives:</h2>
@@ -291,21 +282,16 @@
         <a style="padding-left: 1rem;text-decoration: none;" href="https://link.springer.com/content/pdf/10.1007/978-94-011-5094-1_1.pdf">Practical Approaches to Nonlinear Control</a>
     </li>
 </div>
-
 </div>
 
 
-
-
 <script>
- // Function to create the table header
 function createTableHeader() {
     const tableHeader = document.createElement('tr');
     tableHeader.innerHTML = '<th></th><th>Lecture</th><th>Slides</th><th>HW</th><th>Code</th><th>Note</th>';
     return tableHeader;
 }
 
-// Function to create a table row for a subcategory
 function createTableRow(subcategory) {
     const tableRow = document.createElement('tr');
     tableRow.innerHTML = `<td>${subcategory.index}</td>
@@ -316,26 +302,18 @@ function createTableRow(subcategory) {
                           <td>${subcategory.note ? `<a style="text-decoration:none;"  href="www.google.com" target="_blank">${subcategory.note}</a>` : ""}</td>`;
     return tableRow;
 }
-
-// Fetch JSON data
 fetch('./course.json')
     .then(response => response.json())
     .then(data => {
-        // Populate Lecture Table
         const lectureTable = document.getElementById('lecture-table');
         data.forEach(category => {
             if (category.title === 'Lecture Table') {
-                // Create and append table header
                 lectureTable.appendChild(createTableHeader());
-
-                // Populate table rows for each subcategory
                 category.subcategories.forEach(subcategory => {
                     lectureTable.appendChild(createTableRow(subcategory));
                 });
             }
         });
-
-        // Populate Message
         const messageDiv = document.getElementById('message');
         data.forEach(category => {
             if (category.title === 'Message') {
@@ -345,6 +323,5 @@ fetch('./course.json')
     })
     .catch(error => console.error('Error loading JSON:', error));
 </script>
-
 </body>
 </html>
