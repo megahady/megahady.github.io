@@ -7,7 +7,6 @@ My Course_megahady.github.io/Course
 Nonlinear Control_megahady.github.io/NonlineControl/NonlinearControl_
 SRSMedical_megahady.github.io/SRS_index
 
-
 #AI Writing Tool
 Jenni_jenni.ai
 Tavily_app.tavily.com
