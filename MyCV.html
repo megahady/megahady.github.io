@@ -1,333 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Resume</title>
+    <meta name="description" content="Resume of Mohamed Abdelhady for Mechatronics Assistant Professor Position">
+    <title>Mohamed Abdelhady | Mechatronics Assistant Professor Resume</title>
     <style>
         body {
-            font-family: "Times New Roman", Times, serif;
-            margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
         }
 
-        nav {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding-right: 5%; /* Add right padding */
+        .resume-container {
+            max-width: 900px;
+            background-color: #fff;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        nav li {
-            margin-left: 20px;
-        }
-
-        nav a {
-            text-decoration: none;
+        h1 {
+            text-align: center;
+            font-size: 32px;
             color: #333;
-            font-size: 16px;
-            transition: color 0.3s ease, font-size 0.3s ease;
         }
 
-        nav a:hover {
-            color: #555;
-            font-size: 20px;
+        .section {
+            margin-bottom: 30px;
         }
 
-        section {
-            background-color: rgba(169, 169, 169, 0.2); /* Gray background with 0.7 opacity */
-            border-radius: 15px; /* Rounded corners */
-            margin: 20px;
-            display:none;
-            position: relative;
-            overflow: hidden; /* Hide overflowing content */
-            box-shadow: 10px 0 15px -5px #000; /* Left shadow effect */
+        .section-title {
+            font-size: 24px;
+            border-bottom: 2px solid #444;
+            margin-bottom: 15px;
+            color: #333;
         }
 
-        section.active {
-            display: block;
-            padding: 2%;
-        }
-
-        section h2 {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .section-content {
+            padding-left: 10px;
         }
 
         ul {
-            list-style-type: none;
-            padding: 0;
+            list-style: none;
+            padding-left: 0;
         }
 
         li {
             margin-bottom: 10px;
         }
-        span{
-            font:larger;
-            font-size: 1.2em;
-            font-weight: 900;
+
+        .contact-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .contact-info div {
+            text-align: center;
+        }
+
+        .print-btn {
+            display: block;
+            width: 100px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media print {
+            .print-btn {
+                display: none;
+            }
+
+            body {
+                background-color: white;
+            }
+
+            .resume-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Hide default browser print headers/footers (date, page numbers, etc.) */
+            @page {
+                margin: 0;
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+            }
         }
     </style>
 </head>
-
 <body>
 
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#research">Research</a></li>
-            <li><a href="#education">Teaching</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#cv">C.V</a></li>
-        </ul>
-    </nav>
+    <div class="resume-container">
+        <h1>Mohamed Abdelhady</h1>
 
-    <div id="mainMe" style="margin: 4em;">
-        <img src="logo.png" style="width:8%; margin-right: 3em; float: left; border-radius: 0.5em;border-color:#555;">
-        <h2 style=" justify-self: start; font-family:'Courier New', Courier, monospace, serif;"> 
-        I'm Committing to crafting pioneering therapy tools and solutions for individuals affected by mobility disorders and paralysis,
-        my endeavors aim to seamlessly integrate state-of-the-art technology with a profound expertise in robotic engineering.
-        My work is dedicated to delivering impactful solutions that push the boundaries of rehabilitation robotics. 
-        </h2>
-        <h3 style="font-family:Snell Roundhand, cursive;margin-left: 520px;" >
-         Mohamed Abdelhady
-        </h3>
-<dive style="margin: 10%;">
-            <img src="/EXO.svg" style="width:80%;; border-radius: 0.5em;border-color:#555;">
-</dive>
+        <div class="contact-info">
+            <div>
+                <strong>Tel:</strong> (216) 553-8555
+            </div>
+            <div>
+                <strong>Email:</strong> megahady@gmail.com
+            </div>
+            <div>
+                <strong>Address:</strong> 1890 E93 Street, Cleveland, OH, 44106, USA
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Objective</h2>
+            <p>An innovative engineer and researcher specializing in mechatronics, control systems, and robotics. Seeking an Assistant Professor position in Mechatronics to leverage extensive research experience in intelligent systems, prosthetics, and autonomous systems, and to advance academic excellence and industrial collaboration.</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            <ul class="section-content">
+                <li><strong>Ph.D. in Electrical Engineering</strong>, Cleveland State University, Dec 2021
+                    <ul>
+                        <li>Dissertation: "Codesign Development and Control of Smart Prostheses"</li>
+                        <li>Supervisor: Dr. Dan Simon</li>
+                    </ul>
+                </li>
+                <li><strong>M.Sc. in Computers and System Engineering</strong>, Minia University, Oct 2010
+                    <ul>
+                        <li>Thesis: "Deep Insight in Control of Twin Rotor MIMO Helicopter System"</li>
+                        <li>Advisor: Dr. El Sayed Mohamed</li>
+                    </ul>
+                </li>
+                <li><strong>B.Sc. in Electrical Engineering</strong>, Aswan University, Jun 2001
+                    <ul>
+                        <li>Graduated Summa Cum Laude</li>
+                        <li>Major: Control Engineering</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Research & Academic Experience</h2>
+            <ul class="section-content">
+                <li><strong>National Institutes of Health (NIH), Bethesda, MD, USA</strong>, Postdoc Fellow and Associate Investigator (2022-2023)
+                    <ul>
+                        <li>Developed personalized control systems for pediatric exoskeletons using deep reinforcement learning.</li>
+                        <li>Designed advanced functional electrical muscle stimulation systems for assistive robotics.</li>
+                    </ul>
+                </li>
+                <li><strong>Cleveland Clinic, Cleveland, OH, USA</strong>, Postdoc Fellow, Biomedical Engineering Dept. (2021-2022)
+                    <ul>
+                        <li>Developed a novel algorithm for detrusor pressure estimation using electromyography signals.</li>
+                        <li>Led projects on sensor integration and control of robotic prosthetics.</li>
+                    </ul>
+                </li>
+                <li><strong>US Department of Veterans Affairs</strong>, Research Engineer (2021-2022)
+                    <ul>
+                        <li>Worked with the Advanced Platform Technology Center to develop algorithms for bladder detrusor pressure estimation using a single-channel catheter.</li>
+                    </ul>
+                </li>
+                <li><strong>Ford Motor Company, Detroit, MI, USA</strong>, Research Engineer (2019-2020)
+                    <ul>
+                        <li>Developed advanced control algorithms using self-learning neural networks to enhance fuel efficiency and autonomous driving.</li>
+                        <li>Implemented real-time control systems for vehicle performance optimization.</li>
+                    </ul>
+                </li>
+                <li><strong>SIEMENS Co., Stuttgart, Germany</strong>, Engineering Intern (2011)
+                    <ul>
+                        <li>Collaborated with Festo Co. to augment human assistive robotics for industrial applications.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Skills</h2>
+            <ul class="section-content">
+                <li>Mechatronics System Design</li>
+                <li>Control Systems (PID, Adaptive, Neural Network-based)</li>
+                <li>Robotics (Prosthetics, Exoskeletons, Autonomous Systems)</li>
+                <li>Machine Learning & Neural Networks</li>
+                <li>Hardware-in-the-loop Simulation</li>
+                <li>Programming Languages: Python, C++, MATLAB</li>
+                <li>CAD Design (SolidWorks, Fusion 360)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Selected Publications</h2>
+            <ul class="section-content">
+                <li><strong>Zhang, S., Lopez-Sanchez, M., Abdelhady, M.</strong> "Actuator optimization and deep learning-based control of pediatric knee exoskeleton for community-based mobility assistance." Mechatronics 97 (2024): 103109.</li>
+                <li><strong>M. Abdelhady, A. J. van den Bogert, D. Simon</strong> "A High-Fidelity Wearable System for Measuring Lower-Limb Kinetics and Kinematics." IEEE Sensors Journal 19.24 (2019): 12482-12493.</li>
+                <li><strong>Subramanian, M., Abdelhady, M.</strong> "The role of contemporary digital tools in the Covid-19 crisis." Expert Systems 39.6 (2022).</li>
+                <li><strong>M. Abdelhady, T. Bulea</strong>, "Knee angle estimation from surface EMG during walking using attention-based deep recurrent neural networks," MDPI Sensors Journal (2024).</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Honors & Awards</h2>
+            <ul class="section-content">
+                <li>Cleveland Clinic Travel Garnet (2022)</li>
+                <li>Best Paper Award at 3rd International Conference on Control and Robots (2020)</li>
+                <li>Student Research Award (2021)</li>
+                <li>ICCR Conference Excellent Oral Presentation (2020)</li>
+            </ul>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">Print Resume</button>
     </div>
 
-
-    <section id="research" style="margin: 4em;">
-        <h2>Research</h2>
-        <ul>
-            <li><a href="#ccf">Cleveland Clinc Foundation</a></li>
-            <li><a href="#csu">Cleveland State University</a></li>
-            <li><a href="#ford">Ford Motor Company</a></li>
-        </ul>
-    </section>
-
-    <section id="cv" style="margin: 4em;">
-        <h2>Education</h2>
-        <p style="font-stretch: extra-expanded;font-size:1.1em;">
-
-            Doctor of Philosophy, Cleveland State University, USA
-            <br>Dissertation: “Codesign Development and Control of Smart Prostheses”
-            <br>Major: Electrical Engineering 
-            <br>Specialization: Robotic Control 
-        </p>
-        <p style="font-stretch: extra-expanded;font-size:1.1em;">
-            Master of Science, Minia University, Minia, Egypt
-            <br>Thesis Title:“Deep Insight in Control of Twin Rotor MIMO Helicopter Lab System”
-            <br>Major: Electrical Engineering 
-            <br>Specialization: Robotic Control 
-        </p>
-        <p style="font-stretch: extra-expanded;font-size:1.1em;">
-            Bachelor of Science, Magna Cum Laude, Aswan University, Aswan, Egypt
-            <br>Specialization: Computer Engineering 
-            <br>Major: Electrical Engineering 
-        </p>
-
-        <h2>Experience</h2>
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    National Institutes of Health, Bethesda, MD, USA	2022 to now
-                </span>
-                <br>Postdoc Fellow and Associate Investigator, Clinical Center 
-                <br>Advisor: Dr. Thomas Bulea
-                <br>Develop an design advanced pediatric exoskeleton with aid of functional electrical muscle stimulation, and develop a personalized exoskeleton control using deep and reinforcement learning.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Cleveland Clinic, Cleveland, OH, USA	2021 to 2022
-                </span>
-                <br>Postdoc Fellow, Biomedical Engineering Dept.
-                <br>Advisor: Dr. Margot Damaser
-                <br>Novel estimate approaches for detrusor activities using ensemble decision trees.
-                <br>Accurate data acquisition for invasive wireless pressure sensor. 
-            </spa>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    US. Department of Veteran Affaires, Cleveland, OH, USA	2021 to 2022
-                </span>
-                <br>Research Engineer, Advanced Platform Technology Center (APT)
-                <br>Assist in Vivo data analysis for bladder detrusor estimation
-            </p>
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Doctoral Dissertation, Cleveland State University, Cleveland, Ohio, USA	2022
-                </span>
-                <br>Prof. Dan Simon
-                <br>Develop a wearable sensor network for lower limb prostheses.
-                <br>Develop a learning-based control paradigm for lower limb prostheses.
-                <br>Hardware-in-the-loop testing for an active lower-limb prosthesis.
-                <br>Design and optimize prosthesis prototypes using an additive manufacturing technique.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    SIEMENS Co., Stuttgart, Germany 	2011
-                </span>
-                <br>Engineering Intern
-                <br>Advisor: Dr. Ivan Fischer
-                <br>Augmenting human assistive robotics: Cooperation with Festo Co.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Master thesis, Minia University, Minia, Egypt	2010
-                </span>
-                <br>Advisor: Dr. Elsayed Mohamed
-                <br>Develop control scheme for MIMO system using evolutionary computing algorithms.
-            </p>
-
-            <p>
-                <span style="font-weight:400 bold;"> 
-                    Graduation Project, Aswan University, Aswan, Egypt	2001
-                </span>
-                <br>Graduation project: Robust speech recognition method based on radial basis neural network.
-            </p>
-
-
-    <h2>Honors and Awards</h2>
-        <ul>
-        <li>
-            Cleveland Clinic Travel Garnet	2022
-            <br>Support travel to American Urology Association Conference 
-        </li>
-        <li>
-            Cleveland Clinic Fellowship	2022
-            <br>Machine learning and signal processing to estimate bladder biometrics
-        </li>
-        <li>
-            Student Research Award 	2021
-            <br>Awarded to the best Ph.D. candidate with outstanding research work. 
-        </li>
-        <li>
-            ICCR Conference Excellent Oral Presentation	2020
-        </li>
-        <li>
-            Dean Travel Award	2017
-            <br>Given to support conference publication 
-        </li>
-        <li>
-            Graduate School Award	2017
-            <br>Support publishing in high ranked conferences (ACC2017)
-        </li>
-        <li>
-            Egyptian Government Scholarship	2014
-            <br>Given to outstanding scholar support education in USA  
-        </li>
-    </ul>
-
-
-    <h2>Patents</h2>
-        <ol>
-            <li>
-                M. Abdelhady, S. Majerus, M. Damaser, “Event-Driven Detrusor Pressure Estimation for Single Catheter Use,” IDF# 2022-041.
-            </li>
-            <li>
-                Damaser, Margot S., Steve Majerus, and Mohamed Abdelhady. "Detrusor Pressure Estimation from Single Channel Bladder Pressure Recordings." U.S. Patent No. 17/880,109.
-            </li>
-        </ol>	
-
-
-
-    <h2>Presentation and Invented Lectures</h2>
-    <ol>
-    <li>
-        Paper Presentation, “Hardware-In- the loop simulation for active prosthesis,” ICCR Tokyo, 2020.
-    </li>
-    <li>
-        Paper Presentation, “Neural Network Controller for MIMO Combustion Engine Model,” Ford Artificial Intelligence and Machine Learning Conference, 2020
-    </li>
-    <li>
-        Public Seminar, “An Embedded Hardware and Software Codesign Environment for Prostheses Control,” Cleveland CHMS Seminar, 2018.
-    </li>
-    <li>
-        Public Seminar, “An Embedded Hardware and Software Codesign Environment for Prostheses Control,” Cleveland CHMS Seminar, 2018.
-    </li>
-    <li>
-        Public Seminar, “Data acquisition benchmark for intensive prosthesis learning based control” Cleveland CHMS Seminar, 2017.
-    </li>
-    <li>
-        Paper Presentation, “System identification and control for lower-limb prothesis,” American Control Conference 2017.
-    </li>
-    <li>
-        Public Seminar, “Neural Network Controller for Active Powered Knee,” Cleveland CHMS Seminar, 2016.
-    </li>
-</ol>
-
-<h2>Professional Training</h2>
-<ol>
-    <li>
-        Model predictive control workshop, American Control Conference, Seattle 	2017 
-    </li>
-    <li>
-        NSF proposal writing workshop, Cleveland State University 			2016
-    </li>
-    <li>
-        NIH information security awareness, National Institutes of Health		2022
-    </li>
-    <li>
-        Biomed 101, CITI Program, National Institutes of Health				2023
-    </li>
-</ol>
-
-
-        <p>Email: megahady@gmail.com</p>
-        <p>Phone: +1 (216) 553-8555</p>
-        <p>LinkedIn: <a href="www.linkedin.com/in/megahady" style="text-decoration: none;">www.linkedin.com/in/megahady</a></p>
-        <p>GitHub: <a href=https://github.com/megahady style="text-decoration: none;">https://github.com/megahady</a></p>
-        <a href="#more">..see more</a>
-
-
-
-    </section>
-
-    <!-- Add other sections associated with menu items -->
-
-    <script>
-        // JavaScript to handle section visibility based on menu item click
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector('#mainMe').style.display = 'none';
-                // Hide all sections
-                document.querySelectorAll('section').forEach(section => {
-                    section.classList.remove('active');
-                });
-
-                // Show the selected section
-                const targetSectionId = this.getAttribute('href').substring(1);
-                document.getElementById(targetSectionId).classList.add('active');
-            });
-        });
-    </script>
-
 </body>
-
 </html>
