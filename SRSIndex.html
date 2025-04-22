@@ -11,8 +11,8 @@
   <input type="file" id="csvFile" accept=".csv">
   <div>
     <label><input type="radio" name="pdet" value="pdetcalc" checked> Pdet Calculated</label>
-    <label><input type="radio" name="pdet" value="postpdet"> Post-Processed</label>
-    <label><input type="radio" name="pdet" value="postpdetwavelet"> Wavelet</label>
+    <label><input type="radio" name="pdet" value="postpdet"> Pdet post-processed</label>
+    <label><input type="radio" name="pdet" value="postpdetwavelet"> Pdet Wavelet post-processed</label>
   </div>
   <div id="plot" style="width: 100%; height: 1000px;"></div>
 
@@ -31,6 +31,7 @@
         emg = data.map(row => row[0]);
         pves = data.map(row => row[1]);
         pabd = data.map(row => row[2]);
+        pabdcalc = data.map(row => row[1])-data.map(row => row[6]);
         pdetcalc = data.map(row => row[4]);
         postpdet = data.map(row => row[5]);
         postpdetwavelet = data.map(row => row[6]);
@@ -76,17 +77,17 @@
         },
         {
           x: time, y: emg, type: 'scatter', fill: 'tozeroy',
-          line: {color: 'green'}, name: 'EMG',
+          line: {color: 'blue'}, name: 'EMG',
           yaxis: 'y2'
         },
         {
           x: time, y: pabd, type: 'scatter', fill: 'tozeroy',
-          line: {color: 'orange'}, name: 'Pabd',
+          line: {color: 'orange'}, name: 'Pabdcalc',
           yaxis: 'y3'
         },
         {
           x: time, y: selectedSignal, type: 'scatter', fill: 'tozeroy',
-          line: {color: selectedColor}, name: selectedLabel,
+          line: {color: 'orange'}, name: selectedLabel,
           yaxis: 'y4'
         }
       ];
