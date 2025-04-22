@@ -2,21 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>UDS Plot Viewer</title>
+  <title>UDS CSV Plot Viewer</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body style="font-family: Arial; padding: 20px;">
 
+  <h2>UDS CSV Plot Viewer</h2>
   <input type="file" id="csvFile" accept=".csv">
   <div>
-    <label><input type="radio" name="pdet" value="pdetcalc" checked> Pdet Calculated</label>
-    <label><input type="radio" name="pdet" value="postpdet"> Pdet post-processed</label>
-    <label><input type="radio" name="pdet" value="postpdetwavelet"> Pdet Wavelet post-processed</label>
+    <label><input type="radio" name="pdet" value="pdetcalc"> Pdet Calculated</label>
+    <label><input type="radio" name="pdet" value="postpdet"> Post-Processed</label>
+    <label><input type="radio" name="pdet" value="postpdetwavelet" checked> Wavelet</label>
   </div>
   <div id="plot" style="width: 100%; height: 1000px;"></div>
 
   <script>
-    let emg, pves, pabd, pdetcalc, postpdet, postpdetwavelet, time;
+    let emg, pves, pdetcalc, postpdet, postpdetwavelet, time;
 
     document.getElementById('csvFile').addEventListener('change', function (e) {
       const file = e.target.files[0];
@@ -29,8 +30,6 @@
 
         emg = data.map(row => row[0]);
         pves = data.map(row => row[1]);
-        pabd = data.map(row => row[2]);
-        pabdcalc = data.map(row => row[1])-data.map(row => row[6]);
         pdetcalc = data.map(row => row[4]);
         postpdet = data.map(row => row[5]);
         postpdetwavelet = data.map(row => row[6]);
@@ -38,7 +37,8 @@
         const samplingRate = 1000; // 1 kHz
         time = data.map((_, i) => i / samplingRate / 60); // time in minutes
 
-        plot(document.querySelector('input[name="pdet"]:checked').value);
+        const defaultSelection = document.querySelector('input[name="pdet"]:checked').value;
+        plot(defaultSelection);
       };
       reader.readAsText(file);
     });
@@ -52,21 +52,23 @@
     });
 
     function plot(selectedSignalName) {
-      let selectedSignal, selectedLabel, selectedColor;
+      let selectedPdet, selectedLabel, selectedColor;
 
       if (selectedSignalName === 'pdetcalc') {
-        selectedSignal = pdetcalc;
+        selectedPdet = pdetcalc;
         selectedLabel = 'Pdet Calculated';
         selectedColor = 'purple';
       } else if (selectedSignalName === 'postpdet') {
-        selectedSignal = postpdet;
+        selectedPdet = postpdet;
         selectedLabel = 'Post-Processed';
         selectedColor = 'orange';
       } else if (selectedSignalName === 'postpdetwavelet') {
-        selectedSignal = postpdetwavelet;
+        selectedPdet = postpdetwavelet;
         selectedLabel = 'Wavelet';
         selectedColor = 'black';
       }
+
+      const pabdCalculated = pves.map((val, i) => val - selectedPdet[i]);
 
       const traces = [
         {
@@ -76,17 +78,17 @@
         },
         {
           x: time, y: emg, type: 'scatter', fill: 'tozeroy',
-          line: {color: 'blue'}, name: 'EMG',
+          line: {color: 'green'}, name: 'EMG',
           yaxis: 'y2'
         },
         {
-          x: time, y: pabd, type: 'scatter', fill: 'tozeroy',
-          line: {color: 'orange'}, name: 'Pabdcalc',
+          x: time, y: pabdCalculated, type: 'scatter', fill: 'tozeroy',
+          line: {color: 'orange'}, name: 'Pabd (Calculated)',
           yaxis: 'y3'
         },
         {
-          x: time, y: selectedSignal, type: 'scatter', fill: 'tozeroy',
-          line: {color: 'orange'}, name: selectedLabel,
+          x: time, y: selectedPdet, type: 'scatter', fill: 'tozeroy',
+          line: {color: selectedColor}, name: selectedLabel,
           yaxis: 'y4'
         }
       ];
@@ -111,7 +113,7 @@
           anchor: 'x'
         },
         yaxis3: {
-          title: 'Pabd (cmH₂O)',
+          title: 'Pabd (Pves - Pdet)',
           range: [-20, 100],
           domain: [0.25, 0.5],
           anchor: 'x'
