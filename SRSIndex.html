@@ -1,177 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV Plotter</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        
-        #plot {
-            width: 100%;
-            height: 800px;
-            margin-top: 20px;
-        }
-    </style>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <meta charset="UTF-8">
+  <title>UDS Signal Viewer</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    #plot {
+      width: 100%;
+      height: 800px;
+    }
+  </style>
 </head>
 <body>
-    <h1>CSV File Plotter</h1>
-    <input type="file" id="csvFile" accept=".csv">
-    <div id="plot"></div>
+  <h2>UDS Signal Plotter</h2>
 
-    <script>
-        document.getElementById('csvFile').addEventListener('change', handleFileSelect, false);
+  <input type="file" id="fileInput" accept=".csv" />
+  <br><br>
 
-        let globalData = null;
+  <label><input type="radio" name="signal" value="pdet" checked /> Pdet</label>
+  <label><input type="radio" name="signal" value="pdetcalc" /> Pdet Calculated</label>
+  <label><input type="radio" name="signal" value="postpdet" /> Post-Processed</label>
+  <label><input type="radio" name="signal" value="postpdetwavelet" /> Wavelet</label>
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const contents = e.target.result;
-                    globalData = parseCSV(contents);
-                    processFile();
-                };
-                reader.readAsText(file);
+  <div id="plot"></div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const text = event.target.result;
+        const rows = text.trim().split('\n').map(row => row.split(',').map(Number));
+
+        const emg = rows.map(r => r[0]);
+        const pves = rows.map(r => r[1]);
+        const pabd = rows.map(r => r[2]);
+        const pdet = rows.map(r => r[3]);
+        const pdetcalc = rows.map(r => r[4]);
+        const postpdet = rows.map(r => r[5]);
+        const postpdetwavelet = rows.map(r => r[6]);
+
+        const sampleRate = 1000;
+        const time = rows.map((_, i) => i / sampleRate / 60); // minutes
+
+        function plot(selectedSignalName) {
+          let selectedSignal;
+          let selectedLabel;
+          let selectedColor;
+
+          if (selectedSignalName === 'pdet') {
+            selectedSignal = pdet;
+            selectedLabel = 'Pdet';
+            selectedColor = 'red';
+          } else if (selectedSignalName === 'pdetcalc') {
+            selectedSignal = pdetcalc;
+            selectedLabel = 'Pdet Calculated';
+            selectedColor = 'purple';
+          } else if (selectedSignalName === 'postpdet') {
+            selectedSignal = postpdet;
+            selectedLabel = 'Post-Processed';
+            selectedColor = 'orange';
+          } else if (selectedSignalName === 'postpdetwavelet') {
+            selectedSignal = postpdetwavelet;
+            selectedLabel = 'Wavelet';
+            selectedColor = 'black';
+          }
+
+          const layout = {
+            grid: {rows: 4, columns: 1, pattern: 'independent'},
+            height: 1000,
+            showlegend: false
+          };
+
+          const plots = [
+            {
+              x: time, y: pves, type: 'scatter', fill: 'tozeroy',
+              line: {color: 'blue'}, name: 'Pves',
+              yaxis: 'y1', xaxis: 'x1',
+              subplot: 'xy', row: 0, col: 0
+            },
+            {
+              x: time, y: emg, type: 'scatter', fill: 'tozeroy',
+              line: {color: 'green'}, name: 'EMG',
+              yaxis: 'y2', xaxis: 'x2',
+              subplot: 'xy2', row: 1, col: 0
+            },
+            {
+              x: time, y: pabd, type: 'scatter', fill: 'tozeroy',
+              line: {color: 'orange'}, name: 'Pabd',
+              yaxis: 'y3', xaxis: 'x3',
+              subplot: 'xy3', row: 2, col: 0
+            },
+            {
+              x: time, y: selectedSignal, type: 'scatter', fill: 'tozeroy',
+              line: {color: selectedColor}, name: selectedLabel,
+              yaxis: 'y4', xaxis: 'x4',
+              subplot: 'xy4', row: 3, col: 0
             }
+          ];
+
+          // Apply specific y-axis ranges
+          layout.yaxis = {range: [-20, 100]};
+          layout.yaxis2 = {range: [0, 10]};
+          layout.yaxis3 = {range: [-20, 100]};
+          layout.yaxis4 = {range: [-20, 100]};
+
+          Plotly.newPlot('plot', plots, layout);
         }
 
-        function parseCSV(csv) {
-            const rows = csv.split('\n').slice(2); // Ignore the first two rows
-            const data = {
-                emg: [],
-                pves: [],
-                pabd: []
-            };
-            rows.forEach(row => {
-                const cols = row.split(',').map(Number);
-                if (cols.length >= 4) {
-                    data.emg.push(cols[1]);
-                    data.pves.push(cols[2]);
-                    data.pabd.push(cols[3]);
-                }
-            });
-            return data;
-        }
+        // Set up radio buttons
+        document.querySelectorAll('input[name="signal"]').forEach(radio => {
+          radio.addEventListener('change', () => plot(radio.value));
+        });
 
-        function normalize(data) {
-            const min = Math.min(...data);
-            const max = Math.max(...data);
-            return data.map(value => (value - min) / (max - min));
-        }
+        plot('pdet'); // Initial plot
+      };
 
-        function calculateEnvelope(data) {
-            const windowSize = 100;
-            const envelope = [];
-            for (let i = 0; i < data.length; i++) {
-                let sum = 0;
-                for (let j = Math.max(0, i - windowSize); j <= Math.min(data.length - 1, i + windowSize); j++) {
-                    sum += Math.abs(data[j]);
-                }
-                envelope.push(sum / (2 * windowSize + 1));
-            }
-            return envelope;
-        }
-
-        function calculateOffset(data, samplingRate, startTime, endTime) {
-            const startIndex = Math.floor(startTime / samplingRate);
-            const endIndex = Math.floor(endTime / samplingRate);
-            const segment = data.slice(startIndex, endIndex);
-            const sum = segment.reduce((acc, val) => acc + val, 0);
-            return sum / segment.length;
-        }
-
-        function removeOffset(data, offset) {
-            return data.map(value => value - offset);
-        }
-
-        function processFile() {
-            if (globalData) {
-                const samplingRate = 0.001;
-
-                const emgOffset = calculateOffset(globalData.emg, samplingRate, 2, 5);
-                const pvesOffset = calculateOffset(globalData.pves, samplingRate, 2, 5);
-                const pabdOffset = calculateOffset(globalData.pabd, samplingRate, 2, 5);
-
-                const emgNoOffset = removeOffset(globalData.emg, emgOffset);
-                const pvesNoOffset = removeOffset(globalData.pves, pvesOffset);
-                const pabdNoOffset = removeOffset(globalData.pabd, pabdOffset);
-
-                const normalizedEMG = normalize(emgNoOffset);
-                const emgEnvelope = calculateEnvelope(emgNoOffset);
-                const normalizedEMGEnvelope = normalize(emgEnvelope);
-                const normalizedPves = normalize(pvesNoOffset);
-                const pvesMinusEMGEnvelope = normalizedPves.map((val, index) => val - normalizedEMGEnvelope[index]);
-
-                const xValues = Array.from({ length: globalData.emg.length }, (_, i) => i * samplingRate);
-
-                const trace1 = {
-                    x: xValues,
-                    y: normalizedEMG,
-                    mode: 'lines',
-                    name: 'Normalized EMG'
-                };
-
-                const trace2 = {
-                    x: xValues,
-                    y: normalizedEMGEnvelope,
-                    mode: 'lines',
-                    name: 'EMG Envelope'
-                };
-
-                const trace3 = {
-                    x: xValues,
-                    y: pvesNoOffset,
-                    mode: 'lines',
-                    name: 'Pves'
-                };
-
-                const trace4 = {
-                    x: xValues,
-                    y: pabdNoOffset,
-                    mode: 'lines',
-                    name: 'Pabd'
-                };
-
-                const trace5 = {
-                    x: xValues,
-                    y: pvesMinusEMGEnvelope,
-                    mode: 'lines',
-                    name: 'Normalized Pves - Normalized EMG Envelope'
-                };
-
-                const layout = {
-                    title: 'CSV Data Plot',
-                    grid: { rows: 5, columns: 1, pattern: 'independent' },
-                    xaxis: { title: 'Time (s)' },
-                    yaxis: { title: 'Normalized EMG' },
-                    xaxis2: { title: 'Time (s)', matches: 'x' },
-                    yaxis2: { title: 'EMG Envelope' },
-                    xaxis3: { title: 'Time (s)', matches: 'x' },
-                    yaxis3: { title: 'Pves' },
-                    xaxis4: { title: 'Time (s)', matches: 'x' },
-                    yaxis4: { title: 'Pabd' },
-                    xaxis5: { title: 'Time (s)', matches: 'x' },
-                    yaxis5: { title: 'Normalized Pves - Normalized EMG Envelope' }
-                };
-
-                Plotly.newPlot('plot', [
-                    { ...trace1, xaxis: 'x', yaxis: 'y' },
-                    { ...trace2, xaxis: 'x2', yaxis: 'y2' },
-                    { ...trace3, xaxis: 'x3', yaxis: 'y3' },
-                    { ...trace4, xaxis: 'x4', yaxis: 'y4' },
-                    { ...trace5, xaxis: 'x5', yaxis: 'y5' }
-                ], layout);
-            } else {
-                alert('Please select a CSV file first.');
-            }
-        }
-    </script>
+      reader.readAsText(file);
+    });
+  </script>
 </body>
 </html>
