@@ -7,16 +7,6 @@ My Course_megahady.github.io/Course
 Nonlinear Control_megahady.github.io/NonlineControl/NonlinearControl_
 SRSMedical_megahady.github.io/SRSIndex
 
-AI Writing Tool
-Jenni_jenni.ai
-Tavily_app.tavily.com
-Gemini_gemini.google.com
-SciSpace_typeset.io
-SamWell_Samwell.ai
-ChatGPT_chat.openai.com
-Webcatalog_webcatalog.io
-Paperbrain_www.paperbrain.org
-
 #Books and Papers
 Overleaf_www.Overleaf.com
 Explain Paper_www.explainpaper.com
