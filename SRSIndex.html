@@ -12,7 +12,7 @@
     }
     #plot {
       width: 100%;
-      height: 800px;
+      height: 900px;
     }
   </style>
 </head>
@@ -73,46 +73,46 @@
             selectedColor = 'black';
           }
 
-          const layout = {
-            grid: {rows: 4, columns: 1, pattern: 'independent'},
-            height: 1000,
-            showlegend: false
-          };
-
-          const plots = [
+          const traces = [
             {
               x: time, y: pves, type: 'scatter', fill: 'tozeroy',
               line: {color: 'blue'}, name: 'Pves',
-              yaxis: 'y1', xaxis: 'x1',
-              subplot: 'xy', row: 0, col: 0
+              xaxis: 'x', yaxis: 'y'
             },
             {
               x: time, y: emg, type: 'scatter', fill: 'tozeroy',
               line: {color: 'green'}, name: 'EMG',
-              yaxis: 'y2', xaxis: 'x2',
-              subplot: 'xy2', row: 1, col: 0
+              xaxis: 'x2', yaxis: 'y2'
             },
             {
               x: time, y: pabd, type: 'scatter', fill: 'tozeroy',
               line: {color: 'orange'}, name: 'Pabd',
-              yaxis: 'y3', xaxis: 'x3',
-              subplot: 'xy3', row: 2, col: 0
+              xaxis: 'x3', yaxis: 'y3'
             },
             {
               x: time, y: selectedSignal, type: 'scatter', fill: 'tozeroy',
               line: {color: selectedColor}, name: selectedLabel,
-              yaxis: 'y4', xaxis: 'x4',
-              subplot: 'xy4', row: 3, col: 0
+              xaxis: 'x4', yaxis: 'y4'
             }
           ];
 
-          // Apply specific y-axis ranges
-          layout.yaxis = {range: [-20, 100]};
-          layout.yaxis2 = {range: [0, 10]};
-          layout.yaxis3 = {range: [-20, 100]};
-          layout.yaxis4 = {range: [-20, 100]};
+          const layout = {
+            grid: {rows: 4, columns: 1, pattern: 'independent'},
+            height: 1000,
+            showlegend: false,
 
-          Plotly.newPlot('plot', plots, layout);
+            xaxis: {title: 'Time (min)'},
+            xaxis2: {title: 'Time (min)'},
+            xaxis3: {title: 'Time (min)'},
+            xaxis4: {title: 'Time (min)'},
+
+            yaxis: {title: 'Pves (cmH₂O)', range: [-20, 100]},
+            yaxis2: {title: 'EMG (µV)', range: [0, 10]},
+            yaxis3: {title: 'Pabd (cmH₂O)', range: [-20, 100]},
+            yaxis4: {title: selectedLabel + ' (cmH₂O)', range: [-20, 100]}
+          };
+
+          Plotly.newPlot('plot', traces, layout);
         }
 
         // Set up radio buttons
