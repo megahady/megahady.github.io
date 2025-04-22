@@ -24,7 +24,3 @@ Liberary Genesis_libgen.li
 Sci-Hub_sci-hub.se
 Google Patents_patents.google.com/
 Citation-Finder_citation-finder.vercel.app
-
-
-# Created By
-Dr. Mohamed Abdelhady_
