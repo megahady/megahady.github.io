@@ -1,205 +1,341 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Numeric-formula login (demo)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>متتبع المصاريف والأصول</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:#071023;color:#e6eef8;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
-  .card{background:#0e1726;padding:22px;border-radius:12px;width:360px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-  h1{margin:0 0 12px;font-size:18px;color:#cfe8ff}
-  label{display:block;margin-top:8px;color:#bcd7ff;font-size:13px}
-  input{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:#e7f2ff;box-sizing:border-box}
-  button{margin-top:12px;width:100%;padding:10px;border-radius:8px;border:none;background:#2b6ce6;color:white;font-weight:600;cursor:pointer}
-  .status{margin-top:12px;padding:10px;border-radius:8px;text-align:center;display:none;font-weight:600}
-  .ok{background:rgba(72,187,120,0.12);color:#9ef2b7}
-  .bad{background:rgba(255,80,80,0.08);color:#ffb3b3}
-  .muted{font-size:12px;color:#9fb9ff;margin-top:10px}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#0e1726;color:#f0f4ff}
+header{background:#1a2842;padding:15px;text-align:center;color:#9ef}
+main{max-width:900px;margin:20px auto;padding:20px;background:#14213d;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+h1,h2{margin-top:0;text-align:center}
+form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;margin-bottom:15px}
+input,select,button{padding:10px;border-radius:6px;border:none;font-size:14px}
+input,select{background:#20355f;color:#fff}
+button{background:#3a86ff;color:white;font-weight:600;cursor:pointer}
+button:hover{background:#5ea3ff}
+table{width:100%;border-collapse:collapse;margin-top:10px;overflow-x:auto;display:block}
+th,td{border-bottom:1px solid #233;border-radius:4px;padding:8px;text-align:center;min-width:70px}
+tfoot td{font-weight:bold}
+#total{color:#9ef;font-size:18px}
+.tabs{display:flex;justify-content:center;margin-bottom:15px;flex-wrap:wrap}
+.tab-btn{padding:8px 15px;margin:4px;background:#20355f;border:none;border-radius:6px;color:#fff;cursor:pointer}
+.tab-btn.active{background:#3a86ff}
+.tab-content{display:none}
+.tab-content.active{display:block}
+@media(max-width:600px){
+  form{grid-template-columns:1fr;gap:8px}
+  table,thead,tbody,th,td,tr{display:block}
+  th{text-align:right;background:#1a2842;padding:8px}
+  td{padding:6px;text-align:right}
+  td button{float:left;margin-top:5px}
+}
+.status{margin-top:12px;padding:10px;border-radius:8px;text-align:center;display:none;font-weight:600}
+.ok{background:rgba(72,187,120,0.12);color:#9ef2b7}
+.bad{background:rgba(255,80,80,0.08);color:#ffb3b3}
 </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Login (formula check)</h1>
-    <form id="form">
-      <label for="user">Username</label>
-      <input id="user" value="ayat" required />
-      <label for="pass">Password</label>
-      <input id="pass" type="password" required />
-      <button type="submit">Sign in</button>
-    </form>
-    <div id="status" class="status"></div>
-    <p class="muted">Demo: uses a numeric formula and obfuscated constants. Not cryptographically secure.</p>
-  </div>
+<header>
+<h2>متتبع المصاريف والأصول</h2>
+</header>
+
+<main id="loginPage">
+<h1>تسجيل الدخول</h1>
+<form id="loginForm">
+  <input id="user" placeholder="اسم المستخدم" required>
+  <input id="pass" type="password" placeholder="كلمة المرور" required>
+  <button type="submit">تسجيل الدخول</button>
+</form>
+<div id="loginStatus" class="status"></div>
+</main>
+
+<main id="dashboard" style="display:none">
+<h1>لوحة التحكم</h1>
+
+<div class="tabs">
+<button class="tab-btn active" data-tab="incomeTab">الإيرادات</button>
+<button class="tab-btn" data-tab="expensesTab">المصاريف</button>
+<button class="tab-btn" data-tab="assetsTab">الأصول</button>
+<button class="tab-btn" data-tab="summaryTab">الملخص</button>
+<button class="tab-btn" id="logoutBtn">تسجيل الخروج</button>
+</div>
+
+<div id="incomeTab" class="tab-content active">
+<h2>إضافة دخل</h2>
+<form id="incomeForm">
+<select id="incomeType"><option value="monthly">شهري</option><option value="yearly">سنوي</option></select>
+<input id="incomeAmount" type="number" step="0.01" placeholder="المبلغ" required>
+<button type="submit">إضافة دخل</button>
+</form>
+<div style="overflow-x:auto">
+<table id="incomeTable">
+<thead><tr><th>التاريخ</th><th>النوع</th><th>المبلغ</th><th>حذف</th></tr></thead>
+<tbody></tbody>
+<tfoot></tfoot>
+</table>
+</div>
+</div>
+
+<div id="expensesTab" class="tab-content">
+<h2>إضافة مصروف</h2>
+<form id="expenseForm">
+<select id="expenseCategory">
+<option>طعام</option><option>مواصلات</option><option>فواتير</option>
+<option>ترفيه</option><option>تسوق</option><option>أخرى</option>
+</select>
+<input id="expenseDesc" placeholder="الوصف" required>
+<input id="expenseAmount" type="number" step="0.01" placeholder="المبلغ" required>
+<button type="submit">إضافة مصروف</button>
+</form>
+<div style="overflow-x:auto">
+<table id="expenseTable">
+<thead><tr><th>التاريخ</th><th>الفئة</th><th>الوصف</th><th>المبلغ</th><th>حذف</th></tr></thead>
+<tbody></tbody>
+<tfoot><tr><td colspan="3">الإجمالي</td><td id="expenseTotal">0.00</td><td></td></tr></tfoot>
+</table>
+</div>
+</div>
+
+<div id="assetsTab" class="tab-content">
+<h2>الأصول</h2>
+<form id="assetsForm">
+<input id="goldAmount" type="number" step="0.01" placeholder="الذهب" required>
+<input id="shahadatAmount" type="number" step="1" placeholder="شهادات الاستثمار" required>
+<button type="submit">تحديث الأصول</button>
+</form>
+<div>
+<p>الذهب: <span id="goldDisplay">0</span></p>
+<p>شهادات الاستثمار: <span id="shahadatDisplay">0</span></p>
+</div>
+</div>
+
+<div id="summaryTab" class="tab-content">
+<h2>ملخص</h2>
+<canvas id="summaryChart"></canvas>
+<div style="text-align:center;margin-top:20px">
+  <button id="exportBtn">تصدير البيانات إلى CSV</button>
+  <input type="file" id="importFile" accept=".csv" style="margin-left:10px">
+</div>
+</div>
+</main>
 
 <script>
-/*
-  Approach:
-  - Convert password -> big integer by folding UTF-8 bytes:
-      num = 0; for each byte b: num = num * 257n + BigInt(b)
-    (257 is chosen to reduce collisions and keep numbers manageable)
-  - Compute result = (num * MULT) + ADD, using BigInt arithmetic.
-  - Compare against stored mapped target number for that username.
-  - Stored values and constants are lightly obfuscated (split & base36 encoded).
-  - If match -> authenticated.
-
-  Accounts (as you requested):
-    - username: "ayat"    password: "ne3na3a"
-    - username: "admin"   password: "megahady2020"
-
-  NOTE: This technique is just obfuscation/fast-check; it is easy to brute force or bypass.
-*/
-
-// ---------- small obfuscation helpers ----------
-function fromBase36Parts(parts) {
-  // parts is array of base36 strings we join
-  return BigInt(parts.join(''));
-}
-function decPartsToBigInt(parts) {
-  // parts are decimal string pieces, join them => BigInt
-  return BigInt(parts.join(''));
-}
-function unobfStr(s) { // small reassembly helper for textual pieces stored weirdly
-  return s.split('').reverse().join('');
-}
-
-// ---------- constants (lightly obfuscated) ----------
-/*
-  MULT and ADD are the multiplication/addition constants used in the formula.
-  They are stored split (as base36 parts / decimal parts) so they are not immediate to scan.
-*/
-const MULT = decPartsToBigInt(['1099511628211']); // FNV-like prime (decimal)
-const ADD = decPartsToBigInt(['1469598103934665603']); // FNV offset basis (decimal)
-
-// MOD not used - we keep full BigInt arithmetic (JavaScript BigInt handles it)
-
-// To make lookup harder, stored target numbers (the expected results) are encoded.
-// We store them as base36 chunks, reversed strings, etc., then reconstruct at runtime.
-// The target numbers correspond to: result(password_for_username) using above formula.
-
-// Precomputed target results (obfuscated pieces).
-// These were computed from the passwords and split into pieces and slightly transformed.
+// -------- Login setup --------
+const MULT = 1099511628211n;
+const ADD = 1469598103934665603n;
 const TARGETS_OBF = {
-  // ayat -> "ne3na3a" produced numeric result 34973826436207598755785696238
-  "ayat": {
-    parts: ['1lm7qd0c7ga9h7', '2cj5f'] , // base36 pieces joined produce the number (obfuscated)
-    rev: false
-  },
-  // admin -> "megahady2020" produced numeric result 38856163181843304463441210799948809447503
-  "admin": {
-    parts: ['2g2v8nut9z3bq2ff0g', '1v8yq3s'] ,
-    rev: true
-  }
+  "ayat": { parts: ['3e2fozc3l','e9e1lkrt2m'], rev:false },
+  "admin": { parts: ['1c2m23waoxj2w','0q6pj6scwmfjv3'], rev:true }
 };
-
-// The obfuscation above is just an example arrangement; reconstruct to BigInt:
-function reconstructTarget(ob) {
-  // join parts and (optionally) reverse char order
-  let joined = ob.parts.join('');
-  if (ob.rev) joined = joined.split('').reverse().join('');
-  // interpret joined as base36 -> BigInt
-  return BigInt('0x' + BigInt('0x' + BigInt(joined,36).toString(16)).toString(16)); // avoid direct parseInt on big
-}
-
-// NOTE: above reconstructTarget uses a safe path to get BigInt of base36; simpler below:
-function base36ToBigInt(str) {
-  // convert base36 string to BigInt
-  const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
-  let out = 0n;
-  for (let ch of str.toLowerCase()) {
-    const v = BigInt(alphabet.indexOf(ch));
-    if (v < 0n) throw new Error('bad char in base36: ' + ch);
-    out = out * 36n + v;
-  }
-  return out;
-}
-
-// Rebuild actual targets (we will compute these from the base36 pieces)
 const TARGETS = {};
-for (let k of Object.keys(TARGETS_OBF)) {
-  let s = TARGETS_OBF[k].parts.join('');
-  if (TARGETS_OBF[k].rev) s = s.split('').reverse().join('');
-  // s is a base36-like string. Convert to BigInt base36.
-  try {
-    TARGETS[k] = base36ToBigInt(s);
-  } catch (e) {
-    // fallback: store zero (shouldn't happen)
-    TARGETS[k] = 0n;
-  }
+for(const k in TARGETS_OBF){
+  let s=TARGETS_OBF[k].parts.join('');
+  if(TARGETS_OBF[k].rev) s=s.split('').reverse().join('');
+  TARGETS[k]=BigInt(parseInt(s,36));
 }
-
-// ---------- password -> number conversion ----------
-function passwordToBigInt(pwd) {
-  // convert to UTF-8 bytes and fold into a BigInt:
-  const encoder = new TextEncoder();
-  const bytes = encoder.encode(pwd);
+function passwordToBigInt(p){
+  const enc = new TextEncoder();
+  const bytes = enc.encode(p);
   let n = 0n;
-  for (let i = 0; i < bytes.length; ++i) {
-    n = n * 257n + BigInt(bytes[i]); // 257 is arbitrary prime-like base > 256
-  }
+  for(const b of bytes) n=n*257n+BigInt(b);
   return n;
 }
+function computeFormula(n){ return n*MULT+ADD; }
+function eqConstTime(a,b){ return a===b; }
 
-// ---------- compute formula ----------
-function computeFormula(pwdBigInt) {
-  // result = pwdBigInt * MULT + ADD
-  return pwdBigInt * MULT + ADD;
-}
+const loginForm=document.getElementById('loginForm');
+const loginPage=document.getElementById('loginPage');
+const dashboard=document.getElementById('dashboard');
+const loginStatus=document.getElementById('loginStatus');
 
-// ---------- constant-time-ish comparison ----------
-function eqConstTime(a, b) {
-  // compare BigInts by converting to hex and xoring bytes
-  const ah = a.toString(16);
-  const bh = b.toString(16);
-  // pad
-  const L = Math.max(ah.length, bh.length);
-  const ap = ah.padStart(L, '0');
-  const bp = bh.padStart(L, '0');
-  let diff = 0;
-  for (let i = 0; i < L; ++i) diff |= ap.charCodeAt(i) ^ bp.charCodeAt(i);
-  return diff === 0;
-}
+loginForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const u=document.getElementById('user').value.trim();
+  const p=document.getElementById('pass').value;
+  if(!TARGETS[u]) { loginStatus.textContent="المستخدم غير موجود"; loginStatus.className='status bad'; loginStatus.style.display='block'; return; }
+  const res=computeFormula(passwordToBigInt(p));
+  if(eqConstTime(res,TARGETS[u])){
+    sessionStorage.setItem('sess',u);
+    loginPage.style.display='none';
+    dashboard.style.display='block';
+    initApp();
+  } else { loginStatus.textContent="كلمة المرور خاطئة"; loginStatus.className='status bad'; loginStatus.style.display='block'; }
+});
 
-// ---------- UI & login ----------
-const form = document.getElementById('form');
-const status = document.getElementById('status');
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+  sessionStorage.removeItem('sess');
+  dashboard.style.display='none';
+  loginPage.style.display='block';
+});
 
-function showMsg(msg, bad=false) {
-  status.style.display = 'block';
-  status.textContent = msg;
-  status.className = 'status ' + (bad ? 'bad' : 'ok');
-}
+// -------- App data --------
+let data = JSON.parse(localStorage.getItem('financeData')||'{"income":[],"expenses":[],"assets":{"gold":0,"shahadat":0}}');
 
-form.addEventListener('submit', (ev) => {
-  ev.preventDefault();
-  showMsg('Checking...', false);
-  const u = document.getElementById('user').value.trim();
-  const p = document.getElementById('pass').value;
-  if (!TARGETS[u]) {
-    showMsg('User not found', true);
+// -------- Tabs --------
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=> {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// -------- Income --------
+const incomeForm=document.getElementById('incomeForm');
+const incomeTable=document.querySelector('#incomeTable tbody');
+
+incomeForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const type=document.getElementById('incomeType').value;
+  const amount=parseFloat(document.getElementById('incomeAmount').value);
+  const date=new Date().toLocaleDateString('ar');
+  data.income.push({date,type,amount});
+  saveAndRender();
+  incomeForm.reset();
+});
+
+// -------- Expenses --------
+const expenseForm=document.getElementById('expenseForm');
+const expenseTable=document.querySelector('#expenseTable tbody');
+const expenseTotal=document.getElementById('expenseTotal');
+
+expenseForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const category=document.getElementById('expenseCategory').value;
+  const desc=document.getElementById('expenseDesc').value.trim();
+  const amount=parseFloat(document.getElementById('expenseAmount').value);
+  const now=new Date();
+  const currentMonth=now.getMonth();
+  const currentYear=now.getFullYear();
+  const expenseDate=new Date();
+  const expenseMonth=expenseDate.getMonth();
+  const expenseYear=expenseDate.getFullYear();
+  if(expenseMonth!==currentMonth || expenseYear!==currentYear){
+    alert('لا يمكن إضافة مصروف لشهر سابق');
     return;
   }
-
-  try {
-    const pNum = passwordToBigInt(p);
-    const res = computeFormula(pNum);
-
-    // The stored TARGETS[u] is base36->BigInt of the obfuscated pieces.
-    const expected = TARGETS[u];
-
-    if (eqConstTime(res, expected)) {
-      // success
-      showMsg('Login successful — welcome ' + u, false);
-      // store a tiny ephemeral session token (optional)
-      sessionStorage.setItem('sess', btoa(u + '|' + Date.now()));
-      // redirect or reveal page content...
-    } else {
-      showMsg('Incorrect password — access denied', true);
-    }
-  } catch (err) {
-    console.error(err);
-    showMsg('Error during verification', true);
-  }
+  data.expenses.push({date:expenseDate.toLocaleDateString('ar'),category,desc,amount});
+  saveAndRender();
+  expenseForm.reset();
 });
+
+// -------- Assets --------
+const assetsForm=document.getElementById('assetsForm');
+assetsForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  data.assets.gold=parseFloat(document.getElementById('goldAmount').value);
+  data.assets.shahadat=parseInt(document.getElementById('shahadatAmount').value);
+  saveAndRender();
+});
+
+// -------- Render --------
+function renderTables(){
+  // Income table
+  incomeTable.innerHTML='';
+  data.income.forEach((inc,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${inc.date}</td><td>${inc.type}</td><td>${inc.amount.toFixed(2)}</td><td><button onclick="delIncome(${i})">✖</button></td>`;
+    incomeTable.appendChild(tr);
+  });
+  // Expenses table
+  expenseTable.innerHTML='';
+  let total=0;
+  data.expenses.forEach((exp,i)=>{
+    total+=exp.amount;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${exp.date}</td><td>${exp.category}</td><td>${exp.desc}</td><td>${exp.amount.toFixed(2)}</td><td><button onclick="delExpense(${i})">✖</button></td>`;
+    expenseTable.appendChild(tr);
+  });
+  expenseTotal.textContent=total.toFixed(2);
+  // Assets display
+  document.getElementById('goldDisplay').textContent=data.assets.gold;
+  document.getElementById('shahadatDisplay').textContent=data.assets.shahadat;
+  drawMonthlyNet();
+}
+
+function delIncome(i){ data.income.splice(i,1); saveAndRender(); }
+function delExpense(i){ data.expenses.splice(i,1); saveAndRender(); }
+
+function saveAndRender(){ localStorage.setItem('financeData',JSON.stringify(data)); renderTables(); }
+
+// -------- Monthly net balance chart --------
+let netChart;
+function getMonthlySummary(){
+  const summary={};
+  data.income.forEach(inc=>{
+    const dt=new Date(inc.date);
+    const key=`${dt.getFullYear()}-${dt.getMonth()+1}`;
+    if(!summary[key]) summary[key]={income:0,expenses:0};
+    summary[key].income+=inc.amount;
+  });
+  data.expenses.forEach(exp=>{
+    const dt=new Date(exp.date);
+    const key=`${dt.getFullYear()}-${dt.getMonth()+1}`;
+    if(!summary[key]) summary[key]={income:0,expenses:0};
+    summary[key].expenses+=exp.amount;
+  });
+  return summary;
+}
+
+function drawMonthlyNet(){
+  const summary=getMonthlySummary();
+  const labels=[], net=[];
+  for(const k in summary){
+    labels.push(k);
+    const val=summary[k].income + data.assets.gold*1 + data.assets.shahadat*1 - summary[k].expenses;
+    net.push(val);
+  }
+  if(netChart) netChart.destroy();
+  netChart=new Chart(document.getElementById('summaryChart').getContext('2d'),{
+    type:'bar',
+    data:{labels,datasets:[{label:'الرصيد الشهري',data:net,backgroundColor:'#3a86ff'}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  });
+}
+
+// -------- Export CSV --------
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  let csv="Type,Date,Category/Type,Description,Amount\n";
+  data.income.forEach(inc)=>{ csv+=`Income,${inc.date},${inc.type},,${inc.amount}\n`; });
+  data.expenses.forEach(exp)=>{ csv+=`Expense,${exp.date},${exp.category},${exp.desc},${exp.amount}\n`; });
+  csv+=`Asset,,Gold,,${data.assets.gold}\n`;
+  csv+=`Asset,,Shahadat,,${data.assets.shahadat}\n`;
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='finance_data.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+
+// -------- Import CSV --------
+document.getElementById('importFile').addEventListener('change',function(e){
+  const file=this.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const lines=ev.target.result.split('\n');
+    const newData={income:[],expenses:[],assets:{gold:0,shahadat:0}};
+    lines.forEach(line=>{
+      const [type,date,cat,desc,amt]=line.split(',');
+      if(type==='Income') newData.income.push({date,type:cat,amount:parseFloat(amt)});
+      else if(type==='Expense') newData.expenses.push({date,category:cat,desc,amount:parseFloat(amt)});
+      else if(type==='Asset'){
+        if(cat==='Gold') newData.assets.gold=parseFloat(amt);
+        if(cat==='Shahadat') newData.assets.shahadat=parseInt(amt);
+      }
+    });
+    data=newData; saveAndRender();
+    alert('تم استيراد البيانات بنجاح');
+  };
+  reader.readAsText(file);
+});
+
+// -------- Init --------
+function initApp(){ renderTables(); }
+if(sessionStorage.getItem('sess')){ loginPage.style.display='none'; dashboard.style.display='block'; initApp(); }
 </script>
 </body>
 </html>
