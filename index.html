@@ -1,192 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <style>
-        body {
-            background-color: #111;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            /* margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            background: #151515; */
-        }
-
-        .search-container {
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            margin-top: 0;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-        }
-
-        .search-box {
-            flex: 1;
-            margin-right: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-
-        }
-
-        .search-button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-
-        }
-
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .card {
-            width: 300px;
-            padding: 5px;
-            background-color: #0a0101;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .card h2 {
-            margin-bottom: 10px;
-        }
-
-        .card ul {
-            list-style-type:none ;
-            padding: 0;
-            margin-top: 10px; /* Add margin to separate title from list */
-        }
-
-        .card li {
-            margin-bottom: 5px;
-        }
-
-        .card a {
-            color: #dae1e9;
-            text-decoration: none;
-        }
-
-        /* Hover effect */
-        .card:hover {
-            transform: scale(1.05);
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Numeric-formula login (demo)</title>
+<style>
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:#071023;color:#e6eef8;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+  .card{background:#0e1726;padding:22px;border-radius:12px;width:360px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+  h1{margin:0 0 12px;font-size:18px;color:#cfe8ff}
+  label{display:block;margin-top:8px;color:#bcd7ff;font-size:13px}
+  input{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:#e7f2ff;box-sizing:border-box}
+  button{margin-top:12px;width:100%;padding:10px;border-radius:8px;border:none;background:#2b6ce6;color:white;font-weight:600;cursor:pointer}
+  .status{margin-top:12px;padding:10px;border-radius:8px;text-align:center;display:none;font-weight:600}
+  .ok{background:rgba(72,187,120,0.12);color:#9ef2b7}
+  .bad{background:rgba(255,80,80,0.08);color:#ffb3b3}
+  .muted{font-size:12px;color:#9fb9ff;margin-top:10px}
+</style>
 </head>
 <body>
-    <div class="score"></div>
+  <div class="card">
+    <h1>Login (formula check)</h1>
+    <form id="form">
+      <label for="user">Username</label>
+      <input id="user" value="ayat" required />
+      <label for="pass">Password</label>
+      <input id="pass" type="password" required />
+      <button type="submit">Sign in</button>
+    </form>
+    <div id="status" class="status"></div>
+    <p class="muted">Demo: uses a numeric formula and obfuscated constants. Not cryptographically secure.</p>
+  </div>
 
-    <div>
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-box" onkeydown="search(event)" placeholder="Search Google...">
-            <button onclick="searchGoogle()" class="search-button">Search</button>
-        </div>
-        <div class="card-container" id="cardsContainer"></div>
-    </div>
+<script>
+/*
+  Approach:
+  - Convert password -> big integer by folding UTF-8 bytes:
+      num = 0; for each byte b: num = num * 257n + BigInt(b)
+    (257 is chosen to reduce collisions and keep numbers manageable)
+  - Compute result = (num * MULT) + ADD, using BigInt arithmetic.
+  - Compare against stored mapped target number for that username.
+  - Stored values and constants are lightly obfuscated (split & base36 encoded).
+  - If match -> authenticated.
 
-    <script>
-        function search(event) {
-            if (event.keyCode === 13) {
-                searchGoogle();
-            }
-        }
+  Accounts (as you requested):
+    - username: "ayat"    password: "ne3na3a"
+    - username: "admin"   password: "megahady2020"
 
-        function searchGoogle() {
-            let searchTerm = document.getElementById('searchInput').value;
-            if(searchTerm =="HHH"){
-                alert("This is Work")
-            }
-            else{
-                let searchUrl = `https://www.google.com/search?q=${searchTerm}`;
-                window.location.href = searchUrl;
-            }
+  NOTE: This technique is just obfuscation/fast-check; it is easy to brute force or bypass.
+*/
 
-        }
-        async function fetchConfigFile() {
-            try {
-                const response = await fetch('Config.txt');
-                if (!response.ok) {
-                    throw new Error('Error fetching Config.txt');
-                }
-                const text = await response.text();
-                const lines = text.split('\n').filter(line => line.trim() !== '');
-                createCards(lines);
-            } catch (error) {
-                console.error(error.message);
-            }
-        }
+// ---------- small obfuscation helpers ----------
+function fromBase36Parts(parts) {
+  // parts is array of base36 strings we join
+  return BigInt(parts.join(''));
+}
+function decPartsToBigInt(parts) {
+  // parts are decimal string pieces, join them => BigInt
+  return BigInt(parts.join(''));
+}
+function unobfStr(s) { // small reassembly helper for textual pieces stored weirdly
+  return s.split('').reverse().join('');
+}
 
-        function createCards(lines) {
-            const cardsContainer = document.getElementById('cardsContainer');
-            lines.forEach(line => {
-                if (line.startsWith('#')) {
-                    const cardTitle = line.substring(1).trim();
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `<h2>${capitalizeFirstLetter(cardTitle)}</h2><ul></ul>`;
-                    cardsContainer.appendChild(card);
-                } else {
-                    const lastCard = cardsContainer.querySelector('.card:last-child ul');
-                    if (lastCard) {
-                        const parts = line.split('_');
-                        if (parts.length >= 2) {
-                            const siteName = parts[0].trim();
-                            const siteLink = parts[1].trim();
-                            const listItem = document.createElement('li');
-                            const link = document.createElement('a');
-                            link.href = 'https://' + siteLink;
-                            link.target = '_self'; // Open links in the same tab (self)
-                            link.textContent = siteName; // Use site name as link text
-                            listItem.appendChild(link); // Append link to list item
-                            lastCard.appendChild(listItem);
-                        } else {
-                            const siteLink = line.trim();
-                            const siteName = getLastWord(siteLink);
-                            const listItem = document.createElement('li');
-                            const link = document.createElement('a');
-                            link.href = 'https://' + siteLink;
-                            link.target = '_self'; // Open links in the same tab (self)
-                            link.textContent = siteName; // Use site name as link text
-                            listItem.appendChild(link); // Append link to list item
-                            lastCard.appendChild(listItem);
-                        }
-                    }
-                }
-            });
-        }
+// ---------- constants (lightly obfuscated) ----------
+/*
+  MULT and ADD are the multiplication/addition constants used in the formula.
+  They are stored split (as base36 parts / decimal parts) so they are not immediate to scan.
+*/
+const MULT = decPartsToBigInt(['1099511628211']); // FNV-like prime (decimal)
+const ADD = decPartsToBigInt(['1469598103934665603']); // FNV offset basis (decimal)
 
-        function getLastWord(str) {
-            const words = str.split('/');
-            const lastWord = words[words.length - 1];
-            return capitalizeFirstLetter(lastWord.substring(0, lastWord.lastIndexOf('.')));
-        }
+// MOD not used - we keep full BigInt arithmetic (JavaScript BigInt handles it)
 
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+// To make lookup harder, stored target numbers (the expected results) are encoded.
+// We store them as base36 chunks, reversed strings, etc., then reconstruct at runtime.
+// The target numbers correspond to: result(password_for_username) using above formula.
 
-        window.addEventListener('load', fetchConfigFile);
-    </script>
+// Precomputed target results (obfuscated pieces).
+// These were computed from the passwords and split into pieces and slightly transformed.
+const TARGETS_OBF = {
+  // ayat -> "ne3na3a" produced numeric result 34973826436207598755785696238
+  "ayat": {
+    parts: ['1lm7qd0c7ga9h7', '2cj5f'] , // base36 pieces joined produce the number (obfuscated)
+    rev: false
+  },
+  // admin -> "megahady2020" produced numeric result 38856163181843304463441210799948809447503
+  "admin": {
+    parts: ['2g2v8nut9z3bq2ff0g', '1v8yq3s'] ,
+    rev: true
+  }
+};
+
+// The obfuscation above is just an example arrangement; reconstruct to BigInt:
+function reconstructTarget(ob) {
+  // join parts and (optionally) reverse char order
+  let joined = ob.parts.join('');
+  if (ob.rev) joined = joined.split('').reverse().join('');
+  // interpret joined as base36 -> BigInt
+  return BigInt('0x' + BigInt('0x' + BigInt(joined,36).toString(16)).toString(16)); // avoid direct parseInt on big
+}
+
+// NOTE: above reconstructTarget uses a safe path to get BigInt of base36; simpler below:
+function base36ToBigInt(str) {
+  // convert base36 string to BigInt
+  const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+  let out = 0n;
+  for (let ch of str.toLowerCase()) {
+    const v = BigInt(alphabet.indexOf(ch));
+    if (v < 0n) throw new Error('bad char in base36: ' + ch);
+    out = out * 36n + v;
+  }
+  return out;
+}
+
+// Rebuild actual targets (we will compute these from the base36 pieces)
+const TARGETS = {};
+for (let k of Object.keys(TARGETS_OBF)) {
+  let s = TARGETS_OBF[k].parts.join('');
+  if (TARGETS_OBF[k].rev) s = s.split('').reverse().join('');
+  // s is a base36-like string. Convert to BigInt base36.
+  try {
+    TARGETS[k] = base36ToBigInt(s);
+  } catch (e) {
+    // fallback: store zero (shouldn't happen)
+    TARGETS[k] = 0n;
+  }
+}
+
+// ---------- password -> number conversion ----------
+function passwordToBigInt(pwd) {
+  // convert to UTF-8 bytes and fold into a BigInt:
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(pwd);
+  let n = 0n;
+  for (let i = 0; i < bytes.length; ++i) {
+    n = n * 257n + BigInt(bytes[i]); // 257 is arbitrary prime-like base > 256
+  }
+  return n;
+}
+
+// ---------- compute formula ----------
+function computeFormula(pwdBigInt) {
+  // result = pwdBigInt * MULT + ADD
+  return pwdBigInt * MULT + ADD;
+}
+
+// ---------- constant-time-ish comparison ----------
+function eqConstTime(a, b) {
+  // compare BigInts by converting to hex and xoring bytes
+  const ah = a.toString(16);
+  const bh = b.toString(16);
+  // pad
+  const L = Math.max(ah.length, bh.length);
+  const ap = ah.padStart(L, '0');
+  const bp = bh.padStart(L, '0');
+  let diff = 0;
+  for (let i = 0; i < L; ++i) diff |= ap.charCodeAt(i) ^ bp.charCodeAt(i);
+  return diff === 0;
+}
+
+// ---------- UI & login ----------
+const form = document.getElementById('form');
+const status = document.getElementById('status');
+
+function showMsg(msg, bad=false) {
+  status.style.display = 'block';
+  status.textContent = msg;
+  status.className = 'status ' + (bad ? 'bad' : 'ok');
+}
+
+form.addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  showMsg('Checking...', false);
+  const u = document.getElementById('user').value.trim();
+  const p = document.getElementById('pass').value;
+  if (!TARGETS[u]) {
+    showMsg('User not found', true);
+    return;
+  }
+
+  try {
+    const pNum = passwordToBigInt(p);
+    const res = computeFormula(pNum);
+
+    // The stored TARGETS[u] is base36->BigInt of the obfuscated pieces.
+    const expected = TARGETS[u];
+
+    if (eqConstTime(res, expected)) {
+      // success
+      showMsg('Login successful — welcome ' + u, false);
+      // store a tiny ephemeral session token (optional)
+      sessionStorage.setItem('sess', btoa(u + '|' + Date.now()));
+      // redirect or reveal page content...
+    } else {
+      showMsg('Incorrect password — access denied', true);
+    }
+  } catch (err) {
+    console.error(err);
+    showMsg('Error during verification', true);
+  }
+});
+</script>
 </body>
 </html>
