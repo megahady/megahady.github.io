@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>متتبع المصاريف والأصول</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>متتبع المصاريف والأصول — مصحح</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#0e1726;color:#f0f4ff}
@@ -38,304 +38,376 @@ tfoot td{font-weight:bold}
 </head>
 <body>
 <header>
-<h2>متتبع المصاريف والأصول</h2>
+  <h2>متتبع المصاريف والأصول</h2>
 </header>
 
+<!-- LOGIN -->
 <main id="loginPage">
-<h1>تسجيل الدخول</h1>
-<form id="loginForm">
-  <input id="user" placeholder="اسم المستخدم" required>
-  <input id="pass" type="password" placeholder="كلمة المرور" required>
-  <button type="submit">تسجيل الدخول</button>
-</form>
-<div id="loginStatus" class="status"></div>
+  <h1>تسجيل الدخول</h1>
+  <form id="loginForm">
+    <input id="user" placeholder="اسم المستخدم" required />
+    <input id="pass" type="password" placeholder="كلمة المرور" required />
+    <button type="submit">تسجيل الدخول</button>
+  </form>
+  <div id="loginStatus" class="status"></div>
 </main>
 
+<!-- DASHBOARD (hidden until login) -->
 <main id="dashboard" style="display:none">
-<h1>لوحة التحكم</h1>
+  <h1>لوحة التحكم</h1>
 
-<div class="tabs">
-<button class="tab-btn active" data-tab="incomeTab">الإيرادات</button>
-<button class="tab-btn" data-tab="expensesTab">المصاريف</button>
-<button class="tab-btn" data-tab="assetsTab">الأصول</button>
-<button class="tab-btn" data-tab="summaryTab">الملخص</button>
-<button class="tab-btn" id="logoutBtn">تسجيل الخروج</button>
-</div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="incomeTab">الإيرادات</button>
+    <button class="tab-btn" data-tab="expensesTab">المصاريف</button>
+    <button class="tab-btn" data-tab="assetsTab">الأصول</button>
+    <button class="tab-btn" data-tab="summaryTab">الملخص</button>
+    <button class="tab-btn" id="logoutBtn">تسجيل الخروج</button>
+  </div>
 
-<div id="incomeTab" class="tab-content active">
-<h2>إضافة دخل</h2>
-<form id="incomeForm">
-<select id="incomeType"><option value="monthly">شهري</option><option value="yearly">سنوي</option></select>
-<input id="incomeAmount" type="number" step="0.01" placeholder="المبلغ" required>
-<button type="submit">إضافة دخل</button>
-</form>
-<div style="overflow-x:auto">
-<table id="incomeTable">
-<thead><tr><th>التاريخ</th><th>النوع</th><th>المبلغ</th><th>حذف</th></tr></thead>
-<tbody></tbody>
-<tfoot></tfoot>
-</table>
-</div>
-</div>
+  <div id="incomeTab" class="tab-content active">
+    <h2>إضافة دخل</h2>
+    <form id="incomeForm">
+      <select id="incomeType"><option value="monthly">شهري</option><option value="yearly">سنوي</option></select>
+      <input id="incomeAmount" type="number" step="0.01" placeholder="المبلغ" required />
+      <button type="submit">إضافة دخل</button>
+    </form>
+    <div style="overflow-x:auto">
+      <table id="incomeTable">
+        <thead><tr><th>التاريخ</th><th>النوع</th><th>المبلغ</th><th>حذف</th></tr></thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+  </div>
 
-<div id="expensesTab" class="tab-content">
-<h2>إضافة مصروف</h2>
-<form id="expenseForm">
-<select id="expenseCategory">
-<option>طعام</option><option>مواصلات</option><option>فواتير</option>
-<option>ترفيه</option><option>تسوق</option><option>أخرى</option>
-</select>
-<input id="expenseDesc" placeholder="الوصف" required>
-<input id="expenseAmount" type="number" step="0.01" placeholder="المبلغ" required>
-<button type="submit">إضافة مصروف</button>
-</form>
-<div style="overflow-x:auto">
-<table id="expenseTable">
-<thead><tr><th>التاريخ</th><th>الفئة</th><th>الوصف</th><th>المبلغ</th><th>حذف</th></tr></thead>
-<tbody></tbody>
-<tfoot><tr><td colspan="3">الإجمالي</td><td id="expenseTotal">0.00</td><td></td></tr></tfoot>
-</table>
-</div>
-</div>
+  <div id="expensesTab" class="tab-content">
+    <h2>إضافة مصروف</h2>
+    <form id="expenseForm">
+      <select id="expenseCategory">
+        <option>طعام</option><option>مواصلات</option><option>فواتير</option>
+        <option>ترفيه</option><option>تسوق</option><option>أخرى</option>
+      </select>
+      <input id="expenseDesc" placeholder="الوصف" required />
+      <input id="expenseAmount" type="number" step="0.01" placeholder="المبلغ" required />
+      <button type="submit">إضافة مصروف</button>
+    </form>
+    <div style="overflow-x:auto">
+      <table id="expenseTable">
+        <thead><tr><th>التاريخ</th><th>الفئة</th><th>الوصف</th><th>المبلغ</th><th>حذف</th></tr></thead>
+        <tbody></tbody>
+        <tfoot><tr><td colspan="3">الإجمالي</td><td id="expenseTotal">0.00</td><td></td></tr></tfoot>
+      </table>
+    </div>
+  </div>
 
-<div id="assetsTab" class="tab-content">
-<h2>الأصول</h2>
-<form id="assetsForm">
-<input id="goldAmount" type="number" step="0.01" placeholder="الذهب" required>
-<input id="shahadatAmount" type="number" step="1" placeholder="شهادات الاستثمار" required>
-<button type="submit">تحديث الأصول</button>
-</form>
-<div>
-<p>الذهب: <span id="goldDisplay">0</span></p>
-<p>شهادات الاستثمار: <span id="shahadatDisplay">0</span></p>
-</div>
-</div>
+  <div id="assetsTab" class="tab-content">
+    <h2>الأصول</h2>
+    <form id="assetsForm">
+      <input id="goldAmount" type="number" step="0.01" placeholder="الذهب" required />
+      <input id="shahadatAmount" type="number" step="1" placeholder="شهادات الاستثمار" required />
+      <button type="submit">تحديث الأصول</button>
+    </form>
+    <div>
+      <p>الذهب: <span id="goldDisplay">0</span></p>
+      <p>شهادات الاستثمار: <span id="shahadatDisplay">0</span></p>
+    </div>
+  </div>
 
-<div id="summaryTab" class="tab-content">
-<h2>ملخص</h2>
-<canvas id="summaryChart"></canvas>
-<div style="text-align:center;margin-top:20px">
-  <button id="exportBtn">تصدير البيانات إلى CSV</button>
-  <input type="file" id="importFile" accept=".csv" style="margin-left:10px">
-</div>
-</div>
+  <div id="summaryTab" class="tab-content">
+    <h2>ملخص</h2>
+    <canvas id="summaryChart"></canvas>
+    <div style="text-align:center;margin-top:20px">
+      <button id="exportBtn">تصدير البيانات إلى CSV</button>
+      <input type="file" id="importFile" accept=".csv" style="margin-left:10px" />
+    </div>
+  </div>
 </main>
 
 <script>
-// -------- Login setup --------
+// ----------------- LOGIN (fixed base36 -> BigInt) -----------------
 const MULT = 1099511628211n;
-const ADD = 1469598103934665603n;
+const ADD  = 1469598103934665603n;
+
+/* Obfuscated pieces for targets (these were computed for the two passwords) */
 const TARGETS_OBF = {
-  "ayat": { parts: ['3e2fozc3l','e9e1lkrt2m'], rev:false },
+  "ayat":  { parts: ['3e2fozc3l','e9e1lkrt2m'], rev:false },
   "admin": { parts: ['1c2m23waoxj2w','0q6pj6scwmfjv3'], rev:true }
 };
-const TARGETS = {};
-for(const k in TARGETS_OBF){
-  let s=TARGETS_OBF[k].parts.join('');
-  if(TARGETS_OBF[k].rev) s=s.split('').reverse().join('');
-  TARGETS[k]=BigInt(parseInt(s,36));
+
+/* robust base36 -> BigInt */
+function base36ToBigInt(str){
+  const a = '0123456789abcdefghijklmnopqrstuvwxyz';
+  let out = 0n;
+  for (let ch of str.toLowerCase()){
+    const idx = a.indexOf(ch);
+    if (idx === -1) throw new Error('Invalid base36 char: ' + ch);
+    out = out * 36n + BigInt(idx);
+  }
+  return out;
 }
-function passwordToBigInt(p){
+
+/* reconstruct targets */
+const TARGETS = {};
+for (const k of Object.keys(TARGETS_OBF)){
+  let s = TARGETS_OBF[k].parts.join('');
+  if (TARGETS_OBF[k].rev) s = s.split('').reverse().join('');
+  TARGETS[k] = base36ToBigInt(s);
+}
+
+/* password -> BigInt (fold UTF-8 bytes) */
+function passwordToBigInt(pwd){
   const enc = new TextEncoder();
-  const bytes = enc.encode(p);
+  const bytes = enc.encode(pwd);
   let n = 0n;
-  for(const b of bytes) n=n*257n+BigInt(b);
+  for (let b of bytes) n = n * 257n + BigInt(b);
   return n;
 }
-function computeFormula(n){ return n*MULT+ADD; }
-function eqConstTime(a,b){ return a===b; }
+function computeFormula(n){ return n * MULT + ADD; }
+function eqConstTime(a,b){
+  // compare BigInt constant-time-ish by hex padding xor
+  let ah = a.toString(16), bh = b.toString(16);
+  const L = Math.max(ah.length, bh.length);
+  ah = ah.padStart(L,'0'); bh = bh.padStart(L,'0');
+  let diff = 0;
+  for (let i=0;i<L;i++) diff |= ah.charCodeAt(i) ^ bh.charCodeAt(i);
+  return diff === 0;
+}
 
-const loginForm=document.getElementById('loginForm');
-const loginPage=document.getElementById('loginPage');
-const dashboard=document.getElementById('dashboard');
-const loginStatus=document.getElementById('loginStatus');
+// ---------- DOM refs ----------
+const loginForm = document.getElementById('loginForm');
+const loginPage = document.getElementById('loginPage');
+const dashboard = document.getElementById('dashboard');
+const loginStatus = document.getElementById('loginStatus');
+const logoutBtn = document.getElementById('logoutBtn');
 
-loginForm.addEventListener('submit',e=>{
-  e.preventDefault();
-  const u=document.getElementById('user').value.trim();
-  const p=document.getElementById('pass').value;
-  if(!TARGETS[u]) { loginStatus.textContent="المستخدم غير موجود"; loginStatus.className='status bad'; loginStatus.style.display='block'; return; }
-  const res=computeFormula(passwordToBigInt(p));
-  if(eqConstTime(res,TARGETS[u])){
-    sessionStorage.setItem('sess',u);
-    loginPage.style.display='none';
-    dashboard.style.display='block';
-    initApp();
-  } else { loginStatus.textContent="كلمة المرور خاطئة"; loginStatus.className='status bad'; loginStatus.style.display='block'; }
+// ---------- login handler ----------
+loginForm.addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const u = document.getElementById('user').value.trim();
+  const p = document.getElementById('pass').value;
+  if (!TARGETS[u]) {
+    loginStatus.textContent = 'المستخدم غير موجود';
+    loginStatus.className = 'status bad';
+    loginStatus.style.display = 'block';
+    return;
+  }
+  try {
+    const res = computeFormula(passwordToBigInt(p));
+    if (eqConstTime(res, TARGETS[u])) {
+      sessionStorage.setItem('sess', u);
+      loginPage.style.display = 'none';
+      dashboard.style.display = 'block';
+      initApp();
+    } else {
+      loginStatus.textContent = 'كلمة المرور خاطئة';
+      loginStatus.className = 'status bad';
+      loginStatus.style.display = 'block';
+    }
+  } catch (err) {
+    console.error(err);
+    loginStatus.textContent = 'حدث خطأ أثناء التحقق';
+    loginStatus.className = 'status bad';
+    loginStatus.style.display = 'block';
+  }
 });
 
-document.getElementById('logoutBtn').addEventListener('click',()=>{
+// logout
+logoutBtn.addEventListener('click', ()=>{
   sessionStorage.removeItem('sess');
-  dashboard.style.display='none';
-  loginPage.style.display='block';
+  dashboard.style.display = 'none';
+  loginPage.style.display = 'block';
 });
 
-// -------- App data --------
-let data = JSON.parse(localStorage.getItem('financeData')||'{"income":[],"expenses":[],"assets":{"gold":0,"shahadat":0}}');
+// ----------------- APP DATA -----------------
+let data = JSON.parse(localStorage.getItem('financeData') || '{"income":[],"expenses":[],"assets":{"gold":0,"shahadat":0}}');
 
-// -------- Tabs --------
+// ----------------- Tabs -----------------
 document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=> {
+  btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    document.getElementById(btn.dataset.tab).classList.add('active');
+    const tab = btn.dataset.tab;
+    if (tab) document.getElementById(tab).classList.add('active');
   });
 });
 
-// -------- Income --------
-const incomeForm=document.getElementById('incomeForm');
-const incomeTable=document.querySelector('#incomeTable tbody');
+// ----------------- INCOME -----------------
+const incomeForm = document.getElementById('incomeForm');
+const incomeTable = document.querySelector('#incomeTable tbody');
 
-incomeForm.addEventListener('submit',e=>{
+incomeForm.addEventListener('submit', (e)=>{
   e.preventDefault();
-  const type=document.getElementById('incomeType').value;
-  const amount=parseFloat(document.getElementById('incomeAmount').value);
-  const date=new Date().toLocaleDateString('ar');
+  const type = document.getElementById('incomeType').value;
+  const amount = parseFloat(document.getElementById('incomeAmount').value);
+  if (isNaN(amount)) return;
+  const date = new Date().toISOString(); // store ISO for robust parsing
   data.income.push({date,type,amount});
   saveAndRender();
   incomeForm.reset();
 });
 
-// -------- Expenses --------
-const expenseForm=document.getElementById('expenseForm');
-const expenseTable=document.querySelector('#expenseTable tbody');
-const expenseTotal=document.getElementById('expenseTotal');
+// ----------------- EXPENSES (restricted to current month) -----------------
+const expenseForm = document.getElementById('expenseForm');
+const expenseTable = document.querySelector('#expenseTable tbody');
+const expenseTotal = document.getElementById('expenseTotal');
 
-expenseForm.addEventListener('submit',e=>{
+expenseForm.addEventListener('submit', (e)=>{
   e.preventDefault();
-  const category=document.getElementById('expenseCategory').value;
-  const desc=document.getElementById('expenseDesc').value.trim();
-  const amount=parseFloat(document.getElementById('expenseAmount').value);
-  const now=new Date();
-  const currentMonth=now.getMonth();
-  const currentYear=now.getFullYear();
-  const expenseDate=new Date();
-  const expenseMonth=expenseDate.getMonth();
-  const expenseYear=expenseDate.getFullYear();
-  if(expenseMonth!==currentMonth || expenseYear!==currentYear){
+  const category = document.getElementById('expenseCategory').value;
+  const desc = document.getElementById('expenseDesc').value.trim();
+  const amount = parseFloat(document.getElementById('expenseAmount').value);
+  if (!desc || isNaN(amount)) return;
+
+  const now = new Date();
+  const expDate = new Date(); // date of adding
+  if (expDate.getMonth() !== now.getMonth() || expDate.getFullYear() !== now.getFullYear()){
     alert('لا يمكن إضافة مصروف لشهر سابق');
     return;
   }
-  data.expenses.push({date:expenseDate.toLocaleDateString('ar'),category,desc,amount});
+  data.expenses.push({date: expDate.toISOString(), category, desc, amount});
   saveAndRender();
   expenseForm.reset();
 });
 
-// -------- Assets --------
-const assetsForm=document.getElementById('assetsForm');
-assetsForm.addEventListener('submit',e=>{
+// ----------------- ASSETS -----------------
+const assetsForm = document.getElementById('assetsForm');
+assetsForm.addEventListener('submit', (e)=>{
   e.preventDefault();
-  data.assets.gold=parseFloat(document.getElementById('goldAmount').value);
-  data.assets.shahadat=parseInt(document.getElementById('shahadatAmount').value);
+  const g = parseFloat(document.getElementById('goldAmount').value);
+  const s = parseInt(document.getElementById('shahadatAmount').value);
+  data.assets.gold = isNaN(g)?0:g;
+  data.assets.shahadat = isNaN(s)?0:s;
   saveAndRender();
 });
 
-// -------- Render --------
+// ----------------- RENDER / CRUD -----------------
 function renderTables(){
-  // Income table
-  incomeTable.innerHTML='';
-  data.income.forEach((inc,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${inc.date}</td><td>${inc.type}</td><td>${inc.amount.toFixed(2)}</td><td><button onclick="delIncome(${i})">✖</button></td>`;
-    incomeTable.appendChild(tr);
+  // income
+  incomeTable.innerHTML = '';
+  data.income.forEach((inc, i)=>{
+    const dt = new Date(inc.date);
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${dt.toLocaleDateString('ar')}</td><td>${inc.type}</td><td>${inc.amount.toFixed(2)}</td><td><button onclick="delIncome(${i})">✖</button></td>`;
+    incomeTable.appendChild(row);
   });
-  // Expenses table
-  expenseTable.innerHTML='';
-  let total=0;
-  data.expenses.forEach((exp,i)=>{
-    total+=exp.amount;
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${exp.date}</td><td>${exp.category}</td><td>${exp.desc}</td><td>${exp.amount.toFixed(2)}</td><td><button onclick="delExpense(${i})">✖</button></td>`;
-    expenseTable.appendChild(tr);
+
+  // expenses
+  expenseTable.innerHTML = '';
+  let total = 0;
+  data.expenses.forEach((exp, i)=>{
+    const dt = new Date(exp.date);
+    total += exp.amount;
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${dt.toLocaleDateString('ar')}</td><td>${exp.category}</td><td>${exp.desc}</td><td>${exp.amount.toFixed(2)}</td><td><button onclick="delExpense(${i})">✖</button></td>`;
+    expenseTable.appendChild(row);
   });
-  expenseTotal.textContent=total.toFixed(2);
-  // Assets display
-  document.getElementById('goldDisplay').textContent=data.assets.gold;
-  document.getElementById('shahadatDisplay').textContent=data.assets.shahadat;
+  expenseTotal.textContent = total.toFixed(2);
+
+  // assets display
+  document.getElementById('goldDisplay').textContent = data.assets.gold;
+  document.getElementById('shahadatDisplay').textContent = data.assets.shahadat;
+
+  // draw monthly net
   drawMonthlyNet();
 }
+window.delIncome = function(i){ data.income.splice(i,1); saveAndRender(); };
+window.delExpense = function(i){ data.expenses.splice(i,1); saveAndRender(); };
 
-function delIncome(i){ data.income.splice(i,1); saveAndRender(); }
-function delExpense(i){ data.expenses.splice(i,1); saveAndRender(); }
+function saveAndRender(){
+  localStorage.setItem('financeData', JSON.stringify(data));
+  renderTables();
+}
 
-function saveAndRender(){ localStorage.setItem('financeData',JSON.stringify(data)); renderTables(); }
-
-// -------- Monthly net balance chart --------
-let netChart;
+// ----------------- MONTHLY SUMMARY & CHART -----------------
+let netChart = null;
 function getMonthlySummary(){
-  const summary={};
+  const summary = {};
+  function keyFromISO(iso){
+    const d = new Date(iso);
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  }
   data.income.forEach(inc=>{
-    const dt=new Date(inc.date);
-    const key=`${dt.getFullYear()}-${dt.getMonth()+1}`;
-    if(!summary[key]) summary[key]={income:0,expenses:0};
-    summary[key].income+=inc.amount;
+    const k = keyFromISO(inc.date);
+    if (!summary[k]) summary[k] = {income:0, expenses:0};
+    summary[k].income += inc.amount;
   });
   data.expenses.forEach(exp=>{
-    const dt=new Date(exp.date);
-    const key=`${dt.getFullYear()}-${dt.getMonth()+1}`;
-    if(!summary[key]) summary[key]={income:0,expenses:0};
-    summary[key].expenses+=exp.amount;
+    const k = keyFromISO(exp.date);
+    if (!summary[k]) summary[k] = {income:0, expenses:0};
+    summary[k].expenses += exp.amount;
   });
   return summary;
 }
 
 function drawMonthlyNet(){
-  const summary=getMonthlySummary();
-  const labels=[], net=[];
-  for(const k in summary){
-    labels.push(k);
-    const val=summary[k].income + data.assets.gold*1 + data.assets.shahadat*1 - summary[k].expenses;
-    net.push(val);
-  }
-  if(netChart) netChart.destroy();
-  netChart=new Chart(document.getElementById('summaryChart').getContext('2d'),{
-    type:'bar',
-    data:{labels,datasets:[{label:'الرصيد الشهري',data:net,backgroundColor:'#3a86ff'}]},
-    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  const summary = getMonthlySummary();
+  const labels = Object.keys(summary).sort();
+  const net = labels.map(k => {
+    const s = summary[k];
+    // assets counted fully for every month (you can change logic if needed)
+    return (s.income || 0) + (data.assets.gold || 0) + (data.assets.shahadat || 0) - (s.expenses || 0);
+  });
+
+  const ctx = document.getElementById('summaryChart').getContext('2d');
+  if (netChart) netChart.destroy();
+  netChart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'الرصيد الشهري', data: net, backgroundColor: '#3a86ff' }] },
+    options: { plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
   });
 }
 
-// -------- Export CSV --------
-document.getElementById('exportBtn').addEventListener('click',()=>{
-  let csv="Type,Date,Category/Type,Description,Amount\n";
-  data.income.forEach(inc)=>{ csv+=`Income,${inc.date},${inc.type},,${inc.amount}\n`; });
-  data.expenses.forEach(exp)=>{ csv+=`Expense,${exp.date},${exp.category},${exp.desc},${exp.amount}\n`; });
-  csv+=`Asset,,Gold,,${data.assets.gold}\n`;
-  csv+=`Asset,,Shahadat,,${data.assets.shahadat}\n`;
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.download='finance_data.csv';
+// ----------------- EXPORT / IMPORT CSV -----------------
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  let csv = 'Type,Date,CategoryOrType,Description,Amount\n';
+  data.income.forEach(inc => csv += `Income,${inc.date},${inc.type},,${inc.amount}\n`);
+  data.expenses.forEach(exp => csv += `Expense,${exp.date},${exp.category},${exp.desc},${exp.amount}\n`);
+  csv += `Asset,,Gold,,${data.assets.gold}\n`;
+  csv += `Asset,,Shahadat,,${data.assets.shahadat}\n`;
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'finance_data.csv';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 });
 
-// -------- Import CSV --------
-document.getElementById('importFile').addEventListener('change',function(e){
-  const file=this.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(ev){
-    const lines=ev.target.result.split('\n');
-    const newData={income:[],expenses:[],assets:{gold:0,shahadat:0}};
-    lines.forEach(line=>{
-      const [type,date,cat,desc,amt]=line.split(',');
-      if(type==='Income') newData.income.push({date,type:cat,amount:parseFloat(amt)});
-      else if(type==='Expense') newData.expenses.push({date,category:cat,desc,amount:parseFloat(amt)});
-      else if(type==='Asset'){
-        if(cat==='Gold') newData.assets.gold=parseFloat(amt);
-        if(cat==='Shahadat') newData.assets.shahadat=parseInt(amt);
+document.getElementById('importFile').addEventListener('change', function(){
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    const lines = ev.target.result.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+    const newData = {income:[], expenses:[], assets:{gold:0, shahadat:0}};
+    for (const line of lines.slice(1)){ // skip header
+      const parts = line.split(',');
+      if (parts.length < 5) continue;
+      const [type, date, cat, desc, amt] = parts;
+      if (type === 'Income') newData.income.push({date, type:cat, amount: parseFloat(amt)});
+      else if (type === 'Expense') newData.expenses.push({date, category:cat, desc, amount: parseFloat(amt)});
+      else if (type === 'Asset'){
+        if (cat === 'Gold') newData.assets.gold = parseFloat(amt);
+        if (cat === 'Shahadat') newData.assets.shahadat = parseInt(amt);
       }
-    });
-    data=newData; saveAndRender();
+    }
+    data = newData;
+    saveAndRender();
     alert('تم استيراد البيانات بنجاح');
   };
   reader.readAsText(file);
 });
 
-// -------- Init --------
-function initApp(){ renderTables(); }
-if(sessionStorage.getItem('sess')){ loginPage.style.display='none'; dashboard.style.display='block'; initApp(); }
+// ----------------- INIT -----------------
+function initApp(){
+  renderTables();
+  // make sure summary tab is visible if first time
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('incomeTab').classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="incomeTab"]').classList.add('active');
+}
+
+if (sessionStorage.getItem('sess')){ loginPage.style.display='none'; dashboard.style.display='block'; initApp(); }
 </script>
 </body>
 </html>
