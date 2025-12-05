@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم الثروة</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: #f5f7fa;
+      direction: rtl;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 16px;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .date-filter {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .date-filter-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .date-inputs {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+    
+    .date-group {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .date-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .date-input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .stat-subvalue {
+      font-size: 14px;
+      color: #999;
+      margin-top: 4px;
+    }
+    
+    .notification-banner {
+      background: #fef3c7;
+      border-right: 4px solid #f59e0b;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .notification-banner.show {
+      display: block;
+    }
+    
+    .notification-title {
+      font-weight: bold;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    
+    .notification-item {
+      color: #78350f;
+      margin: 4px 0;
+      font-size: 14px;
+    }
+    
+    .budget-section {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .budget-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    
+    .budget-item {
+      margin-bottom: 20px;
+    }
+    
+    .budget-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .budget-label {
+      font-weight: 600;
+      color: #666;
+    }
+    
+    .budget-value {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 24px;
+      background: #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .progress-fill.warning {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+    
+    .progress-fill.danger {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+    
+    .zakat-card {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .zakat-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .zakat-amount {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+    
+    .zakat-details {
+      background: rgba(255,255,255,0.2);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+    
+    .zakat-detail-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .chart-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .chart-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+    
+    .table-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    
+    .table th,
+    .table td {
+      padding: 12px;
+      text-align: right;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .table th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+    
+    .table tr:hover {
+      background: #f9fafb;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .badge-green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .badge-red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .badge-blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .badge-yellow {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+    }
+    
+    .modal-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+    
+    .modal-body {
+      margin: 20px 0;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .date-inputs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>لوحة تحكم الثروة</h1>
+      <p>نظرة شاملة على أصولك المالية</p>
+      <div class="header-actions">
+        <button class="btn" onclick="loadDashboard()">🔄 تحديث البيانات</button>
+        <button class="btn btn-success" onclick="exportToPDF()">📄 تصدير PDF</button>
+        <button class="btn btn-success" onclick="exportToExcel()">📊 تصدير Excel</button>
+        <button class="btn btn-warning" onclick="openBudgetModal()">🎯 إدارة الميزانية</button>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notification-banner" id="notificationBanner">
+      <div class="notification-title">⚠️ تنبيهات هامة</div>
+      <div id="notificationContent"></div>
+    </div>
+
+    <!-- Live Prices Card -->
+    <div class="budget-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 20px;">
+      <div class="budget-title" style="color: white;" id="livePricesDate">💱 الأسعار الحية</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div style="background: rgba(255,255,255,0.2); padding: 16px; border-radius: 8px;">
+          <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">سعر الدولار</div>
+          <div style="font-size: 24px; font-weight: bold;" id="livePriceUSD">-- جنيه</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.2); padding: 16px; border-radius: 8px;">
+          <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">ذهب 24 قيراط</div>
+          <div style="font-size: 24px; font-weight: bold;" id="livePrice24k">-- جنيه/جرام</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.2); padding: 16px; border-radius: 8px;">
+          <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">ذهب 21 قيراط</div>
+          <div style="font-size: 24px; font-weight: bold;" id="livePrice21k">-- جنيه/جرام</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date Filter -->
+    <div class="date-filter">
+      <div class="date-filter-title">تصفية حسب التاريخ</div>
+      <div class="date-inputs">
+        <div class="date-group">
+          <label class="date-label">من تاريخ</label>
+          <input type="date" class="date-input" id="startDate">
+        </div>
+        <div class="date-group">
+          <label class="date-label">إلى تاريخ</label>
+          <input type="date" class="date-input" id="endDate">
+        </div>
+        <button class="btn" onclick="applyDateFilter()">تطبيق</button>
+        <button class="btn" onclick="resetDateFilter()">إعادة تعيين</button>
+      </div>
+    </div>
+
+    <!-- Zakat Calculator -->
+    <div class="zakat-card">
+      <div class="zakat-title">💰 حاسبة الزكاة</div>
+      <div class="zakat-amount" id="zakatAmount">0.00 جنيه</div>
+      <div class="zakat-details">
+        <div class="zakat-detail-item">
+          <span>الثروة الخاضعة للزكاة:</span>
+          <span id="zakatableWealth">0.00 جنيه</span>
+        </div>
+        <div class="zakat-detail-item">
+          <span>النصاب (85 جرام ذهب):</span>
+          <span id="nisabAmount">0.00 جنيه</span>
+        </div>
+        <div class="zakat-detail-item">
+          <span>الزكاة المستحقة (2.5%):</span>
+          <span id="zakatDue">0.00 جنيه</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">صافي الثروة</div>
+        <div class="stat-value" id="netWorth">0.00 جنيه</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">الرصيد النقدي</div>
+        <div class="stat-value" id="cashBalance">0.00 جنيه</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">الشهادات</div>
+        <div class="stat-value" id="certsTotal">0.00 جنيه</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">الذهب</div>
+        <div class="stat-value" id="goldTotal">0.00 جنيه</div>
+        <div class="stat-subvalue" id="goldGrams">0 جرام</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">العقارات</div>
+        <div class="stat-value" id="realEstateTotal">0.00 جنيه</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">الدولار</div>
+        <div class="stat-value" id="usdTotal">0.00 دولار</div>
+        <div class="stat-subvalue" id="usdEgp">0.00 جنيه</div>
+      </div>
+    </div>
+
+    <!-- Budget Goals -->
+    <div class="budget-section" id="budgetSection">
+      <div class="budget-title">🎯 أهداف الميزانية</div>
+      <div id="budgetGoals"></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <!-- Asset Allocation Pie Chart -->
+      <div class="chart-card">
+        <div class="chart-title">توزيع الأصول</div>
+        <div class="chart-container">
+          <canvas id="assetPieChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Monthly Trend Line Chart -->
+      <div class="chart-card">
+        <div class="chart-title">المصروفات والإيرادات الشهرية</div>
+        <div class="chart-container">
+          <canvas id="monthlyTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gold Holdings Bar Chart -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">حيازات الذهب</div>
+        <div class="chart-container">
+          <canvas id="goldBarChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Year Comparison -->
+      <div class="chart-card">
+        <div class="chart-title">مقارنة سنوية (الإيرادات - المصروفات)</div>
+        <div class="chart-container">
+          <canvas id="yearComparisonChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificates Table -->
+    <div class="table-card">
+      <div class="chart-title">الشهادات القادمة للاستحقاق</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>رقم الشهادة</th>
+            <th>المبلغ</th>
+            <th>تاريخ الاستحقاق</th>
+            <th>الأيام المتبقية</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+        <tbody id="certsTableBody">
+          <tr><td colspan="5" class="loading">جاري التحميل...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="table-card">
+      <div class="chart-title">آخر المعاملات</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>النوع</th>
+            <th>المبلغ</th>
+            <th>الوصف</th>
+          </tr>
+        </thead>
+        <tbody id="transactionsTableBody">
+          <tr><td colspan="4" class="loading">جاري التحميل...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Budget Modal -->
+  <div class="modal" id="budgetModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إدارة أهداف الميزانية</h2>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">اسم الهدف</label>
+          <input type="text" class="form-input" id="budgetGoalName" placeholder="مثال: ادخار لشراء سيارة">
+        </div>
+        <div class="form-group">
+          <label class="form-label">المبلغ المستهدف (جنيه)</label>
+          <input type="number" class="form-input" id="budgetTargetAmount" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">المبلغ الحالي (جنيه)</label>
+          <input type="number" class="form-input" id="budgetCurrentAmount" step="0.01">
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-success" onclick="saveBudgetGoal()">حفظ</button>
+        <button class="btn" onclick="closeBudgetModal()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    // =============================================
+    // SUPABASE CONFIGURATION
+    // =============================================
+    // LINE 558-559: Replace with your Supabase credentials
+    const SUPABASE_URL = 'https://itjrvujlfbmuxoisyvas.supabase.co';  // e.g., 'https://xxxxx.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0anJ2dWpsZmJtdXhvaXN5dmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNzc0NzUsImV4cCI6MjA3ODY1MzQ3NX0.541WN6AX_DVso1o3J4FaJI9H4XSBK8cXf4M96nPlBuY';  // Your anon/public key
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    let assetPieChart, monthlyTrendChart, goldBarChart, yearComparisonChart;
+    let currentGoldPrices = null;
+    let dateFilter = { start: null, end: null };
+
+    // =============================================
+    // GOLD AND USD/EGP PRICE FETCHING
+    // =============================================
+    async function getGoldPrices() {
+      try {
+        console.log('Fetching gold and currency prices...');
+        
+        // Fetch all sources with error handling
+        const results = await Promise.allSettled([
+          fetch('https://www.goldapi.io/api/XAU/USD', {
+            headers: {"x-access-token": "goldapi-2vfj5smi1gxp29-io"}
+          }).then(r => {
+            if (!r.ok) throw new Error('GoldAPI failed');
+            return r.json();
+          }),
+          
+          fetch('https://api.metalpriceapi.com/v1/latest?api_key=4eccbcd0d701380610e5be5cc7a442ec&base=USD&currencies=XAU')
+          .then(r => {
+            if (!r.ok) throw new Error('MetalPriceAPI failed');
+            return r.json();
+          }),
+          
+          fetch('https://api.exchangerate-api.com/v4/latest/USD').then(r => {
+            if (!r.ok) throw new Error('ExchangeRate-API failed');
+            return r.json();
+          }),
+          
+          fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json')
+          .then(r => {
+            if (!r.ok) throw new Error('CurrencyAPI failed');
+            return r.json();
+          })
+        ]);
+        
+        console.log('API Results:', results);
+        
+        // Extract gold prices
+        let goldPrices = [];
+        
+        if (results[0].status === 'fulfilled' && results[0].value?.price) {
+          const price = results[0].value.price;
+          console.log('GoldAPI Price:', price);
+          goldPrices.push(price);
+        }
+        
+        if (results[1].status === 'fulfilled' && results[1].value?.rates?.XAU) {
+          const price = 1 / results[1].value.rates.XAU;
+          console.log('MetalPriceAPI Price:', price);
+          goldPrices.push(price);
+        }
+        
+        // Extract USD/EGP rates
+        let usdEgpRates = [];
+        
+        if (results[2].status === 'fulfilled' && results[2].value?.rates?.EGP) {
+          const rate = results[2].value.rates.EGP;
+          console.log('ExchangeRate-API EGP:', rate);
+          usdEgpRates.push(rate);
+        }
+        
+        if (results[3].status === 'fulfilled' && results[3].value?.usd?.egp) {
+          const rate = results[3].value.usd.egp;
+          console.log('CurrencyAPI EGP:', rate);
+          usdEgpRates.push(rate);
+        }
+        
+        // Calculate averages or use fallback
+        let goldAverage, usdEgpAverage;
+        
+        if (goldPrices.length > 0) {
+          goldAverage = goldPrices.reduce((a, b) => a + b, 0) / goldPrices.length;
+          console.log('Gold Average (per oz):', goldAverage);
+        } else {
+          goldAverage = 2650; // Fallback gold price per oz
+          console.warn('Using fallback gold price');
+        }
+        
+        if (usdEgpRates.length > 0) {
+          usdEgpAverage = usdEgpRates.reduce((a, b) => a + b, 0) / usdEgpRates.length;
+          console.log('USD/EGP Average:', usdEgpAverage);
+        } else {
+          usdEgpAverage = 50; // Fallback USD/EGP rate
+          console.warn('Using fallback USD/EGP rate');
+        }
+        
+        // Calculate gold per gram
+        const goldPerGramUSD = goldAverage / 31.1035; // More accurate troy oz to gram conversion
+        const gold24Gram = goldPerGramUSD * usdEgpAverage * 1.01;
+        const gold21Gram = gold24Gram * 0.875; // More accurate 21k ratio
+        
+        console.log('Final Prices:', {
+          usdEgp: usdEgpAverage,
+          gold24Gram: gold24Gram,
+          gold21Gram: gold21Gram
+        });
+        
+        return {
+          usdEgp: usdEgpAverage,
+          gold24Gram: gold24Gram,
+          gold21Gram: gold21Gram
+        };
+      } catch (error) {
+        console.error('Error fetching prices:', error);
+        // Return fallback values
+        return {
+          usdEgp: 50,
+          gold24Gram: 3500,
+          gold21Gram: 3062.5
+        };
+      }
+    }
+
+    // =============================================
+    // INITIALIZE DASHBOARD
+    // =============================================
+    window.onload = async function() {
+      // Set default date range (current year)
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      document.getElementById('startDate').valueAsDate = startOfYear;
+      document.getElementById('endDate').valueAsDate = now;
+      
+      dateFilter.start = startOfYear.toISOString().split('T')[0];
+      dateFilter.end = now.toISOString().split('T')[0];
+      
+      // Fetch current prices
+      currentGoldPrices = await getGoldPrices();
+      
+      // Display today's date in Arabic
+      const today = new Date();
+      const arabicDate = today.toLocaleDateString('ar-EG', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      document.getElementById('livePricesDate').textContent = '💱 ' + arabicDate;
+      
+      // Display live prices
+      document.getElementById('livePriceUSD').textContent = currentGoldPrices.usdEgp.toFixed(2) + ' جنيه';
+      document.getElementById('livePrice24k').textContent = currentGoldPrices.gold24Gram.toFixed(2) + ' جنيه/جرام';
+      document.getElementById('livePrice21k').textContent = currentGoldPrices.gold21Gram.toFixed(2) + ' جنيه/جرام';
+      
+      await loadDashboard();
+      loadBudgetGoals();
+    };
+
+    async function loadDashboard() {
+      try {
+        // Update today's date
+        const today = new Date();
+        const arabicDate = today.toLocaleDateString('ar-EG', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        document.getElementById('livePricesDate').textContent = '💱 ' + arabicDate;
+        
+        // Update live prices display
+        if (currentGoldPrices) {
+          document.getElementById('livePriceUSD').textContent = currentGoldPrices.usdEgp.toFixed(2) + ' جنيه';
+          document.getElementById('livePrice24k').textContent = currentGoldPrices.gold24Gram.toFixed(2) + ' جنيه/جرام';
+          document.getElementById('livePrice21k').textContent = currentGoldPrices.gold21Gram.toFixed(2) + ' جنيه/جرام';
+        }
+        
+        await Promise.all([
+          loadNetWorth(),
+          loadAssetAllocation(),
+          loadMonthlyTrend(),
+          loadGoldHoldings(),
+          loadYearComparison(),
+          loadCertificates(),
+          loadRecentTransactions(),
+          calculateZakat(),
+          checkNotifications()
+        ]);
+      } catch (error) {
+        console.error('Dashboard loading error:', error);
+        alert('خطأ في تحميل البيانات: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // DATE FILTER
+    // =============================================
+    function applyDateFilter() {
+      const start = document.getElementById('startDate').value;
+      const end = document.getElementById('endDate').value;
+      
+      if (!start || !end) {
+        alert('يرجى اختيار تاريخ البداية والنهاية');
+        return;
+      }
+      
+      dateFilter.start = start;
+      dateFilter.end = end;
+      loadDashboard();
+    }
+
+    function resetDateFilter() {
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      document.getElementById('startDate').valueAsDate = startOfYear;
+      document.getElementById('endDate').valueAsDate = now;
+      
+      dateFilter.start = startOfYear.toISOString().split('T')[0];
+      dateFilter.end = now.toISOString().split('T')[0];
+      loadDashboard();
+    }
+
+    // =============================================
+    // NET WORTH CALCULATION
+    // =============================================
+    async function loadNetWorth() {
+      try {
+        const { data: balance } = await supabase
+          .from('balances')
+          .select('*')
+          .limit(1)
+          .single();
+        
+        const { data: certs } = await supabase
+          .from('certificates')
+          .select('principal_amount')
+          .eq('status', 'active');
+        
+        const { data: gold } = await supabase
+          .from('gold_holdings')
+          .select('*');
+        
+        const { data: realEstate } = await supabase
+          .from('real_estate_properties')
+          .select('monthly_rent, duration_months, deposit_amount')
+          .eq('status', 'active');
+        
+        const cashEGP = balance?.egp_cash || 0;
+        const cashUSD = balance?.usd_cash || 0;
+        const certsTotal = certs?.reduce((sum, c) => sum + parseFloat(c.principal_amount || 0), 0) || 0;
+        
+        // Calculate gold value using real-time prices
+        let goldTotal = 0;
+        let totalGrams = 0;
+        if (gold && currentGoldPrices) {
+          gold.forEach(g => {
+            const grams = parseFloat(g.grams || 0);
+            totalGrams += grams;
+            if (g.gold_type === '21k') {
+              goldTotal += grams * currentGoldPrices.gold21Gram;
+            } else {
+              goldTotal += grams * currentGoldPrices.gold24Gram;
+            }
+          });
+        }
+        
+        const reTotal = realEstate?.reduce((sum, re) => 
+          sum + (parseFloat(re.monthly_rent || 0) * parseInt(re.duration_months || 0)) + 
+          parseFloat(re.deposit_amount || 0), 0) || 0;
+        
+        const usdInEGP = cashUSD * (currentGoldPrices?.usdEgp || 50);
+        const netWorth = cashEGP + certsTotal + goldTotal + reTotal + usdInEGP;
+        
+        document.getElementById('netWorth').textContent = netWorth.toFixed(2) + ' جنيه';
+        document.getElementById('cashBalance').textContent = cashEGP.toFixed(2) + ' جنيه';
+        document.getElementById('certsTotal').textContent = certsTotal.toFixed(2) + ' جنيه';
+        document.getElementById('goldTotal').textContent = goldTotal.toFixed(2) + ' جنيه';
+        document.getElementById('goldGrams').textContent = totalGrams.toFixed(2) + ' جرام';
+        document.getElementById('realEstateTotal').textContent = reTotal.toFixed(2) + ' جنيه';
+        document.getElementById('usdTotal').textContent = cashUSD.toFixed(2) + ' دولار';
+        document.getElementById('usdEgp').textContent = usdInEGP.toFixed(2) + ' جنيه';
+        
+        return { cashEGP, certsTotal, goldTotal, reTotal, usdInEGP };
+      } catch (error) {
+        console.error('Net worth loading error:', error);
+      }
+    }
+
+    // =============================================
+    // ZAKAT CALCULATOR
+    // =============================================
+    async function calculateZakat() {
+      try {
+        const { data: balance } = await supabase
+          .from('balances')
+          .select('*')
+          .limit(1)
+          .single();
+        
+        const { data: gold } = await supabase
+          .from('gold_holdings')
+          .select('*');
+        
+        const cashEGP = balance?.egp_cash || 0;
+        const cashUSD = (balance?.usd_cash || 0) * (currentGoldPrices?.usdEgp || 50);
+        
+        // Calculate gold value
+        let goldValue = 0;
+        if (gold && currentGoldPrices) {
+          gold.forEach(g => {
+            const grams = parseFloat(g.grams || 0);
+            if (g.gold_type === '21k') {
+              goldValue += grams * currentGoldPrices.gold21Gram;
+            } else {
+              goldValue += grams * currentGoldPrices.gold24Gram;
+            }
+          });
+        }
+        
+        // Nisab = 85 grams of gold
+        const nisab = 85 * (currentGoldPrices?.gold24Gram || 3500);
+        
+        // Zakatable wealth (cash + gold)
+        const zakatableWealth = cashEGP + cashUSD + goldValue;
+        
+        // Zakat = 2.5% if above nisab
+        let zakatDue = 0;
+        if (zakatableWealth >= nisab) {
+          zakatDue = zakatableWealth * 0.025;
+        }
+        
+        document.getElementById('zakatableWealth').textContent = zakatableWealth.toFixed(2) + ' جنيه';
+        document.getElementById('nisabAmount').textContent = nisab.toFixed(2) + ' جنيه';
+        document.getElementById('zakatDue').textContent = zakatDue.toFixed(2) + ' جنيه';
+        document.getElementById('zakatAmount').textContent = zakatDue.toFixed(2) + ' جنيه';
+        
+      } catch (error) {
+        console.error('Zakat calculation error:', error);
+      }
+    }
+
+    // =============================================
+    // NOTIFICATIONS
+    // =============================================
+    async function checkNotifications() {
+      try {
+        const { data: certs } = await supabase
+          .from('certificates')
+          .select('*')
+          .eq('status', 'active')
+          .order('maturity_date');
+        
+        const notifications = [];
+        const today = new Date();
+        
+        certs?.forEach(cert => {
+          const maturityDate = new Date(cert.maturity_date);
+          const daysRemaining = Math.ceil((maturityDate - today) / (1000 * 60 * 60 * 24));
+          
+          if (daysRemaining <= 30 && daysRemaining >= 0) {
+            notifications.push(`الشهادة ${cert.certificate_number} ستستحق خلال ${daysRemaining} يوم`);
+          } else if (daysRemaining < 0) {
+            notifications.push(`الشهادة ${cert.certificate_number} انتهت منذ ${Math.abs(daysRemaining)} يوم`);
+          }
+        });
+        
+        if (notifications.length > 0) {
+          document.getElementById('notificationBanner').classList.add('show');
+          document.getElementById('notificationContent').innerHTML = 
+            notifications.map(n => `<div class="notification-item">• ${n}</div>`).join('');
+        } else {
+          document.getElementById('notificationBanner').classList.remove('show');
+        }
+      } catch (error) {
+        console.error('Notifications error:', error);
+      }
+    }
+
+    // =============================================
+    // BUDGET GOALS
+    // =============================================
+    function loadBudgetGoals() {
+      const goals = JSON.parse(localStorage.getItem('budgetGoals') || '[]');
+      
+      if (goals.length === 0) {
+        document.getElementById('budgetGoals').innerHTML = 
+          '<p style="color: #999; text-align: center;">لا توجد أهداف ميزانية. اضغط "إدارة الميزانية" لإضافة هدف.</p>';
+        return;
+      }
+      
+      document.getElementById('budgetGoals').innerHTML = goals.map(goal => {
+        const percentage = Math.min((goal.current / goal.target) * 100, 100);
+        let progressClass = '';
+        if (percentage >= 90) progressClass = '';
+        else if (percentage >= 50) progressClass = 'warning';
+        else progressClass = 'danger';
+        
+        return `
+          <div class="budget-item">
+            <div class="budget-header">
+              <span class="budget-label">${goal.name}</span>
+              <span class="budget-value">${goal.current.toFixed(2)} / ${goal.target.toFixed(2)} جنيه</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill ${progressClass}" style="width: ${percentage}%">
+                ${percentage.toFixed(0)}%
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openBudgetModal() {
+      document.getElementById('budgetModal').classList.add('active');
+    }
+
+    function closeBudgetModal() {
+      document.getElementById('budgetModal').classList.remove('active');
+      document.getElementById('budgetGoalName').value = '';
+      document.getElementById('budgetTargetAmount').value = '';
+      document.getElementById('budgetCurrentAmount').value = '';
+    }
+
+    function saveBudgetGoal() {
+      const name = document.getElementById('budgetGoalName').value;
+      const target = parseFloat(document.getElementById('budgetTargetAmount').value);
+      const current = parseFloat(document.getElementById('budgetCurrentAmount').value);
+      
+      if (!name || !target || target <= 0) {
+        alert('يرجى ملء جميع الحقول بشكل صحيح');
+        return;
+      }
+      
+      const goals = JSON.parse(localStorage.getItem('budgetGoals') || '[]');
+      goals.push({ name, target, current: current || 0 });
+      localStorage.setItem('budgetGoals', JSON.stringify(goals));
+      
+      closeBudgetModal();
+      loadBudgetGoals();
+    }
+
+    // =============================================
+    // ASSET ALLOCATION PIE CHART
+    // =============================================
+    async function loadAssetAllocation() {
+      try {
+        const assets = await loadNetWorth();
+        
+        const ctx = document.getElementById('assetPieChart').getContext('2d');
+        
+        if (assetPieChart) {
+          assetPieChart.destroy();
+        }
+        
+        assetPieChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['نقدي', 'شهادات', 'ذهب', 'عقارات', 'دولار'],
+            datasets: [{
+              data: [
+                assets?.cashEGP || 0,
+                assets?.certsTotal || 0,
+                assets?.goldTotal || 0,
+                assets?.reTotal || 0,
+                assets?.usdInEGP || 0
+              ],
+              backgroundColor: [
+                '#667eea',
+                '#764ba2',
+                '#fbbf24',
+                '#10b981',
+                '#3b82f6'
+              ],
+              borderWidth: 2,
+              borderColor: '#fff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                rtl: true,
+                labels: {
+                  font: {
+                    family: 'Segoe UI',
+                    size: 14
+                  }
+                }
+              },
+              tooltip: {
+                rtl: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.label + ': ' + context.parsed.toFixed(2) + ' جنيه';
+                  }
+                }
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Asset allocation chart error:', error);
+      }
+    }
+
+    // =============================================
+    // MONTHLY TREND CHART
+    // =============================================
+    async function loadMonthlyTrend() {
+      try {
+        const { data: transactions } = await supabase
+          .from('transactions')
+          .select('*')
+          .gte('transaction_date', dateFilter.start)
+          .lte('transaction_date', dateFilter.end)
+          .order('transaction_date');
+        
+        // Group by month
+        const monthlyData = {};
+        const startDate = new Date(dateFilter.start);
+        const endDate = new Date(dateFilter.end);
+        
+        for (let d = new Date(startDate); d <= endDate; d.setMonth(d.getMonth() + 1)) {
+          const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+          monthlyData[key] = { expenses: 0, revenue: 0 };
+        }
+        
+        transactions?.forEach(t => {
+          const date = new Date(t.transaction_date);
+          const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+          const amount = parseFloat(t.amount || 0);
+          
+          if (monthlyData[key]) {
+            if (t.transaction_type === 'expense') {
+              monthlyData[key].expenses += amount;
+            } else if (t.transaction_type === 'revenue') {
+              monthlyData[key].revenue += amount;
+            }
+          }
+        });
+        
+        const labels = Object.keys(monthlyData).map(key => {
+          const [year, month] = key.split('-');
+          const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 
+                         'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+          return `${months[parseInt(month) - 1]} ${year}`;
+        });
+        
+        const ctx = document.getElementById('monthlyTrendChart').getContext('2d');
+        
+        if (monthlyTrendChart) {
+          monthlyTrendChart.destroy();
+        }
+        
+        monthlyTrendChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'الإيرادات',
+                data: Object.values(monthlyData).map(d => d.revenue),
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: 'المصروفات',
+                data: Object.values(monthlyData).map(d => d.expenses),
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                tension: 0.4,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+                rtl: true,
+                labels: {
+                  font: {
+                    family: 'Segoe UI',
+                    size: 14
+                  }
+                }
+              },
+              tooltip: {
+                rtl: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' جنيه';
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Monthly trend chart error:', error);
+      }
+    }
+
+    // =============================================
+    // GOLD HOLDINGS BAR CHART
+    // =============================================
+    async function loadGoldHoldings() {
+      try {
+        const { data: gold } = await supabase
+          .from('gold_holdings')
+          .select('*');
+        
+        const gold21k = gold?.filter(g => g.gold_type === '21k')
+          .reduce((sum, g) => sum + parseFloat(g.grams || 0), 0) || 0;
+        const gold24k = gold?.filter(g => g.gold_type === '24k')
+          .reduce((sum, g) => sum + parseFloat(g.grams || 0), 0) || 0;
+        
+        const ctx = document.getElementById('goldBarChart').getContext('2d');
+        
+        if (goldBarChart) {
+          goldBarChart.destroy();
+        }
+        
+        goldBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['ذهب 21 قيراط', 'ذهب 24 قيراط'],
+            datasets: [{
+              label: 'الجرامات',
+              data: [gold21k, gold24k],
+              backgroundColor: ['#fbbf24', '#f59e0b'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                rtl: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.parsed.y.toFixed(2) + ' جرام';
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Gold chart error:', error);
+      }
+    }
+
+    // =============================================
+    // YEAR COMPARISON CHART
+    // =============================================
+    async function loadYearComparison() {
+      try {
+        const years = [2022, 2023, 2024, 2025];
+        const yearData = [];
+        
+        for (const year of years) {
+          const { data: transactions } = await supabase
+            .from('transactions')
+            .select('*')
+            .gte('transaction_date', `${year}-01-01`)
+            .lte('transaction_date', `${year}-12-31`);
+          
+          const expenses = transactions?.filter(t => t.transaction_type === 'expense')
+            .reduce((sum, t) => sum + parseFloat(t.amount || 0), 0) || 0;
+          const revenue = transactions?.filter(t => t.transaction_type === 'revenue')
+            .reduce((sum, t) => sum + parseFloat(t.amount || 0), 0) || 0;
+          
+          yearData.push({ year, expenses, revenue, net: revenue - expenses });
+        }
+        
+        const ctx = document.getElementById('yearComparisonChart').getContext('2d');
+        
+        if (yearComparisonChart) {
+          yearComparisonChart.destroy();
+        }
+        
+        yearComparisonChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: years.map(y => y.toString()),
+            datasets: [
+              {
+                label: 'الإيرادات',
+                data: yearData.map(d => d.revenue),
+                backgroundColor: '#10b981'
+              },
+              {
+                label: 'المصروفات',
+                data: yearData.map(d => d.expenses),
+                backgroundColor: '#ef4444'
+              },
+              {
+                label: 'الصافي',
+                data: yearData.map(d => d.net),
+                backgroundColor: '#667eea'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+                rtl: true,
+                labels: {
+                  font: {
+                    family: 'Segoe UI',
+                    size: 14
+                  }
+                }
+              },
+              tooltip: {
+                rtl: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' جنيه';
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Year comparison chart error:', error);
+      }
+    }
+
+    // =============================================
+    // CERTIFICATES TABLE
+    // =============================================
+    async function loadCertificates() {
+      try {
+        const { data: certs } = await supabase
+          .from('certificates')
+          .select('*')
+          .eq('status', 'active')
+          .order('maturity_date');
+        
+        const tbody = document.getElementById('certsTableBody');
+        
+        if (!certs || certs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">لا توجد شهادات نشطة</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = certs.map(cert => {
+          const maturityDate = new Date(cert.maturity_date);
+          const today = new Date();
+          const daysRemaining = Math.ceil((maturityDate - today) / (1000 * 60 * 60 * 24));
+          
+          let statusBadge = '';
+          if (daysRemaining < 0) {
+            statusBadge = '<span class="badge badge-red">منتهية</span>';
+          } else if (daysRemaining <= 30) {
+            statusBadge = '<span class="badge badge-yellow">قريبة</span>';
+          } else if (daysRemaining <= 90) {
+            statusBadge = '<span class="badge badge-blue">متوسطة</span>';
+          } else {
+            statusBadge = '<span class="badge badge-green">نشطة</span>';
+          }
+          
+          return `
+            <tr>
+              <td>${cert.certificate_number}</td>
+              <td>${parseFloat(cert.principal_amount).toFixed(0)} جنيه</td>
+              <td>${cert.maturity_date}</td>
+              <td>${daysRemaining} يوم</td>
+              <td>${statusBadge}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Certificates table error:', error);
+      }
+    }
+
+    // =============================================
+    // RECENT TRANSACTIONS TABLE
+    // =============================================
+    async function loadRecentTransactions() {
+      try {
+        const { data: transactions } = await supabase
+          .from('transactions')
+          .select('*')
+          .gte('transaction_date', dateFilter.start)
+          .lte('transaction_date', dateFilter.end)
+          .order('transaction_date', { ascending: false })
+          .limit(10);
+        
+        const tbody = document.getElementById('transactionsTableBody');
+        
+        if (!transactions || transactions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">لا توجد معاملات</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = transactions.map(t => {
+          const typeLabel = t.transaction_type === 'expense' ? 'مصروف' : 'إيراد';
+          const typeBadge = t.transaction_type === 'expense' 
+            ? '<span class="badge badge-red">مصروف</span>' 
+            : '<span class="badge badge-green">إيراد</span>';
+          
+          return `
+            <tr>
+              <td>${t.transaction_date}</td>
+              <td>${typeBadge}</td>
+              <td>${parseFloat(t.amount).toFixed(2)} جنيه</td>
+              <td>${t.description || '-'}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Transactions table error:', error);
+      }
+    }
+
+    // =============================================
+    // EXPORT TO PDF
+    // =============================================
+    async function exportToPDF() {
+      const element = document.querySelector('.container');
+      const opt = {
+        margin: 10,
+        filename: 'تقرير_الثروة.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      try {
+        await html2pdf().set(opt).from(element).save();
+      } catch (error) {
+        console.error('PDF export error:', error);
+        alert('خطأ في تصدير PDF');
+      }
+    }
+
+    // =============================================
+    // EXPORT TO EXCEL
+    // =============================================
+    async function exportToExcel() {
+      try {
+        // Get all data
+        const { data: balance } = await supabase
+          .from('balances')
+          .select('*')
+          .limit(1)
+          .single();
+        
+        const { data: transactions } = await supabase
+          .from('transactions')
+          .select('*')
+          .gte('transaction_date', dateFilter.start)
+          .lte('transaction_date', dateFilter.end)
+          .order('transaction_date', { ascending: false });
+        
+        const { data: certs } = await supabase
+          .from('certificates')
+          .select('*')
+          .eq('status', 'active');
+        
+        const { data: gold } = await supabase
+          .from('gold_holdings')
+          .select('*');
+        
+        const { data: realEstate } = await supabase
+          .from('real_estate_properties')
+          .select('*')
+          .eq('status', 'active');
+        
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        
+        // Summary sheet
+        const summaryData = [
+          ['تقرير الثروة'],
+          ['التاريخ', new Date().toLocaleDateString('ar-EG')],
+          [],
+          ['الرصيد النقدي (جنيه)', balance?.egp_cash || 0],
+          ['رصيد الدولار (دولار)', balance?.usd_cash || 0],
+          [],
+          ['إجمالي الشهادات', certs?.reduce((sum, c) => sum + parseFloat(c.principal_amount || 0), 0) || 0],
+          ['إجمالي الذهب', gold?.reduce((sum, g) => sum + parseFloat(g.purchase_price_egp || 0), 0) || 0],
+          ['إجمالي العقارات', realEstate?.reduce((sum, re) => sum + (parseFloat(re.monthly_rent || 0) * parseInt(re.duration_months || 0)) + parseFloat(re.deposit_amount || 0), 0) || 0]
+        ];
+        const ws1 = XLSX.utils.aoa_to_sheet(summaryData);
+        XLSX.utils.book_append_sheet(wb, ws1, 'ملخص');
+        
+        // Transactions sheet
+        if (transactions && transactions.length > 0) {
+          const transData = transactions.map(t => ({
+            'التاريخ': t.transaction_date,
+            'النوع': t.transaction_type === 'expense' ? 'مصروف' : 'إيراد',
+            'المبلغ': t.amount,
+            'الوصف': t.description || '-'
+          }));
+          const ws2 = XLSX.utils.json_to_sheet(transData);
+          XLSX.utils.book_append_sheet(wb, ws2, 'المعاملات');
+        }
+        
+        // Certificates sheet
+        if (certs && certs.length > 0) {
+          const certsData = certs.map(c => ({
+            'رقم الشهادة': c.certificate_number,
+            'المبلغ': c.principal_amount,
+            'تاريخ البداية': c.start_date,
+            'تاريخ الاستحقاق': c.maturity_date,
+            'نسبة الفائدة': c.interest_rate_year1
+          }));
+          const ws3 = XLSX.utils.json_to_sheet(certsData);
+          XLSX.utils.book_append_sheet(wb, ws3, 'الشهادات');
+        }
+        
+        // Export
+        XLSX.writeFile(wb, 'تقرير_الثروة.xlsx');
+      } catch (error) {
+        console.error('Excel export error:', error);
+        alert('خطأ في تصدير Excel');
+      }
+    }
+  </script>
+</body>
+</html>
