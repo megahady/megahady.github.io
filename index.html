@@ -1,46 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Expense Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaHady | Landing</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+        }
+
+        /* Center content */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #00eaff;
+            text-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+        }
+
+        /* Cards */
+        .card {
+            background: #1b1b1b;
+            padding: 30px;
+            border-radius: 16px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: 1px solid #222;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 18px rgba(0, 234, 255, 0.4);
+            border-color: #00eaff;
+        }
+
+        .icon {
+            font-size: 40px;
+            color: #00eaff;
+            margin-bottom: 15px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
-  <h1>Expense Tracker</h1>
-  <input id="type" placeholder="income or expense">
-  <input id="category" placeholder="category">
-  <input id="amount" placeholder="amount">
-  <input id="description" placeholder="description">
-  <button onclick="add()">Add</button>
+    <div class="container">
+        <h1>MegaHady</h1>
+        <h2>Welcome — Choose where you'd like to go</h2>
 
-  <h2>Transactions</h2>
-  <ul id="list"></ul>
+        <div class="grid">
 
-<script>
-const API_URL = "https://expense-tracker.onrender.com";
+            <a href="money-tracking.html">
+                <div class="card">
+                    <i class="fa-solid fa-coins icon"></i>
+                    <h3>Money Tracking</h3>
+                </div>
+            </a>
 
-function add() {
-  fetch(`${API_URL}/add`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      type: document.getElementById('type').value,
-      category: document.getElementById('category').value,
-      amount: parseFloat(document.getElementById('amount').value),
-      description: document.getElementById('description').value
-    })
-  }).then(() => load());
-}
+            <a href="cv.html">
+                <div class="card">
+                    <i class="fa-solid fa-id-card icon"></i>
+                    <h3>My CV</h3>
+                </div>
+            </a>
 
-function load() {
-  fetch(`${API_URL}/list`)
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById('list').innerHTML = data.map(
-        row => `<li>${row[1]}: ${row[3]} (${row[2]})</li>`
-      ).join('');
-    });
-}
+            <a href="gallery.html">
+                <div class="card">
+                    <i class="fa-solid fa-image icon"></i>
+                    <h3>Gallery</h3>
+                </div>
+            </a>
 
-load();
-</script>
+            <a href="cheatsheets.html">
+                <div class="card">
+                    <i class="fa-solid fa-book icon"></i>
+                    <h3>CheatSheets</h3>
+                </div>
+            </a>
+
+            <a href="courses.html">
+                <div class="card">
+                    <i class="fa-solid fa-graduation-cap icon"></i>
+                    <h3>Courses</h3>
+                </div>
+            </a>
+
+            <a href="projects.html">
+                <div class="card">
+                    <i class="fa-solid fa-laptop-code icon"></i>
+                    <h3>Projects</h3>
+                </div>
+            </a>
+
+        </div>
+    </div>
 </body>
 </html>
