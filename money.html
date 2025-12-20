@@ -904,22 +904,26 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function loadNetWorth() {
       try {
-        const { data: balance } = await supabase
+        const { data: balance } = await supabaseClient
+
           .from('balances')
           .select('*')
           .limit(1)
           .single();
         
-        const { data: certs } = await supabase
+        const { data: certs } = await supabaseClient
+
           .from('certificates')
           .select('principal_amount')
           .eq('status', 'active');
         
-        const { data: gold } = await supabase
+        const { data: gold } = await supabaseClient
+
           .from('gold_holdings')
           .select('*');
         
-        const { data: realEstate } = await supabase
+        const { data: realEstate } = await supabaseClient
+
           .from('real_estate_properties')
           .select('monthly_rent, duration_months, deposit_amount')
           .eq('status', 'active');
@@ -970,13 +974,13 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function calculateZakat() {
       try {
-        const { data: balance } = await supabase
+        const { data: balance } = await supabaseClient
           .from('balances')
           .select('*')
           .limit(1)
           .single();
         
-        const { data: gold } = await supabase
+        const { data: gold } = await supabaseClient
           .from('gold_holdings')
           .select('*');
         
@@ -1023,7 +1027,8 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function checkNotifications() {
       try {
-        const { data: certs } = await supabase
+        const { data: certs } = await supabaseClient
+
           .from('certificates')
           .select('*')
           .eq('status', 'active')
@@ -1190,7 +1195,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function loadMonthlyTrend() {
       try {
-        const { data: transactions } = await supabase
+        const { data: transactions } = await supabaseClient
           .from('transactions')
           .select('*')
           .gte('transaction_date', dateFilter.start)
@@ -1297,7 +1302,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function loadGoldHoldings() {
       try {
-        const { data: gold } = await supabase
+        const { data: gold } = await supabaseClient
           .from('gold_holdings')
           .select('*');
         
@@ -1360,7 +1365,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
         const yearData = [];
         
         for (const year of years) {
-          const { data: transactions } = await supabase
+          const { data: transactions } = await supabaseClient
             .from('transactions')
             .select('*')
             .gte('transaction_date', `${year}-01-01`)
@@ -1442,7 +1447,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function loadCertificates() {
       try {
-        const { data: certs } = await supabase
+        const { data: certs } = await supabaseClient
           .from('certificates')
           .select('*')
           .eq('status', 'active')
@@ -1491,7 +1496,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     // =============================================
     async function loadRecentTransactions() {
       try {
-        const { data: transactions } = await supabase
+        const { data: transactions } = await supabaseClient
           .from('transactions')
           .select('*')
           .gte('transaction_date', dateFilter.start)
@@ -1553,25 +1558,25 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_K
     async function exportToExcel() {
       try {
         // Get all data
-        const { data: balance } = await supabase
+        const { data: balance } = await supabaseClient
           .from('balances')
           .select('*')
           .limit(1)
           .single();
         
-        const { data: transactions } = await supabase
+        const { data: transactions } = await supabaseClient
           .from('transactions')
           .select('*')
           .gte('transaction_date', dateFilter.start)
           .lte('transaction_date', dateFilter.end)
           .order('transaction_date', { ascending: false });
         
-        const { data: certs } = await supabase
+        const { data: certs } = await supabaseClient
           .from('certificates')
           .select('*')
           .eq('status', 'active');
         
-        const { data: gold } = await supabase
+        const { data: gold } = await supabaseClient
           .from('gold_holdings')
           .select('*');
         
