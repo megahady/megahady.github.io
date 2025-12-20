@@ -683,8 +683,7 @@
     const SUPABASE_URL = 'https://itjrvujlfbmuxoisyvas.supabase.co';  // e.g., 'https://xxxxx.supabase.co'
     // const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0anJ2dWpsZmJtdXhvaXN5dmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNzc0NzUsImV4cCI6MjA3ODY1MzQ3NX0.541WN6AX_DVso1o3J4FaJI9H4XSBK8cXf4M96nPlBuY';  // Your anon/public key
     const SUPABASE_ANON_KEY = 'sb_publishable_ubJ7dMZ65_DvU6s9oU2Lyg_b94lfZTW';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
+const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);    
     let assetPieChart, monthlyTrendChart, goldBarChart, yearComparisonChart;
     let currentGoldPrices = null;
     let dateFilter = { start: null, end: null };
