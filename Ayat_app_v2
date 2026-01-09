@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متتبع الثروة</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      direction: rtl;
+    }
+    
+    .main-container {
+      display: flex;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    
+    .left-column {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+    
+    .right-column {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .container {
+      width: 100%;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .transactions-card {
+      height: calc(100vh - 180px);
+      overflow-y: auto;
+    }
+    
+    .balance-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+    }
+    
+    .balance-label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    
+    .balance-amount {
+      font-size: 36px;
+      font-weight: bold;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      background: white;
+      color: #667eea;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .transactions-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #667eea;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+    
+    .transaction-details {
+      flex: 1;
+    }
+    
+    .transaction-type {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .transaction-desc {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    
+    .transaction-date {
+      font-size: 12px;
+      color: #999;
+    }
+    
+    .transaction-amount {
+      font-size: 18px;
+      font-weight: 600;
+      margin-left: 16px;
+    }
+    
+    .no-transactions {
+      text-align: center;
+      color: #999;
+      padding: 40px 0;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #667eea;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    
+    .table th, .table td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .table th {
+      background: #f5f5f5;
+      font-weight: 600;
+    }
+    
+    .table tr:hover {
+      background: #f9f9f9;
+      cursor: pointer;
+    }
+    
+    .info-card {
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+    }
+    
+    .info-label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    
+    .info-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .gold-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    
+    .small-card {
+      background: #fff9e6;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      border: 2px solid #ffd700;
+    }
+    
+    .small-card-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .small-card-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ff8c00;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+    
+    .delete-item {
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: bold;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .left-column, .right-column {
+        max-width: 100%;
+      }
+      
+      .transactions-card {
+        height: auto;
+        max-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Left Column: Balance and Buttons -->
+    <div class="left-column">
+      <!-- Main Balance Card -->
+      <div class="card balance-card">
+        <div class="balance-label">الرصيد النقدي بالجنيه المصري</div>
+        <div class="balance-amount" id="mainBalance">جاري التحميل...</div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="card"><button class="btn" onclick="openModal('expenses')">المصروفات</button></div>
+      <div class="card"><button class="btn" onclick="openModal('revenue')">الإيرادات</button></div>
+      <div class="card"><button class="btn" onclick="openModal('yearExpenses')">مصروفات السنة</button></div>
+      <div class="card"><button class="btn" onclick="openModal('certificates')">الشهادات</button></div>
+      <div class="card"><button class="btn" onclick="openModal('gold')">الذهب</button></div>
+      <div class="card"><button class="btn" onclick="openModal('realEstate')">العقارات</button></div>
+      <div class="card"><button class="btn" onclick="openModal('dollar')">الدولار</button></div>
+    </div>
+    
+    <!-- Right Column: Recent Transactions -->
+    <div class="right-column">
+      <div class="card transactions-card">
+        <h2 class="transactions-title">آخر المعاملات</h2>
+        <div id="recentTransactions">
+          <div class="no-transactions">جاري تحميل المعاملات...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expenses Modal -->
+  <div class="modal" id="expensesModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إضافة مصروف</h2>
+      <div class="form-group">
+        <label class="form-label">المبلغ (جنيه)</label>
+        <input type="number" class="form-input" id="expenseAmount" placeholder="0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف</label>
+        <input type="text" class="form-input" id="expenseDesc" placeholder="أدخل الوصف">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveExpense()">حفظ</button>
+        <button class="btn btn-secondary" onclick="closeModal('expensesModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Modal -->
+  <div class="modal" id="revenueModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إضافة إيراد</h2>
+      <div class="form-group">
+        <label class="form-label">المبلغ (جنيه)</label>
+        <input type="number" class="form-input" id="revenueAmount" placeholder="0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوصف</label>
+        <input type="text" class="form-input" id="revenueDesc" placeholder="أدخل الوصف">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveRevenue()">حفظ</button>
+        <button class="btn btn-secondary" onclick="closeModal('revenueModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Year Expenses Modal -->
+  <div class="modal" id="yearExpensesModal">
+    <div class="modal-content">
+      <h2 class="modal-title">مصروفات السنة</h2>
+      <div class="form-group">
+        <label class="form-label">اختر السنة</label>
+        <select class="form-select" id="yearSelect" onchange="loadYearExpenses()">
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+            <option value="2031">2031</option>
+            <option value="2032">2032</option>
+        </select>
+      </div>
+      <div class="info-card">
+        <div class="info-label">إجمالي المصروفات</div>
+        <div class="info-value" id="yearExpensesTotal">0.00 جنيه</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">إجمالي الإيرادات</div>
+        <div class="info-value" id="yearRevenueTotal" style="color: #10b981;">0.00 جنيه</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">الصافي (الإيرادات - المصروفات)</div>
+        <div class="info-value" id="yearNetTotal">0.00 جنيه</div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>النوع</th>
+              <th>المبلغ</th>
+              <th>الوصف</th>
+            </tr>
+          </thead>
+          <tbody id="yearExpensesTableBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="closeModal('yearExpensesModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificates Modal -->
+  <div class="modal" id="certificatesModal">
+    <div class="modal-content">
+      <h2 class="modal-title">الشهادات</h2>
+      <div class="info-card">
+        <div class="info-label">إجمالي رصيد الشهادات</div>
+        <div class="info-value" id="certTotal">0.00 جنيه</div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="table" id="certTable">
+          <thead>
+            <tr>
+              <th>المبلغ</th>
+              <th>تاريخ البداية</th>
+              <th>تاريخ الاستحقاق</th>
+              <th>نسبة الفائدة %</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody id="certTableBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="showAddCertForm()">إضافة</button>
+        <button class="btn btn-secondary" onclick="closeModal('certificatesModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Certificate Form Modal -->
+  <div class="modal" id="addCertModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إضافة شهادة</h2>
+      <div class="form-group">
+        <label class="form-label">رقم الشهادة</label>
+        <input type="text" class="form-input" id="certNumber" placeholder="CERT-001">
+      </div>
+      <div class="form-group">
+        <label class="form-label">المبلغ (جنيه)</label>
+        <input type="number" class="form-input" id="certAmount" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">تاريخ البداية</label>
+        <input type="date" class="form-input" id="certStart">
+      </div>
+      <div class="form-group">
+        <label class="form-label">تاريخ الاستحقاق</label>
+        <input type="date" class="form-input" id="certMaturity">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نسبة الفائدة السنة الأولى (%)</label>
+        <input type="number" class="form-input" id="certRate1" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نسبة الفائدة السنة الثانية (%)</label>
+        <input type="number" class="form-input" id="certRate2" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نسبة الفائدة السنة الثالثة (%)</label>
+        <input type="number" class="form-input" id="certRate3" step="0.01">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveCertificate()">حفظ</button>
+        <button class="btn btn-secondary" onclick="closeModal('addCertModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gold Modal -->
+  <div class="modal" id="goldModal">
+    <div class="modal-content">
+      <h2 class="modal-title">الذهب</h2>
+      <div class="info-card">
+        <div class="info-label">إجمالي قيمة الذهب</div>
+        <div class="info-value" id="goldTotal">0.00 جنيه</div>
+      </div>
+      <div class="gold-cards">
+        <div class="small-card">
+          <div class="small-card-label">ذهب 21 قيراط</div>
+          <div class="small-card-value" id="gold21k">0 جرام</div>
+        </div>
+        <div class="small-card">
+          <div class="small-card-label">ذهب 24 قيراط</div>
+          <div class="small-card-value" id="gold24k">0 جرام</div>
+        </div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>النوع</th>
+              <th>الجرامات</th>
+              <th>السعر</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody id="goldTableBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="showAddGoldForm()">إضافة</button>
+        <button class="btn btn-secondary" onclick="closeModal('goldModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Gold Form Modal -->
+  <div class="modal" id="addGoldModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إضافة ذهب</h2>
+      <div class="form-group">
+        <label class="form-label">نوع الذهب</label>
+        <select class="form-select" id="goldType">
+          <option value="21k">21 قيراط</option>
+          <option value="24k">24 قيراط</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الكمية (جرام)</label>
+        <input type="number" class="form-input" id="goldAmount" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">سعر الشراء (جنيه)</label>
+        <input type="number" class="form-input" id="goldPurchase" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التاريخ</label>
+        <input type="date" class="form-input" id="goldDate">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveGold()">حفظ</button>
+        <button class="btn btn-secondary" onclick="closeModal('addGoldModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real Estate Modal -->
+  <div class="modal" id="realEstateModal">
+    <div class="modal-content">
+      <h2 class="modal-title">العقارات</h2>
+      <div class="info-card">
+        <div class="info-label">إجمالي قيمة العقارات</div>
+        <div class="info-value" id="reTotal">0.00 جنيه</div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>العقار</th>
+              <th>الإيجار الشهري</th>
+              <th>التأمين</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody id="reTableBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="showAddREForm()">إضافة</button>
+        <button class="btn btn-secondary" onclick="closeModal('realEstateModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Real Estate Form Modal -->
+  <div class="modal" id="addREModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إضافة عقار</h2>
+      <div class="form-group">
+        <label class="form-label">اسم العقار</label>
+        <input type="text" class="form-input" id="reName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع العقار</label>
+        <select class="form-select" id="reType">
+          <option value="apartment">شقة</option>
+          <option value="house">منزل</option>
+          <option value="shop">محل</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">تاريخ بداية الإيجار</label>
+        <input type="date" class="form-input" id="reStart">
+      </div>
+      <div class="form-group">
+        <label class="form-label">المدة (بالأشهر)</label>
+        <input type="number" class="form-input" id="reDuration">
+      </div>
+      <div class="form-group">
+        <label class="form-label">القيمة الشهرية (جنيه)</label>
+        <input type="number" class="form-input" id="reMonthly" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التأمين (جنيه)</label>
+        <input type="number" class="form-input" id="reDeposit" step="0.01">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveRealEstate()">حفظ</button>
+        <button class="btn btn-secondary" onclick="closeModal('addREModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dollar Modal -->
+  <div class="modal" id="dollarModal">
+    <div class="modal-content">
+      <h2 class="modal-title">الدولار</h2>
+      <div class="info-card">
+        <div class="info-label">الرصيد بالجنيه</div>
+        <div class="info-value" id="dollarEgp">0.00 جنيه</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">الرصيد بالدولار</div>
+        <div class="info-value" id="dollarUsd">0.00 دولار</div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="showAddUSDForm()">إضافة دولار</button>
+        <button class="btn btn-danger" onclick="showLiquefyForm()">تحويل إلى جنيه</button>
+        <button class="btn btn-secondary" onclick="closeModal('dollarModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add USD Form Modal -->
+  <div class="modal" id="addUSDModal">
+    <div class="modal-content">
+      <h2 class="modal-title">إضافة دولار</h2>
+      <div class="form-group">
+        <label class="form-label">المبلغ (دولار)</label>
+        <input type="number" class="form-input" id="usdAmount" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">سعر الصرف (جنيه لكل دولار)</label>
+        <input type="number" class="form-input" id="usdRate" value="50" step="0.01">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveUSD()">حفظ</button>
+        <button class="btn btn-secondary" onclick="closeModal('addUSDModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liquefy USD Modal -->
+  <div class="modal" id="liquefyModal">
+    <div class="modal-content">
+      <h2 class="modal-title">تحويل الدولار إلى جنيه</h2>
+      <div class="form-group">
+        <label class="form-label">المبلغ (دولار)</label>
+        <input type="number" class="form-input" id="liquefyAmount" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">سعر الصرف (جنيه لكل دولار)</label>
+        <input type="number" class="form-input" id="liquefyRate" value="50" step="0.01">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="liquefyUSD()">تحويل</button>
+        <button class="btn btn-secondary" onclick="closeModal('liquefyModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    // =============================================
+    // SUPABASE CONFIGURATION
+    // =============================================
+    const SUPABASE_URL = 'https://itjrvujlfbmuxoisyvas.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ubJ7dMZ65_DvU6s9oU2Lyg_b94lfZTW';
+
+    // Initialize Supabase client
+    let supabaseClient;
+    if (!window.supabaseClient) {
+      window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+    supabaseClient = window.supabaseClient;
+
+    // Global balance ID (assuming single user/balance row)
+    let BALANCE_ID = null;
+
+    // =============================================
+    // INITIALIZATION
+    // =============================================
+    window.onload = async function() {
+      try {
+        await initializeApp();
+      } catch (error) {
+        console.error('Initialization error:', error);
+        alert('خطأ في الاتصال بقاعدة البيانات. تحقق من وحدة التحكم للتفاصيل.');
+      }
+    };
+
+    async function initializeApp() {
+      try {
+        // Get or create balance record
+        const { data: balances, error } = await supabaseClient
+          .from('balances')
+          .select('*')
+          .limit(1);
+        
+        if (error) throw error;
+        
+        if (balances && balances.length > 0) {
+          BALANCE_ID = balances[0].id;
+        } else {
+          // Create initial balance
+          const { data: newBalance, error: createError } = await supabaseClient
+            .from('balances')
+            .insert([{ egp_cash: 0, usd_cash: 0 }])
+            .select();
+          
+          if (createError) throw createError;
+          BALANCE_ID = newBalance[0].id;
+        }
+        
+        await updateDisplay();
+        await loadRecentTransactions();
+      } catch (error) {
+        console.error('Initialization error:', error);
+        throw error;
+      }
+    }
+
+    // =============================================
+    // DISPLAY UPDATES
+    // =============================================
+    async function updateDisplay() {
+      try {
+        const { data: balance, error } = await supabaseClient
+          .from('balances')
+          .select('*')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        if (error) throw error;
+        
+        document.getElementById('mainBalance').textContent = 
+          (balance.egp_cash || 0).toFixed(2) + ' جنيه';
+      } catch (error) {
+        console.error('Display update error:', error);
+      }
+    }
+
+    // =============================================
+    // RECENT TRANSACTIONS MODULE
+    // =============================================
+    async function loadRecentTransactions() {
+      try {
+        const { data: transactions, error } = await supabaseClient
+          .from('transactions')
+          .select('*')
+          .order('transaction_date', { ascending: false })
+          .limit(20);
+        
+        if (error) throw error;
+        
+        const container = document.getElementById('recentTransactions');
+        
+        if (transactions && transactions.length > 0) {
+          container.innerHTML = '';
+          
+          transactions.forEach(transaction => {
+            const transactionElement = document.createElement('div');
+            transactionElement.className = 'transaction-item';
+            
+            const typeLabel = transaction.transaction_type === 'expense' ? 'مصروف' : 
+                             transaction.transaction_type === 'revenue' ? 'إيراد' :
+                             transaction.transaction_type === 'usd_purchase' ? 'شراء دولار' :
+                             transaction.transaction_type === 'usd_sale' ? 'بيع دولار' : 'معاملة';
+            
+            const typeColor = transaction.transaction_type === 'expense' ? '#ef4444' : 
+                            transaction.transaction_type === 'revenue' ? '#10b981' : '#667eea';
+            
+            const amountColor = transaction.transaction_type === 'expense' ? '#ef4444' : '#10b981';
+            const amountPrefix = transaction.transaction_type === 'expense' ? '-' : '+';
+            
+            transactionElement.innerHTML = `
+              <div class="transaction-details">
+                <div class="transaction-type" style="color: ${typeColor}">${typeLabel}</div>
+                <div class="transaction-desc">${transaction.description || 'لا يوجد وصف'}</div>
+                <div class="transaction-date">${transaction.transaction_date}</div>
+              </div>
+              <div class="transaction-amount" style="color: ${amountColor}">
+                ${amountPrefix}${parseFloat(transaction.amount).toFixed(2)} ${transaction.currency}
+              </div>
+            `;
+            
+            container.appendChild(transactionElement);
+          });
+        } else {
+          container.innerHTML = '<div class="no-transactions">لا توجد معاملات سابقة</div>';
+        }
+      } catch (error) {
+        console.error('Load recent transactions error:', error);
+        document.getElementById('recentTransactions').innerHTML = 
+          '<div class="no-transactions">خطأ في تحميل المعاملات</div>';
+      }
+    }
+
+    // =============================================
+    // MODAL MANAGEMENT
+    // =============================================
+    function openModal(type) {
+      const modalMap = {
+        'expenses': 'expensesModal',
+        'revenue': 'revenueModal',
+        'yearExpenses': 'yearExpensesModal',
+        'certificates': 'certificatesModal',
+        'gold': 'goldModal',
+        'realEstate': 'realEstateModal',
+        'dollar': 'dollarModal'
+      };
+      
+      const modalId = modalMap[type];
+      if (modalId) {
+        if (modalId === 'yearExpensesModal') loadYearExpenses();
+        if (modalId === 'certificatesModal') updateCertDisplay();
+        if (modalId === 'goldModal') updateGoldDisplay();
+        if (modalId === 'realEstateModal') updateREDisplay();
+        if (modalId === 'dollarModal') updateDollarDisplay();
+        
+        document.getElementById(modalId).classList.add('active');
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    // =============================================
+    // YEAR EXPENSES MODULE
+    // =============================================
+    async function loadYearExpenses() {
+      const year = document.getElementById('yearSelect').value;
+      
+      try {
+        // Get all transactions for the selected year
+        const { data: transactions, error } = await supabaseClient
+          .from('transactions')
+          .select('*')
+          .gte('transaction_date', `${year}-01-01`)
+          .lte('transaction_date', `${year}-12-31`)
+          .order('transaction_date', { ascending: false });
+        
+        if (error) throw error;
+        
+        // Calculate totals
+        const expenses = transactions.filter(t => t.transaction_type === 'expense');
+        const revenues = transactions.filter(t => t.transaction_type === 'revenue');
+        
+        const expensesTotal = expenses.reduce((sum, t) => sum + parseFloat(t.amount || 0), 0);
+        const revenueTotal = revenues.reduce((sum, t) => sum + parseFloat(t.amount || 0), 0);
+        const netTotal = revenueTotal - expensesTotal;
+        
+        document.getElementById('yearExpensesTotal').textContent = expensesTotal.toFixed(2) + ' جنيه';
+        document.getElementById('yearRevenueTotal').textContent = revenueTotal.toFixed(2) + ' جنيه';
+        document.getElementById('yearNetTotal').textContent = netTotal.toFixed(2) + ' جنيه';
+        
+        // Update net total color based on positive/negative
+        const netElement = document.getElementById('yearNetTotal');
+        if (netTotal >= 0) {
+          netElement.style.color = '#10b981';
+        } else {
+          netElement.style.color = '#ef4444';
+        }
+        
+        // Display all transactions
+        const tbody = document.getElementById('yearExpensesTableBody');
+        tbody.innerHTML = transactions.map(t => {
+          const typeColor = t.transaction_type === 'expense' ? '#ef4444' : '#10b981';
+          const typeLabel = t.transaction_type === 'expense' ? 'مصروف' : 'إيراد';
+          return `
+            <tr>
+              <td>${t.transaction_date}</td>
+              <td style="color: ${typeColor}; font-weight: 600;">${typeLabel}</td>
+              <td>${parseFloat(t.amount).toFixed(2)}</td>
+              <td>${t.description || '-'}</td>
+            </tr>
+          `;
+        }).join('');
+        
+        if (transactions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">لا توجد معاملات لهذه السنة</td></tr>';
+        }
+      } catch (error) {
+        console.error('Load year expenses error:', error);
+        alert('خطأ في تحميل المصروفات: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // EXPENSES MODULE
+    // =============================================
+    async function saveExpense() {
+      const amount = parseFloat(document.getElementById('expenseAmount').value);
+      const desc = document.getElementById('expenseDesc').value;
+      
+      if (!amount || amount <= 0) {
+        alert('يرجى إدخال مبلغ صحيح');
+        return;
+      }
+      
+      try {
+        // Get current balance
+        const { data: balance } = await supabaseClient
+          .from('balances')
+          .select('egp_cash')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        const newBalance = (balance.egp_cash || 0) - amount;
+        
+        // Update balance
+        const { error: balanceError } = await supabaseClient
+          .from('balances')
+          .update({ egp_cash: newBalance, last_updated: new Date().toISOString() })
+          .eq('id', BALANCE_ID);
+        
+        if (balanceError) throw balanceError;
+        
+        // Create transaction record
+        const { error: txError } = await supabaseClient
+          .from('transactions')
+          .insert([{
+            transaction_type: 'expense',
+            amount: amount,
+            currency: 'EGP',
+            description: desc,
+            transaction_date: new Date().toISOString().split('T')[0]
+          }]);
+        
+        if (txError) throw txError;
+        
+        await updateDisplay();
+        await loadRecentTransactions();
+        document.getElementById('expenseAmount').value = '';
+        document.getElementById('expenseDesc').value = '';
+        closeModal('expensesModal');
+        alert('تم حفظ المصروف بنجاح!');
+      } catch (error) {
+        console.error('Save expense error:', error);
+        alert('خطأ في حفظ المصروف: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // REVENUE MODULE
+    // =============================================
+    async function saveRevenue() {
+      const amount = parseFloat(document.getElementById('revenueAmount').value);
+      const desc = document.getElementById('revenueDesc').value;
+      
+      if (!amount || amount <= 0) {
+        alert('Please enter a valid amount');
+        return;
+      }
+      
+      try {
+        // Get current balance
+        const { data: balance } = await supabaseClient
+          .from('balances')
+          .select('egp_cash')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        const newBalance = (balance.egp_cash || 0) + amount;
+        
+        // Update balance
+        const { error: balanceError } = await supabaseClient
+          .from('balances')
+          .update({ egp_cash: newBalance, last_updated: new Date().toISOString() })
+          .eq('id', BALANCE_ID);
+        
+        if (balanceError) throw balanceError;
+        
+        // Create transaction record
+        const { error: txError } = await supabaseClient
+          .from('transactions')
+          .insert([{
+            transaction_type: 'revenue',
+            amount: amount,
+            currency: 'EGP',
+            description: desc,
+            transaction_date: new Date().toISOString().split('T')[0]
+          }]);
+        
+        if (txError) throw txError;
+        
+        await updateDisplay();
+        await loadRecentTransactions();
+        document.getElementById('revenueAmount').value = '';
+        document.getElementById('revenueDesc').value = '';
+        closeModal('revenueModal');
+        alert('تم حفظ الإيراد بنجاح!');
+      } catch (error) {
+        console.error('Save revenue error:', error);
+        alert('خطأ في حفظ الإيراد: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // CERTIFICATES MODULE
+    // =============================================
+    async function updateCertDisplay() {
+      try {
+        const { data: certs, error } = await supabaseClient
+          .from('certificates')
+          .select('*')
+          .eq('status', 'active')
+          .order('start_date', { ascending: false });
+        
+        if (error) throw error;
+        
+        const total = certs.reduce((sum, cert) => sum + parseFloat(cert.principal_amount || 0), 0);
+        document.getElementById('certTotal').textContent = total.toFixed(2) + ' جنيه';
+        
+        const tbody = document.getElementById('certTableBody');
+        tbody.innerHTML = certs.map(cert => `
+          <tr>
+            <td>${parseFloat(cert.principal_amount).toFixed(0)}</td>
+            <td>${cert.start_date}</td>
+            <td>${cert.maturity_date}</td>
+            <td>${parseFloat(cert.interest_rate_year1 * 100).toFixed(0)}%</td>
+            <td><span class="delete-item" onclick="deleteCertificate('${cert.id}')">حذف</span></td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Update cert display error:', error);
+      }
+    }
+
+    function showAddCertForm() {
+      closeModal('certificatesModal');
+      document.getElementById('addCertModal').classList.add('active');
+    }
+
+    async function saveCertificate() {
+      const certNumber = document.getElementById('certNumber').value;
+      const amount = parseFloat(document.getElementById('certAmount').value);
+      const startDate = document.getElementById('certStart').value;
+      const maturityDate = document.getElementById('certMaturity').value;
+      const rate1 = parseFloat(document.getElementById('certRate1').value) / 100;
+      const rate2 = parseFloat(document.getElementById('certRate2').value) / 100;
+      const rate3 = parseFloat(document.getElementById('certRate3').value) / 100;
+      
+      if (!amount || amount <= 0 || !certNumber || !startDate || !maturityDate) {
+        alert('يرجى ملء جميع الحقول المطلوبة');
+        return;
+      }
+      
+      try {
+        const { error } = await supabaseClient
+          .from('certificates')
+          .insert([{
+            certificate_number: certNumber,
+            principal_amount: amount,
+            start_date: startDate,
+            maturity_date: maturityDate,
+            interest_rate_year1: rate1,
+            interest_rate_year2: rate2,
+            interest_rate_year3: rate3,
+            status: 'active'
+          }]);
+        
+        if (error) throw error;
+        
+        // Clear form
+        document.getElementById('certNumber').value = '';
+        document.getElementById('certAmount').value = '';
+        document.getElementById('certStart').value = '';
+        document.getElementById('certMaturity').value = '';
+        document.getElementById('certRate1').value = '';
+        document.getElementById('certRate2').value = '';
+        document.getElementById('certRate3').value = '';
+        
+        closeModal('addCertModal');
+        openModal('certificates');
+        alert('تم حفظ الشهادة بنجاح!');
+      } catch (error) {
+        console.error('Save certificate error:', error);
+        alert('خطأ في حفظ الشهادة: ' + error.message);
+      }
+    }
+
+    async function deleteCertificate(certId) {
+      if (!confirm('هل أنت متأكد من حذف هذه الشهادة؟ سيتم إضافة المبلغ الأساسي إلى رصيدك.')) {
+        return;
+      }
+      
+      try {
+        // Get certificate details
+        const { data: cert, error: fetchError } = await supabaseClient
+          .from('certificates')
+          .select('principal_amount')
+          .eq('id', certId)
+          .single();
+        
+        if (fetchError) throw fetchError;
+        
+        // Get current balance
+        const { data: balance } = await supabaseClient
+          .from('balances')
+          .select('egp_cash')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        const newBalance = (balance.egp_cash || 0) + parseFloat(cert.principal_amount);
+        
+        // Update balance
+        const { error: balanceError } = await supabaseClient
+          .from('balances')
+          .update({ egp_cash: newBalance, last_updated: new Date().toISOString() })
+          .eq('id', BALANCE_ID);
+        
+        if (balanceError) throw balanceError;
+        
+        // Delete certificate
+        const { error: deleteError } = await supabaseClient
+          .from('certificates')
+          .delete()
+          .eq('id', certId);
+        
+        if (deleteError) throw deleteError;
+        
+        // Create transaction record
+        const { error: txError } = await supabaseClient
+          .from('transactions')
+          .insert([{
+            transaction_type: 'revenue',
+            amount: parseFloat(cert.principal_amount),
+            currency: 'EGP',
+            description: 'إرجاع مبلغ الشهادة',
+            transaction_date: new Date().toISOString().split('T')[0]
+          }]);
+        
+        if (txError) throw txError;
+        
+        await updateDisplay();
+        await loadRecentTransactions();
+        await updateCertDisplay();
+        alert('تم حذف الشهادة وإضافة المبلغ الأساسي إلى الرصيد!');
+      } catch (error) {
+        console.error('Delete certificate error:', error);
+        alert('خطأ في حذف الشهادة: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // GOLD MODULE
+    // =============================================
+    async function updateGoldDisplay() {
+      try {
+        const { data: gold, error } = await supabaseClient
+          .from('gold_holdings')
+          .select('*')
+          .order('purchase_date', { ascending: false });
+        
+        if (error) throw error;
+        
+        const gold21k = gold.filter(g => g.gold_type === '21k')
+          .reduce((sum, g) => sum + parseFloat(g.grams || 0), 0);
+        const gold24k = gold.filter(g => g.gold_type === '24k')
+          .reduce((sum, g) => sum + parseFloat(g.grams || 0), 0);
+        const total = gold.reduce((sum, g) => sum + parseFloat(g.purchase_price_egp || 0), 0);
+        
+        document.getElementById('gold21k').textContent = gold21k.toFixed(2) + ' جرام';
+        document.getElementById('gold24k').textContent = gold24k.toFixed(2) + ' جرام';
+        document.getElementById('goldTotal').textContent = total.toFixed(2) + ' جنيه';
+        
+        const tbody = document.getElementById('goldTableBody');
+        tbody.innerHTML = gold.map(g => `
+          <tr>
+            <td>${g.gold_type}</td>
+            <td>${parseFloat(g.grams).toFixed(2)}g</td>
+            <td>${parseFloat(g.purchase_price_egp).toFixed(2)}</td>
+            <td><span class="delete-item" onclick="deleteGold('${g.id}', ${g.purchase_price_egp})">حذف</span></td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Update gold display error:', error);
+      }
+    }
+
+    function showAddGoldForm() {
+      closeModal('goldModal');
+      document.getElementById('goldDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('addGoldModal').classList.add('active');
+    }
+
+    async function saveGold() {
+      const goldType = document.getElementById('goldType').value;
+      const grams = parseFloat(document.getElementById('goldAmount').value);
+      const purchasePrice = parseFloat(document.getElementById('goldPurchase').value);
+      const date = document.getElementById('goldDate').value;
+      
+      if (!grams || grams <= 0 || !purchasePrice || purchasePrice <= 0) {
+        alert('يرجى إدخال بيانات صحيحة');
+        return;
+      }
+      
+      try {
+        const { error } = await supabaseClient
+          .from('gold_holdings')
+          .insert([{
+            gold_type: goldType,
+            grams: grams,
+            purchase_price_egp: purchasePrice,
+            purchase_date: date
+          }]);
+        
+        if (error) throw error;
+        
+        // Clear form
+        document.getElementById('goldAmount').value = '';
+        document.getElementById('goldPurchase').value = '';
+        
+        closeModal('addGoldModal');
+        openModal('gold');
+        alert('تم حفظ الذهب بنجاح!');
+      } catch (error) {
+        console.error('Save gold error:', error);
+        alert('خطأ في حفظ الذهب: ' + error.message);
+      }
+    }
+
+    async function deleteGold(goldId, purchasePrice) {
+      if (!confirm('هل أنت متأكد من حذف هذا الذهب؟ سيتم إضافة سعر الشراء إلى رصيدك.')) {
+        return;
+      }
+      
+      try {
+        // Get current balance
+        const { data: balance } = await supabaseClient
+          .from('balances')
+          .select('egp_cash')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        const newBalance = (balance.egp_cash || 0) + parseFloat(purchasePrice);
+        
+        // Update balance
+        const { error: balanceError } = await supabaseClient
+          .from('balances')
+          .update({ egp_cash: newBalance, last_updated: new Date().toISOString() })
+          .eq('id', BALANCE_ID);
+        
+        if (balanceError) throw balanceError;
+        
+        // Delete gold holding
+        const { error: deleteError } = await supabaseClient
+          .from('gold_holdings')
+          .delete()
+          .eq('id', goldId);
+        
+        if (deleteError) throw deleteError;
+        
+        // Create transaction record
+        const { error: txError } = await supabaseClient
+          .from('transactions')
+          .insert([{
+            transaction_type: 'revenue',
+            amount: parseFloat(purchasePrice),
+            currency: 'EGP',
+            description: 'بيع ذهب',
+            transaction_date: new Date().toISOString().split('T')[0]
+          }]);
+        
+        if (txError) throw txError;
+        
+        await updateDisplay();
+        await loadRecentTransactions();
+        await updateGoldDisplay();
+        alert('تم حذف الذهب وإضافة القيمة إلى الرصيد!');
+      } catch (error) {
+        console.error('Delete gold error:', error);
+        alert('خطأ في حذف الذهب: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // REAL ESTATE MODULE
+    // =============================================
+    async function updateREDisplay() {
+      try {
+        const { data: properties, error } = await supabaseClient
+          .from('real_estate_properties')
+          .select('*')
+          .eq('status', 'active')
+          .order('rent_start_date', { ascending: false });
+        
+        if (error) throw error;
+        
+        const total = properties.reduce((sum, re) => 
+          sum + (parseFloat(re.monthly_rent || 0) * parseInt(re.duration_months || 0)) + 
+          parseFloat(re.deposit_amount || 0), 0);
+        
+        document.getElementById('reTotal').textContent = total.toFixed(2) + ' EGP';
+        
+        const tbody = document.getElementById('reTableBody');
+        tbody.innerHTML = properties.map(re => `
+          <tr>
+            <td>${re.property_name}</td>
+            <td>${parseFloat(re.monthly_rent).toFixed(2)}</td>
+            <td>${parseFloat(re.deposit_amount).toFixed(2)}</td>
+            <td><span class="delete-item" onclick="deleteRealEstate('${re.id}')">حذف</span></td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Update real estate display error:', error);
+      }
+    }
+
+    function showAddREForm() {
+      closeModal('realEstateModal');
+      document.getElementById('reStart').value = new Date().toISOString().split('T')[0];
+      document.getElementById('addREModal').classList.add('active');
+    }
+
+    async function saveRealEstate() {
+      const name = document.getElementById('reName').value;
+      const type = document.getElementById('reType').value;
+      const startDate = document.getElementById('reStart').value;
+      const duration = parseInt(document.getElementById('reDuration').value);
+      const monthly = parseFloat(document.getElementById('reMonthly').value);
+      const deposit = parseFloat(document.getElementById('reDeposit').value);
+      
+      if (!name || !startDate) {
+        alert('يرجى إدخال بيانات صحيحة');
+        return;
+      }
+      
+      try {
+        const { error } = await supabaseClient
+          .from('real_estate_properties')
+          .insert([{
+            property_name: name,
+            property_type: type,
+            rent_start_date: startDate,
+            duration_months: duration || 0,
+            monthly_rent: monthly || 0,
+            deposit_amount: deposit || 0,
+            status: 'active'
+          }]);
+        
+        if (error) throw error;
+        
+        // Clear form
+        document.getElementById('reName').value = '';
+        document.getElementById('reDuration').value = '';
+        document.getElementById('reMonthly').value = '';
+        document.getElementById('reDeposit').value = '';
+        
+        closeModal('addREModal');
+        openModal('realEstate');
+        alert('تم حفظ العقار بنجاح!');
+      } catch (error) {
+        console.error('Save real estate error:', error);
+        alert('خطأ في حفظ العقار: ' + error.message);
+      }
+    }
+
+    async function deleteRealEstate(propertyId) {
+      if (!confirm('هل أنت متأكد من حذف هذا العقار؟')) {
+        return;
+      }
+      
+      try {
+        const { error } = await supabaseClient
+          .from('real_estate_properties')
+          .delete()
+          .eq('id', propertyId);
+        
+        if (error) throw error;
+        
+        await updateREDisplay();
+        alert('تم حذف العقار بنجاح!');
+      } catch (error) {
+        console.error('Delete real estate error:', error);
+        alert('خطأ في حذف العقار: ' + error.message);
+      }
+    }
+
+    // =============================================
+    // DOLLAR MODULE
+    // =============================================
+    async function updateDollarDisplay() {
+      try {
+        const { data: balance, error } = await supabaseClient
+          .from('balances')
+          .select('*')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        if (error) throw error;
+        
+        document.getElementById('dollarEgp').textContent = 
+          (balance.egp_cash || 0).toFixed(2) + ' جنيه';
+        document.getElementById('dollarUsd').textContent = 
+          (balance.usd_cash || 0).toFixed(2) + ' دولار';
+      } catch (error) {
+        console.error('Update dollar display error:', error);
+      }
+    }
+
+    function showAddUSDForm() {
+      closeModal('dollarModal');
+      document.getElementById('addUSDModal').classList.add('active');
+    }
+
+    async function saveUSD() {
+      const amount = parseFloat(document.getElementById('usdAmount').value);
+      const rate = parseFloat(document.getElementById('usdRate').value);
+      
+      if (!amount || amount <= 0) {
+        alert('يرجى إدخال مبلغ صحيح');
+        return;
+      }
+      
+      try {
+        // Get current balance
+        const { data: balance } = await supabaseClient
+          .from('balances')
+          .select('usd_cash')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        const newUsdBalance = (balance.usd_cash || 0) + amount;
+        
+        // Update balance
+        const { error: balanceError } = await supabaseClient
+          .from('balances')
+          .update({ usd_cash: newUsdBalance, last_updated: new Date().toISOString() })
+          .eq('id', BALANCE_ID);
+        
+        if (balanceError) throw balanceError;
+        
+        // Create transaction record
+        const { error: txError } = await supabaseClient
+          .from('transactions')
+          .insert([{
+            transaction_type: 'usd_purchase',
+            amount: amount,
+            currency: 'USD',
+            description: `تم شراء ${amount} دولار بسعر ${rate}`,
+            transaction_date: new Date().toISOString().split('T')[0]
+          }]);
+        
+        if (txError) throw txError;
+        
+        document.getElementById('usdAmount').value = '';
+        closeModal('addUSDModal');
+        await loadRecentTransactions();
+        openModal('dollar');
+        alert('تم إضافة الدولار بنجاح!');
+      } catch (error) {
+        console.error('Save USD error:', error);
+        alert('خطأ في حفظ الدولار: ' + error.message);
+      }
+    }
+
+    function showLiquefyForm() {
+      closeModal('dollarModal');
+      document.getElementById('liquefyModal').classList.add('active');
+    }
+
+    async function liquefyUSD() {
+      const amount = parseFloat(document.getElementById('liquefyAmount').value);
+      const rate = parseFloat(document.getElementById('liquefyRate').value);
+      
+      if (!amount || amount <= 0 || !rate || rate <= 0) {
+        alert('يرجى إدخال مبالغ صحيحة');
+        return;
+      }
+      
+      try {
+        // Get current balance
+        const { data: balance } = await supabaseClient
+          .from('balances')
+          .select('*')
+          .eq('id', BALANCE_ID)
+          .single();
+        
+        if (amount > (balance.usd_cash || 0)) {
+          alert('رصيد الدولار غير كافٍ');
+          return;
+        }
+        
+        const newUsdBalance = (balance.usd_cash || 0) - amount;
+        const egpAmount = amount * rate;
+        const newEgpBalance = (balance.egp_cash || 0) + egpAmount;
+        
+        // Update balance
+        const { error: balanceError } = await supabaseClient
+          .from('balances')
+          .update({ 
+            usd_cash: newUsdBalance,
+            egp_cash: newEgpBalance,
+            last_updated: new Date().toISOString() 
+          })
+          .eq('id', BALANCE_ID);
+        
+        if (balanceError) throw balanceError;
+        
+        // Create transaction record
+        const { error: txError } = await supabaseClient
+          .from('transactions')
+          .insert([{
+            transaction_type: 'usd_sale',
+            amount: amount,
+            currency: 'USD',
+            description: `تم تحويل ${amount} دولار إلى ${egpAmount.toFixed(2)} جنيه بسعر ${rate}`,
+            transaction_date: new Date().toISOString().split('T')[0]
+          }]);
+        
+        if (txError) throw txError;
+        
+        await updateDisplay();
+        await loadRecentTransactions();
+        document.getElementById('liquefyAmount').value = '';
+        closeModal('liquefyModal');
+        openModal('dollar');
+        alert(`تم تحويل ${amount} دولار إلى ${egpAmount.toFixed(2)} جنيه بنجاح!`);
+      } catch (error) {
+        console.error('Liquefy USD error:', error);
+        alert('خطأ في تحويل الدولار: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
