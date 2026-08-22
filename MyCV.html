@@ -1,219 +1,836 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Resume of Mohamed Abdelhady for Mechatronics Assistant Professor Position">
-    <title>Mohamed Abdelhady | Mechatronics Assistant Professor Resume</title>
-    <style>
+
+```
+<meta name="description"
+      content="Academic CV of Mohamed Abdelhady, Ph.D., specializing in mechatronics, robotics, adaptive control, machine learning, wearable systems, prosthetics, and exoskeletons.">
+
+<meta name="keywords"
+      content="Mohamed Abdelhady, PhD, Mechatronics, Robotics, Control Systems, Adaptive Control, Machine Learning, Neural Networks, Prosthetics, Exoskeletons, Assistive Robotics">
+
+<title>Mohamed Abdelhady, Ph.D. | Academic CV | Mechatronics and Robotics</title>
+
+<style>
+    :root {
+        --navy: #17365d;
+        --blue: #245a8d;
+        --dark: #222;
+        --gray: #555;
+        --light-gray: #e5e7eb;
+        --paper: #ffffff;
+        --background: #eef1f5;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        padding: 32px 20px;
+        background: var(--background);
+        color: var(--dark);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.48;
+    }
+
+    .cv-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        background: var(--paper);
+        padding: 42px 52px;
+        box-shadow: 0 5px 24px rgba(0, 0, 0, 0.10);
+    }
+
+    /* =========================
+       Header
+       ========================= */
+
+    .header {
+        border-bottom: 3px solid var(--navy);
+        padding-bottom: 18px;
+        margin-bottom: 24px;
+    }
+
+    .name {
+        margin: 0;
+        color: var(--navy);
+        font-size: 29pt;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        line-height: 1.1;
+    }
+
+    .credentials {
+        margin-top: 5px;
+        color: var(--blue);
+        font-size: 13pt;
+        font-weight: 600;
+    }
+
+    .academic-title {
+        margin-top: 3px;
+        color: var(--gray);
+        font-size: 10.5pt;
+    }
+
+    .contact {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+        margin-top: 14px;
+        color: #333;
+        font-size: 9.5pt;
+    }
+
+    .contact span {
+        white-space: nowrap;
+    }
+
+    /* =========================
+       Sections
+       ========================= */
+
+    section {
+        margin-bottom: 23px;
+    }
+
+    .section-title {
+        margin: 0 0 11px 0;
+        padding-bottom: 5px;
+        border-bottom: 1.5px solid var(--navy);
+        color: var(--navy);
+        font-size: 14pt;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        text-transform: uppercase;
+    }
+
+    p {
+        margin: 0 0 9px 0;
+    }
+
+    .profile {
+        font-size: 10.5pt;
+        text-align: justify;
+    }
+
+    /* =========================
+       Research Areas
+       ========================= */
+
+    .research-areas {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px 28px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .research-areas li {
+        position: relative;
+        padding-left: 13px;
+        margin: 0;
+    }
+
+    .research-areas li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--blue);
+        font-weight: bold;
+    }
+
+    /* =========================
+       Education / Experience
+       ========================= */
+
+    .entry {
+        margin-bottom: 15px;
+        page-break-inside: avoid;
+    }
+
+    .entry:last-child {
+        margin-bottom: 0;
+    }
+
+    .entry-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 20px;
+    }
+
+    .entry-title {
+        margin: 0;
+        font-size: 11pt;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .entry-date {
+        flex-shrink: 0;
+        color: var(--blue);
+        font-weight: 700;
+        font-size: 9.5pt;
+    }
+
+    .institution {
+        margin-top: 2px;
+        color: var(--gray);
+        font-weight: 600;
+    }
+
+    .details {
+        margin: 5px 0 0 0;
+        padding-left: 19px;
+    }
+
+    .details li {
+        margin-bottom: 3px;
+    }
+
+    .details li:last-child {
+        margin-bottom: 0;
+    }
+
+    .dissertation {
+        margin-top: 5px;
+        padding-left: 19px;
+    }
+
+    .dissertation strong {
+        color: #333;
+    }
+
+    /* =========================
+       Skills
+       ========================= */
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 30px;
+    }
+
+    .skill-category {
+        margin-bottom: 4px;
+    }
+
+    .skill-category strong {
+        color: var(--navy);
+    }
+
+    /* =========================
+       Publications
+       ========================= */
+
+    .publication-list {
+        margin: 0;
+        padding-left: 22px;
+    }
+
+    .publication-list li {
+        margin-bottom: 9px;
+        padding-left: 3px;
+    }
+
+    .publication-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    /* =========================
+       Awards
+       ========================= */
+
+    .award-list {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .award-list li {
+        margin-bottom: 5px;
+    }
+
+    /* =========================
+       Faculty Position Target
+       ========================= */
+
+    .faculty-focus {
+        background: #f4f7fa;
+        border-left: 4px solid var(--blue);
+        padding: 12px 15px;
+    }
+
+    /* =========================
+       Print Button
+       ========================= */
+
+    .print-wrapper {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .print-btn {
+        border: none;
+        border-radius: 4px;
+        padding: 10px 22px;
+        background: var(--navy);
+        color: white;
+        font-size: 10pt;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .print-btn:hover {
+        background: var(--blue);
+    }
+
+    /* =========================
+       Print
+       ========================= */
+
+    @media print {
+        @page {
+            size: Letter;
+            margin: 0.55in 0.60in;
+        }
+
+        html,
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            background: white;
         }
 
-        .resume-container {
-            max-width: 900px;
-            background-color: #fff;
-            margin: 0 auto;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        body {
+            font-size: 9.5pt;
+            line-height: 1.4;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 32px;
-            color: #333;
+        .cv-container {
+            max-width: none;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
         }
 
-        .section {
-            margin-bottom: 30px;
+        .print-wrapper {
+            display: none;
+        }
+
+        .header {
+            margin-bottom: 18px;
+        }
+
+        section {
+            margin-bottom: 17px;
         }
 
         .section-title {
-            font-size: 24px;
-            border-bottom: 2px solid #444;
-            margin-bottom: 15px;
-            color: #333;
+            font-size: 12pt;
+            margin-bottom: 8px;
         }
 
-        .section-content {
-            padding-left: 10px;
+        .entry {
+            margin-bottom: 11px;
         }
 
-        ul {
-            list-style: none;
-            padding-left: 0;
+        .publication-list li {
+            margin-bottom: 6px;
         }
 
-        li {
-            margin-bottom: 10px;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        .contact-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
+        .page-break-before {
+            page-break-before: always;
+        }
+    }
+
+    /* =========================
+       Mobile
+       ========================= */
+
+    @media screen and (max-width: 700px) {
+        body {
+            padding: 0;
         }
 
-        .contact-info div {
-            text-align: center;
+        .cv-container {
+            padding: 28px 22px;
+            box-shadow: none;
         }
 
-        .print-btn {
+        .name {
+            font-size: 24pt;
+        }
+
+        .contact {
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .research-areas,
+        .skills-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .entry-header {
             display: block;
-            width: 100px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            cursor: pointer;
         }
 
-        @media print {
-            .print-btn {
-                display: none;
-            }
-
-            body {
-                background-color: white;
-            }
-
-            .resume-container {
-                box-shadow: none;
-                margin: 0;
-                padding: 0;
-            }
-
-            /* Hide default browser print headers/footers (date, page numbers, etc.) */
-            @page {
-                margin: 0;
-            }
-
-            body, html {
-                margin: 0;
-                padding: 0;
-            }
+        .entry-date {
+            display: block;
+            margin-top: 2px;
         }
-    </style>
+    }
+</style>
+```
+
 </head>
+
 <body>
 
-    <div class="resume-container">
-        <h1>Mohamed Abdelhady</h1>
+<main class="cv-container">
 
-        <div class="contact-info">
-            <div>
-                <strong>Tel:</strong> (216) 553-8555
-            </div>
-            <div>
-                <strong>Email:</strong> megahady@gmail.com
-            </div>
-            <div>
-                <strong>Address:</strong> 1890 E93 Street, Cleveland, OH, 44106, USA
-            </div>
-        </div>
+```
+<!-- =========================
+     HEADER
+     ========================= -->
 
-        <div class="section">
-            <h2 class="section-title">Objective</h2>
-            <p>I have an established research direction in adaptive intelligence for physical robotic systems.</p>
-        </div>
+<header class="header">
+    <h1 class="name">Mohamed Abdelhady</h1>
 
-        <div class="section">
-            <h2 class="section-title">Education</h2>
-            <ul class="section-content">
-                <li><strong>Ph.D. in Electrical Engineering</strong>, Cleveland State University, Dec 2021
-                    <ul>
-                        <li>Dissertation: "Codesign Development and Control of Smart Prostheses"</li>
-                        <li>Supervisor: Dr. Dan Simon</li>
-                    </ul>
-                </li>
-                <li><strong>M.Sc. in Computers and System Engineering</strong>, Minia University, Oct 2010
-                    <ul>
-                        <li>Thesis: "Deep Insight in Control of Twin Rotor MIMO Helicopter System"</li>
-                        <li>Advisor: Dr. El Sayed Mohamed</li>
-                    </ul>
-                </li>
-                <li><strong>B.Sc. in Electrical Engineering</strong>, Aswan University, Jun 2001
-                    <ul>
-                        <li>Graduated Summa Cum Laude</li>
-                        <li>Major: Control Engineering</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+    <div class="credentials">Ph.D. in Electrical Engineering</div>
 
-        <div class="section">
-            <h2 class="section-title">Research & Academic Experience</h2>
-            <ul class="section-content">
-                <li><strong>National Institutes of Health (NIH), Bethesda, MD, USA</strong>, Postdoc Fellow and Associate Investigator (2022-2023)
-                    <ul>
-                        <li>Developed personalized control systems for pediatric exoskeletons using deep reinforcement learning.</li>
-                        <li>Designed advanced functional electrical muscle stimulation systems for assistive robotics.</li>
-                    </ul>
-                </li>
-                <li><strong>Cleveland Clinic, Cleveland, OH, USA</strong>, Postdoc Fellow, Biomedical Engineering Dept. (2021-2022)
-                    <ul>
-                        <li>Developed a novel algorithm for detrusor pressure estimation using electromyography signals.</li>
-                        <li>Led projects on sensor integration and control of robotic prosthetics.</li>
-                    </ul>
-                </li>
-                <li><strong>US Department of Veterans Affairs</strong>, Research Engineer (2021-2022)
-                    <ul>
-                        <li>Worked with the Advanced Platform Technology Center to develop algorithms for bladder detrusor pressure estimation using a single-channel catheter.</li>
-                    </ul>
-                </li>
-                <li><strong>Ford Motor Company, Detroit, MI, USA</strong>, Research Engineer (2019-2020)
-                    <ul>
-                        <li>Developed advanced control algorithms using self-learning neural networks to enhance fuel efficiency and autonomous driving.</li>
-                        <li>Implemented real-time control systems for vehicle performance optimization.</li>
-                    </ul>
-                </li>
-                <li><strong>SIEMENS Co., Stuttgart, Germany</strong>, Engineering Intern (2011)
-                    <ul>
-                        <li>Collaborated with Festo Co. to augment human assistive robotics for industrial applications.</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Skills</h2>
-            <ul class="section-content">
-                <li>Mechatronics System Design</li>
-                <li>Control Systems (PID, Adaptive, Neural Network-based)</li>
-                <li>Robotics (Prosthetics, Exoskeletons, Autonomous Systems)</li>
-                <li>Machine Learning & Neural Networks</li>
-                <li>Hardware-in-the-loop Simulation</li>
-                <li>Programming Languages: Python, C++, MATLAB</li>
-                <li>CAD Design (SolidWorks, Fusion 360)</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Selected Publications</h2>
-            <ul class="section-content">
-                <li><strong>Zhang, S., Lopez-Sanchez, M., Abdelhady, M.</strong> "Actuator optimization and deep learning-based control of pediatric knee exoskeleton for community-based mobility assistance." Mechatronics 97 (2024): 103109.</li>
-                <li><strong>M. Abdelhady, A. J. van den Bogert, D. Simon</strong> "A High-Fidelity Wearable System for Measuring Lower-Limb Kinetics and Kinematics." IEEE Sensors Journal 19.24 (2019): 12482-12493.</li>
-                <li><strong>Subramanian, M., Abdelhady, M.</strong> "The role of contemporary digital tools in the Covid-19 crisis." Expert Systems 39.6 (2022).</li>
-                <li><strong>M. Abdelhady, T. Bulea</strong>, "Knee angle estimation from surface EMG during walking using attention-based deep recurrent neural networks," MDPI Sensors Journal (2024).</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Honors & Awards</h2>
-            <ul class="section-content">
-                <li>Cleveland Clinic Travel Garnet (2022)</li>
-                <li>Best Paper Award at 3rd International Conference on Control and Robots (2020)</li>
-                <li>Student Research Award (2021)</li>
-                <li>ICCR Conference Excellent Oral Presentation (2020)</li>
-            </ul>
-        </div>
-
-        <button class="print-btn" onclick="window.print()">Print Resume</button>
+    <div class="academic-title">
+        Mechatronics • Robotics • Adaptive Control • Machine Learning • Assistive Technology
     </div>
+
+    <div class="contact" aria-label="Contact information">
+        <span><strong>Tel:</strong> (216) 553-8555</span>
+        <span><strong>Email:</strong> megahady@gmail.com</span>
+        <span><strong>Location:</strong> Cleveland, Ohio, USA</span>
+    </div>
+</header>
+
+
+<!-- =========================
+     ACADEMIC PROFILE
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Academic Profile</h2>
+
+    <p class="profile">
+        Electrical engineer and robotics researcher with a Ph.D. in Electrical Engineering
+        and interdisciplinary research experience spanning mechatronics, adaptive control,
+        machine learning, wearable robotics, prosthetics, exoskeletons, and biomedical
+        engineering. Established research direction in adaptive intelligence for physical
+        robotic systems, with experience developing personalized control algorithms,
+        sensor-driven systems, and real-time robotic technologies. Research experience
+        includes collaborations with the National Institutes of Health, Cleveland Clinic,
+        U.S. Department of Veterans Affairs, Ford Motor Company, and Siemens. Prepared to
+        contribute to undergraduate and graduate education in mechatronics, robotics,
+        control systems, automation, and intelligent systems while developing an
+        externally visible interdisciplinary research program.
+    </p>
+</section>
+
+
+<!-- =========================
+     RESEARCH AREAS
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Research Areas</h2>
+
+    <ul class="research-areas">
+        <li>Mechatronics and Intelligent Systems</li>
+        <li>Robotics and Assistive Robotics</li>
+        <li>Adaptive and Intelligent Control</li>
+        <li>Machine Learning and Neural Networks</li>
+        <li>Reinforcement Learning</li>
+        <li>Wearable Robotics and Exoskeletons</li>
+        <li>Prosthetic Systems and Human-Robot Interaction</li>
+        <li>Biomedical Instrumentation and Sensing</li>
+        <li>Real-Time Control Systems</li>
+        <li>Hardware-in-the-Loop Simulation</li>
+    </ul>
+</section>
+
+
+<!-- =========================
+     EDUCATION
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Education</h2>
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">Ph.D. in Electrical Engineering</h3>
+            <span class="entry-date">December 2021</span>
+        </div>
+
+        <div class="institution">
+            Cleveland State University, Cleveland, Ohio
+        </div>
+
+        <div class="dissertation">
+            <strong>Dissertation:</strong>
+            "Codesign Development and Control of Smart Prostheses"
+            <br>
+            <strong>Dissertation Supervisor:</strong> Dr. Dan Simon
+        </div>
+    </article>
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">M.Sc. in Computers and Systems Engineering</h3>
+            <span class="entry-date">October 2010</span>
+        </div>
+
+        <div class="institution">
+            Minia University, Egypt
+        </div>
+
+        <div class="dissertation">
+            <strong>Thesis:</strong>
+            "Deep Insight in Control of Twin Rotor MIMO Helicopter System"
+            <br>
+            <strong>Thesis Advisor:</strong> Dr. El Sayed Mohamed
+        </div>
+    </article>
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">B.Sc. in Electrical Engineering</h3>
+            <span class="entry-date">June 2001</span>
+        </div>
+
+        <div class="institution">
+            Aswan University, Egypt
+        </div>
+
+        <div class="dissertation">
+            <strong>Major:</strong> Control Engineering
+            <br>
+            Graduated <strong>Summa Cum Laude</strong>
+        </div>
+    </article>
+</section>
+
+
+<!-- =========================
+     RESEARCH EXPERIENCE
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Research & Academic Experience</h2>
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">
+                Postdoctoral Fellow and Associate Investigator
+            </h3>
+            <span class="entry-date">2022–2023</span>
+        </div>
+
+        <div class="institution">
+            National Institutes of Health (NIH), Bethesda, Maryland
+        </div>
+
+        <ul class="details">
+            <li>
+                Developed personalized control systems for pediatric exoskeletons
+                using deep reinforcement learning.
+            </li>
+            <li>
+                Designed advanced functional electrical stimulation systems
+                for assistive robotic applications.
+            </li>
+            <li>
+                Conducted interdisciplinary research integrating machine learning,
+                control systems, sensing, and wearable robotics.
+            </li>
+        </ul>
+    </article>
+
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">
+                Postdoctoral Fellow, Biomedical Engineering
+            </h3>
+            <span class="entry-date">2021–2022</span>
+        </div>
+
+        <div class="institution">
+            Cleveland Clinic, Cleveland, Ohio
+        </div>
+
+        <ul class="details">
+            <li>
+                Developed a novel algorithm for estimating detrusor pressure
+                from electromyography signals.
+            </li>
+            <li>
+                Led research projects involving sensor integration,
+                signal processing, and control of robotic prosthetic systems.
+            </li>
+        </ul>
+    </article>
+
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">
+                Research Engineer
+            </h3>
+            <span class="entry-date">2021–2022</span>
+        </div>
+
+        <div class="institution">
+            U.S. Department of Veterans Affairs
+        </div>
+
+        <ul class="details">
+            <li>
+                Developed algorithms for bladder detrusor pressure estimation
+                using a single-channel catheter.
+            </li>
+            <li>
+                Conducted engineering research through the Advanced Platform
+                Technology Center, focusing on biomedical sensing and assistive technology.
+            </li>
+        </ul>
+    </article>
+
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">
+                Research Engineer
+            </h3>
+            <span class="entry-date">2019–2020</span>
+        </div>
+
+        <div class="institution">
+            Ford Motor Company, Detroit, Michigan
+        </div>
+
+        <ul class="details">
+            <li>
+                Developed advanced control algorithms using self-learning
+                neural networks for vehicle performance and fuel-efficiency applications.
+            </li>
+            <li>
+                Implemented real-time control systems for vehicle performance optimization.
+            </li>
+            <li>
+                Applied machine learning and intelligent control methods
+                to automotive engineering problems.
+            </li>
+        </ul>
+    </article>
+
+
+    <article class="entry">
+        <div class="entry-header">
+            <h3 class="entry-title">
+                Engineering Intern
+            </h3>
+            <span class="entry-date">2011</span>
+        </div>
+
+        <div class="institution">
+            Siemens, Stuttgart, Germany
+        </div>
+
+        <ul class="details">
+            <li>
+                Collaborated with Festo on human-assistive robotic systems
+                for industrial applications.
+            </li>
+        </ul>
+    </article>
+</section>
+
+
+<!-- =========================
+     TECHNICAL EXPERTISE
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Technical Expertise</h2>
+
+    <div class="skills-grid">
+
+        <div class="skill-category">
+            <strong>Mechatronics:</strong>
+            System design, integration, prototyping
+        </div>
+
+        <div class="skill-category">
+            <strong>Control Systems:</strong>
+            PID, adaptive control, intelligent control
+        </div>
+
+        <div class="skill-category">
+            <strong>Robotics:</strong>
+            Prosthetics, exoskeletons, autonomous systems
+        </div>
+
+        <div class="skill-category">
+            <strong>Machine Learning:</strong>
+            Neural networks, deep learning, reinforcement learning
+        </div>
+
+        <div class="skill-category">
+            <strong>Simulation:</strong>
+            Hardware-in-the-loop and real-time simulation
+        </div>
+
+        <div class="skill-category">
+            <strong>Programming:</strong>
+            Python, C++, MATLAB
+        </div>
+
+        <div class="skill-category">
+            <strong>CAD:</strong>
+            SolidWorks, Fusion 360
+        </div>
+
+        <div class="skill-category">
+            <strong>Biomedical Systems:</strong>
+            EMG, wearable sensing, functional electrical stimulation
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     SELECTED PUBLICATIONS
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Selected Publications</h2>
+
+    <ol class="publication-list">
+
+        <li>
+            Zhang, S., Lopez-Sanchez, M., &amp; Abdelhady, M.
+            "Actuator optimization and deep learning-based control of pediatric
+            knee exoskeleton for community-based mobility assistance."
+            <em>Mechatronics</em>, 97 (2024), 103109.
+        </li>
+
+        <li>
+            Abdelhady, M., van den Bogert, A. J., &amp; Simon, D.
+            "A High-Fidelity Wearable System for Measuring Lower-Limb Kinetics
+            and Kinematics."
+            <em>IEEE Sensors Journal</em>, 19(24) (2019), 12482–12493.
+        </li>
+
+        <li>
+            Subramanian, M., &amp; Abdelhady, M.
+            "The role of contemporary digital tools in the COVID-19 crisis."
+            <em>Expert Systems</em>, 39(6) (2022).
+        </li>
+
+        <li>
+            Abdelhady, M. &amp; Bulea, T.
+            "Knee angle estimation from surface EMG during walking using
+            attention-based deep recurrent neural networks."
+            <em>Sensors</em> (2024).
+        </li>
+
+    </ol>
+</section>
+
+
+<!-- =========================
+     HONORS
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Honors & Awards</h2>
+
+    <ul class="award-list">
+        <li>
+            <strong>Cleveland Clinic Travel Grant</strong>, 2022
+        </li>
+
+        <li>
+            <strong>Best Paper Award</strong>,
+            3rd International Conference on Control and Robots, 2020
+        </li>
+
+        <li>
+            <strong>Student Research Award</strong>, 2021
+        </li>
+
+        <li>
+            <strong>Excellent Oral Presentation Award</strong>,
+            ICCR Conference, 2020
+        </li>
+    </ul>
+</section>
+
+
+<!-- =========================
+     FACULTY FIT
+     ========================= -->
+
+<section>
+    <h2 class="section-title">Faculty Research & Teaching Focus</h2>
+
+    <div class="faculty-focus">
+        <p>
+            Research and teaching interests include mechatronics, robotics,
+            control systems, automation, intelligent systems, machine learning,
+            embedded and real-time systems, wearable robotics, prosthetic and
+            assistive technologies, and human-robot interaction.
+        </p>
+
+        <p>
+            Positioned to develop interdisciplinary research collaborations
+            connecting electrical engineering, mechanical engineering,
+            biomedical engineering, robotics, artificial intelligence,
+            and intelligent manufacturing.
+        </p>
+    </div>
+</section>
+
+
+<!-- =========================
+     PRINT
+     ========================= -->
+
+<div class="print-wrapper">
+    <button class="print-btn" type="button" onclick="window.print()">
+        Print / Save as PDF
+    </button>
+</div>
+```
+
+</main>
 
 </body>
 </html>
