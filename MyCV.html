@@ -7,20 +7,21 @@
 
 ```
 <meta name="description"
-      content="Academic CV of Mohamed Abdelhady, Ph.D., specializing in mechatronics, robotics, adaptive control, machine learning, wearable systems, prosthetics, and exoskeletons.">
+      content="Academic CV of Mohamed Abdelhady, Ph.D., specializing in learning-based control, physics-informed control and simulation, AI-based signal decoding, mechatronics, robotics, and biomedical systems.">
 
 <meta name="keywords"
-      content="Mohamed Abdelhady, PhD, Mechatronics, Robotics, Control Systems, Adaptive Control, Machine Learning, Neural Networks, Prosthetics, Exoskeletons, Assistive Robotics">
+      content="Mohamed Abdelhady, PhD, Mechatronics, Robotics, Learning-Based Control, Physics-Informed Control, AI Signal Decoding, Machine Learning, Biomedical Signals, EMG, ECG, EEG, Prosthetics, Exoskeletons">
 
-<title>Mohamed Abdelhady, Ph.D. | Academic CV | Mechatronics and Robotics</title>
+<title>Mohamed Abdelhady, Ph.D. | Academic CV</title>
 
 <style>
     :root {
         --navy: #17365d;
         --blue: #245a8d;
-        --dark: #222;
-        --gray: #555;
+        --dark: #222222;
+        --gray: #555555;
         --light-gray: #e5e7eb;
+        --very-light: #f5f7fa;
         --paper: #ffffff;
         --background: #eef1f5;
     }
@@ -52,9 +53,9 @@
         box-shadow: 0 5px 24px rgba(0, 0, 0, 0.10);
     }
 
-    /* =========================
-       Header
-       ========================= */
+    /* =========================================
+       HEADER
+       ========================================= */
 
     .header {
         border-bottom: 3px solid var(--navy);
@@ -79,7 +80,7 @@
     }
 
     .academic-title {
-        margin-top: 3px;
+        margin-top: 4px;
         color: var(--gray);
         font-size: 10.5pt;
     }
@@ -89,7 +90,7 @@
         flex-wrap: wrap;
         gap: 6px 18px;
         margin-top: 14px;
-        color: #333;
+        color: #333333;
         font-size: 9.5pt;
     }
 
@@ -97,9 +98,9 @@
         white-space: nowrap;
     }
 
-    /* =========================
-       Sections
-       ========================= */
+    /* =========================================
+       GENERAL SECTIONS
+       ========================================= */
 
     section {
         margin-bottom: 23px;
@@ -120,41 +121,48 @@
         margin: 0 0 9px 0;
     }
 
+    /* =========================================
+       ACADEMIC PROFILE
+       ========================================= */
+
     .profile {
         font-size: 10.5pt;
         text-align: justify;
     }
 
-    /* =========================
-       Research Areas
-       ========================= */
+    /* =========================================
+       RESEARCH AREAS
+       ========================================= */
 
-    .research-areas {
+    .research-focus {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 5px 28px;
+        grid-template-columns: 1fr;
+        gap: 11px;
+    }
+
+    .research-item {
+        padding: 11px 15px;
+        border-left: 4px solid var(--blue);
+        background: var(--very-light);
+        page-break-inside: avoid;
+    }
+
+    .research-item h3 {
+        margin: 0 0 5px 0;
+        color: var(--navy);
+        font-size: 11.5pt;
+        font-weight: 700;
+    }
+
+    .research-item p {
         margin: 0;
-        padding: 0;
-        list-style: none;
+        color: #333333;
+        line-height: 1.45;
     }
 
-    .research-areas li {
-        position: relative;
-        padding-left: 13px;
-        margin: 0;
-    }
-
-    .research-areas li::before {
-        content: "•";
-        position: absolute;
-        left: 0;
-        color: var(--blue);
-        font-weight: bold;
-    }
-
-    /* =========================
-       Education / Experience
-       ========================= */
+    /* =========================================
+       EDUCATION & EXPERIENCE
+       ========================================= */
 
     .entry {
         margin-bottom: 15px;
@@ -176,7 +184,7 @@
         margin: 0;
         font-size: 11pt;
         font-weight: 700;
-        color: #222;
+        color: #222222;
     }
 
     .entry-date {
@@ -211,30 +219,31 @@
     }
 
     .dissertation strong {
-        color: #333;
+        color: #333333;
     }
 
-    /* =========================
-       Skills
-       ========================= */
+    /* =========================================
+       TECHNICAL EXPERTISE
+       ========================================= */
 
     .skills-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px 30px;
+        gap: 9px 28px;
     }
 
     .skill-category {
-        margin-bottom: 4px;
+        margin-bottom: 3px;
+        line-height: 1.45;
     }
 
     .skill-category strong {
         color: var(--navy);
     }
 
-    /* =========================
-       Publications
-       ========================= */
+    /* =========================================
+       PUBLICATIONS
+       ========================================= */
 
     .publication-list {
         margin: 0;
@@ -244,15 +253,16 @@
     .publication-list li {
         margin-bottom: 9px;
         padding-left: 3px;
+        page-break-inside: avoid;
     }
 
     .publication-list li:last-child {
         margin-bottom: 0;
     }
 
-    /* =========================
-       Awards
-       ========================= */
+    /* =========================================
+       HONORS & AWARDS
+       ========================================= */
 
     .award-list {
         margin: 0;
@@ -263,19 +273,27 @@
         margin-bottom: 5px;
     }
 
-    /* =========================
-       Faculty Position Target
-       ========================= */
+    .award-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    /* =========================================
+       FACULTY RESEARCH & TEACHING FOCUS
+       ========================================= */
 
     .faculty-focus {
-        background: #f4f7fa;
+        background: var(--very-light);
         border-left: 4px solid var(--blue);
         padding: 12px 15px;
     }
 
-    /* =========================
-       Print Button
-       ========================= */
+    .faculty-focus p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* =========================================
+       PRINT BUTTON
+       ========================================= */
 
     .print-wrapper {
         text-align: center;
@@ -297,11 +315,12 @@
         background: var(--blue);
     }
 
-    /* =========================
-       Print
-       ========================= */
+    /* =========================================
+       PRINT / PDF
+       ========================================= */
 
     @media print {
+
         @page {
             size: Letter;
             margin: 0.55in 0.60in;
@@ -343,6 +362,14 @@
             margin-bottom: 8px;
         }
 
+        .research-focus {
+            gap: 7px;
+        }
+
+        .research-item {
+            padding: 8px 11px;
+        }
+
         .entry {
             margin-bottom: 11px;
         }
@@ -355,17 +382,14 @@
             color: inherit;
             text-decoration: none;
         }
-
-        .page-break-before {
-            page-break-before: always;
-        }
     }
 
-    /* =========================
-       Mobile
-       ========================= */
+    /* =========================================
+       MOBILE
+       ========================================= */
 
     @media screen and (max-width: 700px) {
+
         body {
             padding: 0;
         }
@@ -384,7 +408,6 @@
             gap: 4px;
         }
 
-        .research-areas,
         .skills-grid {
             grid-template-columns: 1fr;
         }
@@ -408,83 +431,161 @@
 <main class="cv-container">
 
 ```
-<!-- =========================
+<!-- =========================================
      HEADER
-     ========================= -->
+     ========================================= -->
 
 <header class="header">
+
     <h1 class="name">Mohamed Abdelhady</h1>
 
-    <div class="credentials">Ph.D. in Electrical Engineering</div>
+    <div class="credentials">
+        Ph.D. in Electrical Engineering
+    </div>
 
     <div class="academic-title">
-        Mechatronics • Robotics • Adaptive Control • Machine Learning • Assistive Technology
+        Mechatronics • Robotics • Intelligent Control • Biomedical Systems
     </div>
 
     <div class="contact" aria-label="Contact information">
-        <span><strong>Tel:</strong> (216) 553-8555</span>
-        <span><strong>Email:</strong> megahady@gmail.com</span>
-        <span><strong>Location:</strong> Cleveland, Ohio, USA</span>
+
+        <span>
+            <strong>Tel:</strong>
+            (216) 553-8555
+        </span>
+
+        <span>
+            <strong>Email:</strong>
+            megahady@gmail.com
+        </span>
+
+        <span>
+            <strong>Location:</strong>
+            Cleveland, Ohio, USA
+        </span>
+
     </div>
+
 </header>
 
 
-<!-- =========================
+<!-- =========================================
      ACADEMIC PROFILE
-     ========================= -->
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Academic Profile</h2>
+
+    <h2 class="section-title">
+        Academic Profile
+    </h2>
 
     <p class="profile">
-        Electrical engineer and robotics researcher with a Ph.D. in Electrical Engineering
-        and interdisciplinary research experience spanning mechatronics, adaptive control,
-        machine learning, wearable robotics, prosthetics, exoskeletons, and biomedical
-        engineering. Established research direction in adaptive intelligence for physical
-        robotic systems, with experience developing personalized control algorithms,
-        sensor-driven systems, and real-time robotic technologies. Research experience
-        includes collaborations with the National Institutes of Health, Cleveland Clinic,
-        U.S. Department of Veterans Affairs, Ford Motor Company, and Siemens. Prepared to
-        contribute to undergraduate and graduate education in mechatronics, robotics,
-        control systems, automation, and intelligent systems while developing an
-        externally visible interdisciplinary research program.
+        Electrical engineer and robotics researcher with a Ph.D. in Electrical
+        Engineering and interdisciplinary research experience spanning intelligent
+        control, machine learning, mechatronics, robotics, wearable systems,
+        prosthetics, exoskeletons, and biomedical engineering. My research focuses
+        on developing intelligent methods for controlling and understanding
+        complex physical systems by integrating learning-based approaches,
+        physics-informed models, simulation, and AI-based signal decoding.
+        I have conducted interdisciplinary research with the National Institutes
+        of Health, Cleveland Clinic, U.S. Department of Veterans Affairs,
+        Ford Motor Company, and Siemens. My long-term research goal is to develop
+        adaptive and intelligent physical systems that can learn from data while
+        maintaining the interpretability, reliability, and physical consistency
+        required for real-world deployment.
     </p>
+
 </section>
 
 
-<!-- =========================
+<!-- =========================================
      RESEARCH AREAS
-     ========================= -->
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Research Areas</h2>
 
-    <ul class="research-areas">
-        <li>Mechatronics and Intelligent Systems</li>
-        <li>Robotics and Assistive Robotics</li>
-        <li>Adaptive and Intelligent Control</li>
-        <li>Machine Learning and Neural Networks</li>
-        <li>Reinforcement Learning</li>
-        <li>Wearable Robotics and Exoskeletons</li>
-        <li>Prosthetic Systems and Human-Robot Interaction</li>
-        <li>Biomedical Instrumentation and Sensing</li>
-        <li>Real-Time Control Systems</li>
-        <li>Hardware-in-the-Loop Simulation</li>
-    </ul>
+    <h2 class="section-title">
+        Research Areas
+    </h2>
+
+    <div class="research-focus">
+
+        <article class="research-item">
+
+            <h3>
+                Learning-Based Control
+            </h3>
+
+            <p>
+                Development of intelligent control strategies that combine
+                machine learning, reinforcement learning, neural networks,
+                and adaptive control to enable personalized and autonomous
+                control of complex physical systems.
+            </p>
+
+        </article>
+
+
+        <article class="research-item">
+
+            <h3>
+                Physics-Informed Control &amp; Simulation
+            </h3>
+
+            <p>
+                Integration of physical knowledge, mathematical models,
+                system dynamics, and data-driven methods to develop
+                physics-informed controllers and high-fidelity simulation
+                environments for complex mechatronic and robotic systems.
+            </p>
+
+        </article>
+
+
+        <article class="research-item">
+
+            <h3>
+                AI-Based Signal Decoding
+            </h3>
+
+            <p>
+                Development of artificial intelligence and machine-learning
+                methods for decoding physiological and sensor signals,
+                including EMG, ECG, EEG, and other biosignals, for
+                human-machine interaction, system identification, and
+                intelligent control.
+            </p>
+
+        </article>
+
+    </div>
+
 </section>
 
 
-<!-- =========================
+<!-- =========================================
      EDUCATION
-     ========================= -->
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Education</h2>
+
+    <h2 class="section-title">
+        Education
+    </h2>
+
 
     <article class="entry">
+
         <div class="entry-header">
-            <h3 class="entry-title">Ph.D. in Electrical Engineering</h3>
-            <span class="entry-date">December 2021</span>
+
+            <h3 class="entry-title">
+                Ph.D. in Electrical Engineering
+            </h3>
+
+            <span class="entry-date">
+                December 2021
+            </span>
+
         </div>
 
         <div class="institution">
@@ -492,17 +593,32 @@
         </div>
 
         <div class="dissertation">
+
             <strong>Dissertation:</strong>
             "Codesign Development and Control of Smart Prostheses"
+
             <br>
-            <strong>Dissertation Supervisor:</strong> Dr. Dan Simon
+
+            <strong>Dissertation Supervisor:</strong>
+            Dr. Dan Simon
+
         </div>
+
     </article>
 
+
     <article class="entry">
+
         <div class="entry-header">
-            <h3 class="entry-title">M.Sc. in Computers and Systems Engineering</h3>
-            <span class="entry-date">October 2010</span>
+
+            <h3 class="entry-title">
+                M.Sc. in Computers and Systems Engineering
+            </h3>
+
+            <span class="entry-date">
+                October 2010
+            </span>
+
         </div>
 
         <div class="institution">
@@ -510,17 +626,32 @@
         </div>
 
         <div class="dissertation">
+
             <strong>Thesis:</strong>
             "Deep Insight in Control of Twin Rotor MIMO Helicopter System"
+
             <br>
-            <strong>Thesis Advisor:</strong> Dr. El Sayed Mohamed
+
+            <strong>Thesis Advisor:</strong>
+            Dr. El Sayed Mohamed
+
         </div>
+
     </article>
 
+
     <article class="entry">
+
         <div class="entry-header">
-            <h3 class="entry-title">B.Sc. in Electrical Engineering</h3>
-            <span class="entry-date">June 2001</span>
+
+            <h3 class="entry-title">
+                B.Sc. in Electrical Engineering
+            </h3>
+
+            <span class="entry-date">
+                June 2001
+            </span>
+
         </div>
 
         <div class="institution">
@@ -528,27 +659,45 @@
         </div>
 
         <div class="dissertation">
-            <strong>Major:</strong> Control Engineering
+
+            <strong>Major:</strong>
+            Control Engineering
+
             <br>
-            Graduated <strong>Summa Cum Laude</strong>
+
+            Graduated
+            <strong>Summa Cum Laude</strong>
+
         </div>
+
     </article>
+
 </section>
 
 
-<!-- =========================
-     RESEARCH EXPERIENCE
-     ========================= -->
+<!-- =========================================
+     RESEARCH & ACADEMIC EXPERIENCE
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Research & Academic Experience</h2>
+
+    <h2 class="section-title">
+        Research &amp; Academic Experience
+    </h2>
+
 
     <article class="entry">
+
         <div class="entry-header">
+
             <h3 class="entry-title">
                 Postdoctoral Fellow and Associate Investigator
             </h3>
-            <span class="entry-date">2022–2023</span>
+
+            <span class="entry-date">
+                2022–2023
+            </span>
+
         </div>
 
         <div class="institution">
@@ -556,28 +705,39 @@
         </div>
 
         <ul class="details">
+
             <li>
-                Developed personalized control systems for pediatric exoskeletons
-                using deep reinforcement learning.
+                Developed personalized control systems for pediatric
+                exoskeletons using deep reinforcement learning.
             </li>
+
             <li>
-                Designed advanced functional electrical stimulation systems
-                for assistive robotic applications.
+                Designed advanced functional electrical stimulation
+                systems for assistive robotic applications.
             </li>
+
             <li>
-                Conducted interdisciplinary research integrating machine learning,
-                control systems, sensing, and wearable robotics.
+                Conducted interdisciplinary research integrating machine
+                learning, control systems, sensing, and wearable robotics.
             </li>
+
         </ul>
+
     </article>
 
 
     <article class="entry">
+
         <div class="entry-header">
+
             <h3 class="entry-title">
                 Postdoctoral Fellow, Biomedical Engineering
             </h3>
-            <span class="entry-date">2021–2022</span>
+
+            <span class="entry-date">
+                2021–2022
+            </span>
+
         </div>
 
         <div class="institution">
@@ -585,24 +745,34 @@
         </div>
 
         <ul class="details">
+
             <li>
                 Developed a novel algorithm for estimating detrusor pressure
                 from electromyography signals.
             </li>
+
             <li>
                 Led research projects involving sensor integration,
                 signal processing, and control of robotic prosthetic systems.
             </li>
+
         </ul>
+
     </article>
 
 
     <article class="entry">
+
         <div class="entry-header">
+
             <h3 class="entry-title">
                 Research Engineer
             </h3>
-            <span class="entry-date">2021–2022</span>
+
+            <span class="entry-date">
+                2021–2022
+            </span>
+
         </div>
 
         <div class="institution">
@@ -610,24 +780,35 @@
         </div>
 
         <ul class="details">
+
             <li>
                 Developed algorithms for bladder detrusor pressure estimation
                 using a single-channel catheter.
             </li>
+
             <li>
                 Conducted engineering research through the Advanced Platform
-                Technology Center, focusing on biomedical sensing and assistive technology.
+                Technology Center, focusing on biomedical sensing and
+                assistive technology.
             </li>
+
         </ul>
+
     </article>
 
 
     <article class="entry">
+
         <div class="entry-header">
+
             <h3 class="entry-title">
                 Research Engineer
             </h3>
-            <span class="entry-date">2019–2020</span>
+
+            <span class="entry-date">
+                2019–2020
+            </span>
+
         </div>
 
         <div class="institution">
@@ -635,27 +816,40 @@
         </div>
 
         <ul class="details">
+
             <li>
                 Developed advanced control algorithms using self-learning
-                neural networks for vehicle performance and fuel-efficiency applications.
+                neural networks for vehicle performance and fuel-efficiency
+                applications.
             </li>
+
             <li>
-                Implemented real-time control systems for vehicle performance optimization.
+                Implemented real-time control systems for vehicle
+                performance optimization.
             </li>
+
             <li>
                 Applied machine learning and intelligent control methods
                 to automotive engineering problems.
             </li>
+
         </ul>
+
     </article>
 
 
     <article class="entry">
+
         <div class="entry-header">
+
             <h3 class="entry-title">
                 Engineering Intern
             </h3>
-            <span class="entry-date">2011</span>
+
+            <span class="entry-date">
+                2011
+            </span>
+
         </div>
 
         <div class="institution">
@@ -663,190 +857,299 @@
         </div>
 
         <ul class="details">
+
             <li>
                 Collaborated with Festo on human-assistive robotic systems
                 for industrial applications.
             </li>
+
         </ul>
+
     </article>
+
 </section>
 
 
-<!-- =========================
+<!-- =========================================
      TECHNICAL EXPERTISE
-     ========================= -->
+     ========================================= -->
+
 <section>
-    <h2 class="section-title">Technical Expertise</h2>
 
-```
-<div class="skills-grid">
+    <h2 class="section-title">
+        Technical Expertise
+    </h2>
 
-    <div class="skill-category">
-        <strong>Programming &amp; Computational Tools:</strong>
-        Proficient in Python, MATLAB, C++, and C# for scientific computing,
-        modeling, simulation, data analysis, control development, and
-        robotic-system implementation.
+    <div class="skills-grid">
+
+
+        <div class="skill-category">
+
+            <strong>
+                Programming &amp; Computational Tools:
+            </strong>
+
+            Experienced with Python, MATLAB, C++, and C# for scientific
+            computing, modeling, simulation, data analysis, control
+            development, and robotic-system implementation.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Modeling &amp; Simulation:
+            </strong>
+
+            Modeling and simulation of electrochemical and electromechanical
+            systems, including development, analysis, and validation of
+            dynamic system models.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Experimental Design &amp; Validation:
+            </strong>
+
+            Experimental design, data acquisition, quantitative analysis,
+            performance evaluation, and validation of computational models
+            and experimental results.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Hardware–Software Co-Design:
+            </strong>
+
+            Hardware–software co-design and system integration for reliable,
+            real-time mechatronic and robotic systems, with emphasis on
+            system integrity and interaction among hardware, software,
+            sensing, and control.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Biomedical Signal Processing:
+            </strong>
+
+            Analysis and decoding of biomedical biosignals, including EMG,
+            ECG, EEG, and other physiological signals, for system
+            identification, monitoring, control, and human-machine interaction.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Signal Processing &amp; Filtering:
+            </strong>
+
+            Design and implementation of digital filters and signal-processing
+            algorithms for noise reduction, signal conditioning, feature
+            extraction, and analysis of biomedical signals.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Control Systems:
+            </strong>
+
+            Development and implementation of controllers using classical,
+            modern, adaptive, and neuro-control techniques for dynamic
+            mechatronic, biomedical, and robotic systems.
+
+        </div>
+
+
+        <div class="skill-category">
+
+            <strong>
+                Robotics Simulation &amp; Deployment:
+            </strong>
+
+            Development and deployment of robotic systems from simulation
+            to real-world operation using Isaac Lab, MuJoCo, and Gazebo,
+            including simulation, controller development, system
+            integration, testing, and experimental validation.
+
+        </div>
+
+
     </div>
-
-    <div class="skill-category">
-        <strong>Modeling &amp; Simulation:</strong>
-        Modeling and simulation of electrochemical and electromechanical
-        systems, including development, analysis, and validation of
-        dynamic system models.
-    </div>
-
-    <div class="skill-category">
-        <strong>Experimental Design &amp; Validation:</strong>
-        Experimental design, data acquisition, quantitative analysis,
-        performance evaluation, and validation of computational models
-        and experimental results.
-    </div>
-
-    <div class="skill-category">
-        <strong>Hardware–Software Co-Design:</strong>
-        Hardware–software co-design and system integration for reliable,
-        real-time mechatronic and robotic systems, with emphasis on
-        system integrity and seamless interaction between hardware,
-        software, sensing, and control.
-    </div>
-
-    <div class="skill-category">
-        <strong>Biomedical Signal Processing:</strong>
-        Analysis of biomedical biosignals, including EMG, ECG, EEG,
-        and other physiological signals, for system identification,
-        monitoring, control, and human-machine interaction.
-    </div>
-
-    <div class="skill-category">
-        <strong>Signal Processing &amp; Filtering:</strong>
-        Design and implementation of digital filters and signal-processing
-        algorithms for noise reduction, feature extraction, signal
-        conditioning, and analysis of biomedical signals.
-    </div>
-
-    <div class="skill-category">
-        <strong>Control Systems:</strong>
-        Development and implementation of controllers using classical,
-        modern, adaptive, and neuro-control techniques for dynamic
-        mechatronic, biomedical, and robotic systems.
-    </div>
-
-    <div class="skill-category">
-        <strong>Robotics Simulation &amp; Deployment:</strong>
-        Development and deployment of robotic systems from simulation
-        to real-world operation using Isaac Lab, MuJoCo, and Gazebo,
-        including simulation, controller development, integration,
-        testing, and experimental validation.
-    </div>
-
-</div>
-```
 
 </section>
 
 
-<!-- =========================
+<!-- =========================================
      SELECTED PUBLICATIONS
-     ========================= -->
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Selected Publications</h2>
+
+    <h2 class="section-title">
+        Selected Publications
+    </h2>
 
     <ol class="publication-list">
 
+
         <li>
+
             Zhang, S., Lopez-Sanchez, M., &amp; Abdelhady, M.
-            "Actuator optimization and deep learning-based control of pediatric
-            knee exoskeleton for community-based mobility assistance."
-            <em>Mechatronics</em>, 97 (2024), 103109.
+
+            "Actuator optimization and deep learning-based control of
+            pediatric knee exoskeleton for community-based mobility assistance."
+
+            <em>Mechatronics</em>,
+            97 (2024), 103109.
+
         </li>
 
+
         <li>
+
             Abdelhady, M., van den Bogert, A. J., &amp; Simon, D.
-            "A High-Fidelity Wearable System for Measuring Lower-Limb Kinetics
-            and Kinematics."
-            <em>IEEE Sensors Journal</em>, 19(24) (2019), 12482–12493.
+
+            "A High-Fidelity Wearable System for Measuring Lower-Limb
+            Kinetics and Kinematics."
+
+            <em>IEEE Sensors Journal</em>,
+            19(24) (2019), 12482–12493.
+
         </li>
 
+
         <li>
+
             Subramanian, M., &amp; Abdelhady, M.
+
             "The role of contemporary digital tools in the COVID-19 crisis."
-            <em>Expert Systems</em>, 39(6) (2022).
+
+            <em>Expert Systems</em>,
+            39(6) (2022).
+
         </li>
 
+
         <li>
+
             Abdelhady, M. &amp; Bulea, T.
+
             "Knee angle estimation from surface EMG during walking using
             attention-based deep recurrent neural networks."
-            <em>Sensors</em> (2024).
+
+            <em>Sensors</em>
+            (2024).
+
         </li>
 
+
     </ol>
+
 </section>
 
 
-<!-- =========================
-     HONORS
-     ========================= -->
+<!-- =========================================
+     HONORS & AWARDS
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Honors & Awards</h2>
+
+    <h2 class="section-title">
+        Honors &amp; Awards
+    </h2>
 
     <ul class="award-list">
+
+
         <li>
             <strong>Cleveland Clinic Travel Grant</strong>, 2022
         </li>
+
 
         <li>
             <strong>Best Paper Award</strong>,
             3rd International Conference on Control and Robots, 2020
         </li>
 
+
         <li>
             <strong>Student Research Award</strong>, 2021
         </li>
+
 
         <li>
             <strong>Excellent Oral Presentation Award</strong>,
             ICCR Conference, 2020
         </li>
+
+
     </ul>
+
 </section>
 
 
-<!-- =========================
-     FACULTY FIT
-     ========================= -->
+<!-- =========================================
+     FACULTY RESEARCH & TEACHING FOCUS
+     ========================================= -->
 
 <section>
-    <h2 class="section-title">Faculty Research & Teaching Focus</h2>
+
+    <h2 class="section-title">
+        Faculty Research &amp; Teaching Focus
+    </h2>
 
     <div class="faculty-focus">
+
         <p>
-            Research and teaching interests include mechatronics, robotics,
-            control systems, automation, intelligent systems, machine learning,
-            embedded and real-time systems, wearable robotics, prosthetic and
-            assistive technologies, and human-robot interaction.
+            Research and teaching interests include learning-based control,
+            physics-informed modeling and simulation, AI-based signal
+            decoding, mechatronics, robotics, control systems, automation,
+            biomedical systems, wearable robotics, and human-machine
+            interaction.
         </p>
 
         <p>
             Positioned to develop interdisciplinary research collaborations
             connecting electrical engineering, mechanical engineering,
             biomedical engineering, robotics, artificial intelligence,
-            and intelligent manufacturing.
+            and intelligent physical systems.
         </p>
+
     </div>
+
 </section>
 
 
-<!-- =========================
-     PRINT
-     ========================= -->
+<!-- =========================================
+     PRINT / SAVE PDF
+     ========================================= -->
 
 <div class="print-wrapper">
-    <button class="print-btn" type="button" onclick="window.print()">
+
+    <button
+        class="print-btn"
+        type="button"
+        onclick="window.print()">
+
         Print / Save as PDF
+
     </button>
+
 </div>
 ```
 
