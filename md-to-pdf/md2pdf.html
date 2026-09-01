@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown to PDF</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; background: #f0f2f5; display: flex; flex-direction: column; overflow: hidden; }
+    header { background: #24292f; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    header .brand h1 { font-size: 18px; font-weight: 600; }
+    header .brand p { font-size: 12px; color: #8b949e; }
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; }
+    .controls button { padding: 7px 14px; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; }
+    #btnConvert { background: #2da44e; color: #fff; }
+    #btnConvert:hover { background: #2c974b; }
+    #btnClear { background: #e1e4e8; color: #24292f; }
+    #btnSample { background: #0969da; color: #fff; }
+    .upload-wrap { position: relative; overflow: hidden; }
+    .upload-wrap #btnUpload { background: #8250df; color: #fff; }
+    .upload-wrap input[type=file] { position: absolute; top: 0; right: 0; opacity: 0; font-size: 100px; cursor: pointer; }
+    .title-field { display: flex; align-items: center; gap: 8px; }
+    .title-field label { font-size: 13px; color: #8b949e; font-weight: 600; }
+    .title-field input { width: 200px; padding: 7px 10px; border: 1px solid #444; border-radius: 6px; font-size: 13px; background: #1c2128; color: #fff; }
+    .split { flex: 1; display: flex; min-height: 0; }
+    .pane { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    .pane + .pane { border-left: 1px solid #d0d7de; }
+    .pane .pane-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #fff; border-bottom: 1px solid #e1e4e8; }
+    .pane .pane-header h2 { font-size: 14px; font-weight: 600; color: #24292f; display: flex; align-items: center; gap: 8px; }
+    .pane .pane-header .badge { font-size: 11px; color: #57606a; font-weight: 400; }
+    .config-panel { border-top: 1px solid #e1e4e8; background: #f6f8fa; padding: 14px 16px; }
+    .config-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .config-item { display: flex; flex-direction: column; gap: 4px; }
+    .config-item label { font-size: 12px; color: #57606a; font-weight: 600; }
+    .config-item select, .config-item input[type=number] { padding: 6px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 13px; background: #fff; }
+    .config-item input[type=color] { width: 100%; height: 32px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; cursor: pointer; }
+    #editor { flex: 1; width: 100%; padding: 16px; border: none; resize: none; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 14px; line-height: 1.6; background: #fff; }
+    #editor:focus { outline: none; }
+    #previewFrame { flex: 1; width: 100%; border: none; background: #fff; }
+    .placeholder { flex: 1; display: flex; align-items: center; justify-content: center; color: #8b949e; font-size: 15px; background: #fff; }
+    .placeholder.hidden { display: none; }
+    .hidden { display: none !important; }
+    .busy { opacity: 0.6; pointer-events: none; }
+    @media (max-width: 900px) {
+      .split { flex-direction: column; }
+      .pane + .pane { border-left: none; border-top: 1px solid #d0d7de; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>Markdown → PDF</h1>
+      <p>Editor on the left · live PDF preview on the right</p>
+    </div>
+    <div class="title-field">
+      <label for="title">Title:</label>
+      <input type="text" id="title" placeholder="Document">
+    </div>
+    <div class="controls">
+      <button id="btnSample">Sample</button>
+      <div class="upload-wrap">
+        <button id="btnUpload">Upload .md</button>
+        <input type="file" id="fileInput" accept=".md,.markdown,.txt">
+      </div>
+      <button id="btnClear">Clear</button>
+    </div>
+  </header>
+
+  <div class="split">
+    <div class="pane">
+      <div class="pane-header">
+        <h2>Markdown <span class="badge">live editor — math, Mermaid, highlights supported</span></h2>
+        <span id="status"></span>
+      </div>
+      <textarea id="editor" placeholder="Type or paste your markdown here…"></textarea>
+      <div class="config-panel">
+        <div class="config-grid">
+          <div class="config-item">
+            <label for="fontFamily">Font family</label>
+            <select id="fontFamily">
+              <option value="Helvetica, Arial, sans-serif" selected>Helvetica (sans)</option>
+              <option value="Georgia, 'Times New Roman', serif">Georgia (serif)</option>
+              <option value="'Times New Roman', Times, serif">Times New Roman</option>
+              <option value="Arial, Helvetica, sans-serif">Arial</option>
+              <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+              <option value="'Courier New', monospace">Courier New</option>
+            </select>
+          </div>
+          <div class="config-item">
+            <label for="monoFamily">Code font</label>
+            <select id="monoFamily">
+              <option value="'SFMono-Regular', Consolas, monospace" selected>Consolas</option>
+              <option value="'Courier New', monospace">Courier New</option>
+              <option value="Menlo, Monaco, monospace">Menlo</option>
+              <option value="monospace">Monospace</option>
+            </select>
+          </div>
+          <div class="config-item">
+            <label for="bodySize">Body size (px)</label>
+            <input type="number" id="bodySize" value="16" min="10" max="28" step="1">
+          </div>
+          <div class="config-item">
+            <label for="headingScale">Heading scale</label>
+            <input type="number" id="headingScale" value="1.0" min="0.5" max="2.0" step="0.1">
+          </div>
+          <div class="config-item">
+            <label for="lineHeight">Line height</label>
+            <input type="number" id="lineHeight" value="1.6" min="1.0" max="2.5" step="0.1">
+          </div>
+          <div class="config-item">
+            <label for="pageMargin">Margin (px)</label>
+            <input type="number" id="pageMargin" value="40" min="10" max="120" step="5">
+          </div>
+          <div class="config-item">
+            <label for="textColor">Text color</label>
+            <input type="color" id="textColor" value="#222222">
+          </div>
+          <div class="config-item">
+            <label for="codeColor">Code color</label>
+            <input type="color" id="codeColor" value="#24292f">
+          </div>
+          <div class="config-item">
+            <label for="codeBg">Code background</label>
+            <input type="color" id="codeBg" value="#f4f4f4">
+          </div>
+          <div class="config-item">
+            <label for="theme">Theme</label>
+            <select id="theme">
+              <option value="light" selected>Light</option>
+              <option value="sepia">Sepia</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div class="config-item">
+            <label for="pageSize">Page size</label>
+            <select id="pageSize">
+              <option value="A4" selected>A4</option>
+              <option value="Letter">Letter</option>
+            </select>
+          </div>
+          <div class="config-item" style="grid-column: 1 / -1;">
+            <button id="btnConvert" style="padding:9px 14px;border:none;border-radius:6px;background:#2da44e;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">🖨 Print / Save PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane">
+      <div class="pane-header">
+        <h2>PDF Preview</h2>
+        <button id="btnDownload" style="padding:6px 12px;border:1px solid #d0d7de;border-radius:6px;background:#fff;font-size:13px;cursor:pointer;">Export</button>
+      </div>
+      <div id="placeholder" class="placeholder">No preview yet — start typing or load the sample.</div>
+      <iframe id="previewFrame" class="hidden" title="Preview"></iframe>
+    </div>
+  </div>
+
+  <script src="marked.min.js"></script>
+  <script src="highlight.min.js"></script>
+  <script src="katex.min.js"></script>
+  <script src="mermaid.min.js"></script>
+  <script>
+    const editor = document.getElementById('editor');
+    const titleInput = document.getElementById('title');
+    const status = document.getElementById('status');
+    const previewFrame = document.getElementById('previewFrame');
+    const placeholder = document.getElementById('placeholder');
+    const btnDownload = document.getElementById('btnDownload');
+
+    let debounceTimer = null;
+    let mermaidReady = false;
+
+    // ─── Marked configuration ─────────────────────────────────────────────
+    const renderer = new marked.Renderer();
+
+    // GitHub-style alerts (NOTE / TIP / IMPORTANT / WARNING / CAUTION)
+    marked.use({
+      extensions: [{
+        name: 'alerts',
+        level: 'block',
+        start(src) {
+          const m = src.match(/^(\[\!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\])/i);
+          return m ? m.index : -1;
+        },
+        tokenizer(src) {
+          const m = src.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*\n([\s\S]*?)(?=\n---|\n\n|$)/i);
+          if (!m) return undefined;
+          const type = m[1].toLowerCase();
+          const inner = m[2].trim();
+          const paragraphs = inner.split(/\n{2,}/).map((p, i) =>
+            i === 0 ? p : '<p>' + p + '</p>'
+          ).join('\n');
+          return {
+            type: 'alerts',
+            raw: m[0],
+            tokens: this.lexer.inline(paragraphs),
+            alertType: type,
+          };
+        },
+        renderer(token) {
+          const icons = {
+            note: '📝', tip: '💡', important: '❗',
+            warning: '⚠️', caution: '🚫',
+          };
+          return `<div class="markdown-alert markdown-alert-${token.alertType}">
+                    <p class="markdown-alert-title">${icons[token.alertType]} ${token.alertType.toUpperCase()}</p>
+                    ${this.parser.parseInline(token.tokens)}
+                  </div>`;
+        },
+      }],
+      gfm: true,
+      breaks: true,
+    });
+
+    // Footnotes: inline refs [^n] and a footer div for definitions
+    const footnotes = { defs: {} };
+    marked.use({
+      extensions: [
+        {
+          name: 'footnoteDef',
+          level: 'block',
+          start(src) {
+            return src.match(/^\[\^([^\]]+)\]:/) ? 0 : -1;
+          },
+          tokenizer(src) {
+            const m = src.match(/^\[\^([^\]]+)\]:\s*([\s\S]*?)(?=\n\[\^[^\]]+\]:|\n\n|$)/);
+            if (!m) return undefined;
+            footnotes.defs[m[1]] = (footnotes.defs[m[1]] || m[2]).trim();
+            return { type: 'footnoteDef', raw: m[0], id: m[1] };
+          },
+          renderer(token) {
+            return ''; // defs collected; rendered at end
+          },
+        },
+        {
+          name: 'footnoteRef',
+          level: 'inline',
+          start(src) {
+            return src.match(/\[\^([^\]]+)\]/) ? 0 : -1;
+          },
+          tokenizer(src) {
+            const m = src.match(/^\[\^([^\]]+)\]/);
+            if (!m) return undefined;
+            return { type: 'footnoteRef', raw: m[0], id: m[1] };
+          },
+          renderer(token) {
+            const n = Object.keys(footnotes.defs).indexOf(token.id) + 1;
+            return `<sup class="footnote-ref"><a href="#fn-${n}" id="fnref-${n}">${n}</a></sup>`;
+          },
+        },
+      ],
+    });
+
+    function buildPageCss(o) {
+      const themes = {
+        light: { bg: '#ffffff', text: o.textColor, border: '#d0d7de', mellow: '#f6f8fa' },
+        sepia: { bg: '#fdf6e3', text: '#5b4636', border: '#e6d5b8', mellow: '#f6ead8' },
+        dark: { bg: '#0d1117', text: '#e6edf3', border: '#30363d', mellow: '#161b22' },
+      };
+      const t = themes[o.theme] || themes.light;
+      return `
+        body {
+          font-family: ${o.fontFamily};
+          max-width: 800px; margin: 0 auto;
+          padding: ${o.pageMargin}px;
+          line-height: ${o.lineHeight};
+          font-size: ${o.bodySize}px;
+          color: ${t.text};
+          background: ${t.bg};
+        }
+        h1, h2, h3, h4, h5, h6 { line-height: 1.2; margin-top: 1.2em; margin-bottom: 0.5em; font-family: ${o.fontFamily}; color: ${t.text}; }
+        h1 { font-size: ${o.bodySize * 2.0 * o.headingScale}px; }
+        h2 { font-size: ${o.bodySize * 1.6 * o.headingScale}px; border-bottom: 1px solid ${t.border}; padding-bottom: 0.3em; }
+        h3 { font-size: ${o.bodySize * 1.3 * o.headingScale}px; }
+        h4 { font-size: ${o.bodySize * 1.1 * o.headingScale}px; }
+        p { margin: 0.7em 0; }
+        ul, ol { padding-left: 1.6em; margin: 0.7em 0; }
+        li { margin: 0.2em 0; }
+        li input[type=checkbox] { margin-right: 0.4em; accent-color: #0969da; }
+        a { color: #0366d6; }
+        code { background: ${o.codeBg}; color: ${o.codeColor}; padding: 2px 5px; border-radius: 3px; font-family: ${o.monoFamily}; }
+        pre { background: ${o.codeBg}; color: ${o.codeColor}; padding: 12px; border-radius: 6px; overflow-x: auto; font-family: ${o.monoFamily}; font-size: ${o.bodySize * 0.9}px; line-height: 1.4; }
+        pre code { background: transparent; padding: 0; color: inherit; }
+        blockquote { border-left: 4px solid ${t.border}; margin: 0.8em 0; padding-left: 16px; color: ${t.text}; opacity: 0.85; }
+        table { border-collapse: collapse; width: 100%; margin: 0.8em 0; }
+        th, td { border: 1px solid ${t.border}; padding: 8px 12px; text-align: left; }
+        th { background: ${t.mellow}; }
+        img { max-width: 100%; }
+        hr { border: none; border-top: 1px solid ${t.border}; margin: 2em 0; }
+        del { text-decoration: line-through; }
+        kbd { background: ${t.mellow}; border: 1px solid ${t.border}; border-bottom-width: 2px; border-radius: 4px; padding: 2px 6px; font-family: ${o.monoFamily}; font-size: 0.85em; }
+        .footnotes { font-size: 0.85em; opacity: 0.85; border-top: 1px solid ${t.border}; margin-top: 2em; padding-top: 1em; }
+        /* KaTeX */
+        .katex { font-size: 1.1em; }
+        .math-display { overflow-x: auto; margin: 1em 0; }
+        /* Mermaid */
+        .mermaid-container { text-align: center; margin: 1em 0; }
+        .mermaid { background: transparent; }
+        /* GitHub alerts */
+        .markdown-alert { padding: 12px 16px; border-radius: 6px; border: 1px solid ${t.border}; margin: 0.8em 0; }
+        .markdown-alert p:first-child { margin-top: 0; }
+        .markdown-alert p:last-child { margin-bottom: 0; }
+        .markdown-alert-title { font-weight: 700; margin-bottom: 0.4em; }
+        .markdown-alert-note { background: rgba(9,105,218,0.08); border-left: 4px solid #0969da; }
+        .markdown-alert-tip { background: rgba(26,127,55,0.08); border-left: 4px solid #1a7f37; }
+        .markdown-alert-important { background: rgba(130,80,223,0.08); border-left: 4px solid #8250df; }
+        .markdown-alert-warning { background: rgba(154,103,0,0.10); border-left: 4px solid #9a6700; }
+        .markdown-alert-caution { background: rgba(207,34,46,0.08); border-left: 4px solid #cf222e; }
+        .markdown-alert-note .markdown-alert-title { color: #0969da; }
+        .markdown-alert-tip .markdown-alert-title { color: #1a7f37; }
+        .markdown-alert-important .markdown-alert-title { color: #8250df; }
+        .markdown-alert-warning .markdown-alert-title { color: #9a6700; }
+        .markdown-alert-caution .markdown-alert-title { color: #cf222e; }
+        details { border: 1px solid ${t.border}; border-radius: 6px; padding: 8px 12px; margin: 0.8em 0; }
+        summary { cursor: pointer; font-weight: 600; }
+        .abbr { text-decoration: underline dotted; }
+        @media print { body { padding: 0; } }
+      `;
+    }
+
+    // ─── Theme toggle: apply KaTeX + highlight.js theme colors ────────────
+    function loadHighlightCss(theme) {
+      const id = 'hljs-theme';
+      const old = document.getElementById(id);
+      if (old) old.remove();
+      const link = document.createElement('link');
+      link.id = id;
+      link.rel = 'stylesheet';
+      link.href = theme === 'dark' ? 'github-dark.min.css' : 'github.min.css';
+      document.head.appendChild(link);
+    }
+    const DEFAULT_HLJS = 'github.min.css';
+    function ensureHighlightCss() {
+      if (!document.getElementById('hljs-theme')) loadHighlightCss('light');
+    }
+    ensureHighlightCss();
+
+    function getOptions() {
+      return {
+        fontFamily: document.getElementById('fontFamily').value,
+        monoFamily: document.getElementById('monoFamily').value,
+        bodySize: Number(document.getElementById('bodySize').value),
+        headingScale: Number(document.getElementById('headingScale').value),
+        lineHeight: Number(document.getElementById('lineHeight').value),
+        pageMargin: Number(document.getElementById('pageMargin').value),
+        textColor: document.getElementById('textColor').value,
+        codeColor: document.getElementById('codeColor').value,
+        codeBg: document.getElementById('codeBg').value,
+        theme: document.getElementById('theme').value,
+        pageSize: document.getElementById('pageSize').value,
+        title: titleInput.value.trim() || 'Document',
+      };
+    }
+
+    const sample = `# Markdown Complete Capabilities Demo
+
+A comprehensive **demo** supporting *math*, **Mermaid diagrams**, syntax highlighting, and more.
+
+---
+
+## Math (LaTeX)
+
+Inline math: the famous equation is $E = mc^2$, and $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$
+
+Display math:
+
+$$\\int_{0}^{\\infty} e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+
+Matrix:
+
+$$
+A = \\begin{bmatrix}
+1 & 2 & 3 \\\\
+4 & 5 & 6 \\\\
+7 & 8 & 9
+\\end{bmatrix}
+$$
+
+---
+
+## Mermaid Diagrams
+
+\`\`\`mermaid
+flowchart TD
+    A[Start] --> B{Is Markdown supported?}
+    B -->|Yes| C[Render Markdown]
+    B -->|No| D[Show Plain Text]
+    C --> E[Done]
+    D --> E
+\`\`\`
+
+\`\`\`mermaid
+pie title Technology Usage
+    "JavaScript" : 40
+    "Python" : 30
+    "TypeScript" : 20
+    "Other" : 10
+\`\`\`
+
+---
+
+## Syntax Highlighting
+
+\`\`\`python
+def greet(name: str) -> str:
+    return f"Hello, {name}!"
+
+print(greet("World"))
+\`\`\`
+
+\`\`\`javascript
+const squares = [1,2,3,4,5].map(n => n ** 2);
+console.log(squares); // [1, 4, 9, 16, 25]
+\`\`\`
+
+---
+
+## Task Lists (GFM)
+
+- [x] Completed task
+- [ ] Incomplete task
+
+## GitHub Alerts
+
+> [!NOTE]
+> Useful information that users should know.
+
+> [!WARNING]
+> Something needs caution.
+
+## Footnotes
+
+Here is a sentence with a footnote.[^1]
+
+[^1]: This is the first footnote.
+
+## Tables with Alignment
+
+| Left | Center | Right |
+|:-----|:------:|------:|
+| Apple | 10 | $1.00 |
+| Banana | 20 | $2.00 |
+
+---
+
+> *End of demo.*
+`;
+
+    // ─── RENDER PIPELINE ─────────────────────────────────────────────────
+    function renderPreview() {
+      const text = editor.value.trim();
+      if (!text) {
+        previewFrame.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        setStatus('');
+        return;
+      }
+      const o = getOptions();
+      setStatus('Rendering…');
+
+      // Syntax highlight via marked-highlight-style override can't use marked easily;
+      // instead post-process code blocks after marked renders.
+      let html = marked.parse(text);
+
+      // Append footnote definitions section
+      const fnKeys = Object.keys(footnotes.defs);
+      if (fnKeys.length > 0) {
+        const items = fnKeys.map((id, i) => {
+          const n = i + 1;
+          return `<li id="fn-${n}"><a href="#fnref-${n}">↩</a> ${footnotes.defs[id]}</li>`;
+        }).join('');
+        html += `<div class="footnotes"><hr><ol>${items}</ol></div>`;
+        footnotes.defs = {};
+      }
+
+      // Replace GitHub-style emoji shortcodes outside code blocks
+      html = replaceEmoji(html);
+
+      // Apply syntax highlighting to code blocks (skip mermaid, handled separately)
+      html = html.replace(/<pre><code class="language-([^"]+)">([\s\S]*?)<\/code><\/pre>/g,
+        (full, lang, code) => {
+          if (lang === 'mermaid') return full;
+          // decode entities
+          const decoded = code
+            .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+            .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+          let highlighted;
+          try {
+            highlighted = hljs.getLanguage(lang)
+              ? hljs.highlight(decoded, { language: lang }).value
+              : hljs.highlightAuto(decoded).value;
+          } catch (e) {
+            highlighted = escapeHtml(decoded);
+          }
+          return `<pre class="hljs"><code class="language-${lang}">${highlighted}</code></pre>`;
+        });
+
+      // Math handled by KaTeX after insertion into DOM
+      const css = buildPageCss(o);
+      const doc = `<!DOCTYPE html><html><head>
+        <meta charset="UTF-8">
+        <style>${css}</style>
+        <link rel="stylesheet" href="github.min.css">
+        <link rel="stylesheet" href="katex.min.css">
+        <script src="katex.min.js"><\/script>
+        <script src="auto-render.min.js"><\/script>
+        <script src="mermaid.min.js"><\/script>
+      </head>
+      <body>${html}</body></html>`;
+
+      previewFrame.srcdoc = doc;
+
+      previewFrame.onload = () => {
+        try {
+          const win = previewFrame.contentWindow;
+          const d = previewFrame.contentDocument;
+          const o = getOptions();
+
+          if (win.mermaid) {
+            win.mermaid.initialize({ startOnLoad: false, theme: o.theme === 'dark' ? 'dark' : 'default' });
+          }
+
+          renderIframeContent(win, d, o).then(() => {
+            previewFrame.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            setStatus('Preview updated.', 'success');
+          });
+        } catch (err) {
+          setStatus(err.message, 'error');
+        }
+      };
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // Common GitHub-style emoji shortcodes
+    const EMOJI = {
+      ':smile:': '😀', ':rocket:': '🚀', ':tada:': '🎉', ':heart:': '❤️',
+      ':star:': '⭐', ':fire:': '🔥', ':warning:': '⚠️', ':x:': '❌',
+      ':white_check_mark:': '✅', ':eyeglasses:': '👓', ':bulb:': '💡',
+      ':pushpin:': '📌', ':memo:': '📝', ':page_facing_up:': '📄',
+      ':wrench:': '🔧', ':gear:': '⚙️', ':sparkles:': '✨', ':mag:': '🔍',
+      ':+1:': '👍', ':-1:': '👎', ':ok_hand:': '👌', ':clap:': '👏',
+      ':boom:': '💥', ':zap:': '⚡', ':bug:': '🐛', ':beetle:': '🐞',
+      ':computer:': '💻', ':iphone:': '📱', ':chart_with_upwards_trend:': '📈',
+      ':bar_chart:': '📊', ':moneybag:': '💰', ':dollar:': '💵',
+      ':calendar:': '📅', ':clock1:': '🕐', ':hourglass:': '⏳',
+      ':book:': '📖', ':books:': '📚', ':clipboard:': '📋', ':email:': '✉️',
+      ':link:': '🔗', ':lock:': '🔒', ':unlock:': '🔓', ':key:': '🔑',
+      ':camera:': '📷', ':video_camera:': '📹', ':tv:': '📺',
+      ':house:': '🏠', ':office:': '🏢', ':globe_with_meridians:': '🌐',
+      ':earth_africa:': '🌍', ':sunny:': '☀️', ':rainbow:': '🌈',
+      ':cloud:': '☁️', ':snowflake:': '❄️', ':seedling:': '🌱',
+      ':penguin:': '🐧', ':dog:': '🐶', ':cat:': '🐱', ':mouse:': '🐭',
+      ':rabbit:': '🐰', ':monkey:': '🐵', ':tiger:': '🐯', ':bear:': '🐻',
+      ':koala:': '🐨', ':panda_face:': '🐼', ':frog:': '🐸',
+      ':electric_plug:': '🔌', ':hammer:': '🔨', ':bulb:': '💡',
+      ':checkered_flag:': '🏁', ':triangular_flag_on_post:': '🚩',
+      ':arrow_up:': '⬆️', ':arrow_down:': '⬇️', ':arrow_left:': '⬅️',
+      ':arrow_right:': '➡️', ':leftwards_arrow_with_hook:': '↩️',
+      ':question:': '❓', ':exclamation:': '❗', ':m:': 'Ⓜ️',
+      ':copyright:': '©️', ':registered:': '®️', ':tm:': '™️',
+    };
+    function replaceEmoji(html) {
+      // Only replace inside text nodes (not inside <pre>/<code>/<script>/<style>)
+      const protectedTags = /<(pre|code|script|style|kbd)\b[^>]*>[\s\S]*?<\/\1>/gi;
+      const parts = [];
+      let last = 0, m;
+      while ((m = protectedTags.exec(html)) !== null) {
+        parts.push(html.slice(last, m.index));
+        parts.push(m[0]);
+        last = protectedTags.lastIndex;
+      }
+      parts.push(html.slice(last));
+      return parts.map((p, i) => (i % 2 === 0)
+        ? p.replace(/:(-?\+?1|[a-z0-9_+\-]+):/gi, (match) => EMOJI[match.toLowerCase()] || match)
+        : p).join('');
+    }
+
+    // Render math + mermaid inside the (already loaded) iframe document.
+    // Waits for async iFrame script libraries, handles the retry loop for mermaid.
+    function renderIframeContent(win, d, o) {
+      return new Promise((resolve) => {
+        // Handle mermaid blocks. marked renders them as <pre><code class="language-mermaid">
+        const blocks = d.querySelectorAll('pre code.language-mermaid');
+        blocks.forEach((el) => {
+          const chart = el.textContent || el.innerText;
+          const pre = el.closest('pre');
+          const container = d.createElement('div');
+          container.className = 'mermaid-container';
+          container.setAttribute('data-chart', chart);
+          if (pre) pre.replaceWith(container);
+        });
+
+        const tryRender = () => {
+          const katexReady = typeof win.katex !== 'undefined' && typeof win.renderMathInElement === 'function';
+          const mermaidReady = typeof win.mermaid !== 'undefined';
+          if (!katexReady || !mermaidReady) {
+            // libs not loaded yet — retry (with a safety cap)
+            if (!renderIframeContent._retries) renderIframeContent._retries = 0;
+            if (renderIframeContent._retries++ < 60) { setTimeout(tryRender, 150); return; }
+          }
+
+          // Math
+          if (katexReady) {
+            try {
+              win.renderMathInElement(d.body, {
+                delimiters: [
+                  { left: '$$', right: '$$', display: true },
+                  { left: '$', right: '$', display: false },
+                ],
+                throwOnError: false,
+              });
+            } catch (e) {
+              // ignore individual math render errors
+            }
+          }
+
+          // Mermaid
+          if (mermaidReady) {
+            if (!win._mermaidInit) {
+              win.mermaid.initialize({ startOnLoad: false, theme: o.theme === 'dark' ? 'dark' : 'default' });
+              win._mermaidInit = true;
+            }
+            const containers = d.querySelectorAll('.mermaid-container[data-chart]');
+            let pending = containers.length;
+            if (pending === 0) { finalize(); return; }
+            containers.forEach((c) => {
+              const chart = c.getAttribute('data-chart');
+              const id = 'mmd-' + Math.random().toString(36).slice(2);
+              win.mermaid.render(id, chart)
+                .then(({ svg }) => {
+                  c.innerHTML = svg;
+                  c.removeAttribute('data-chart');
+                  if (--pending === 0) finalize();
+                })
+                .catch((err) => {
+                  c.innerHTML = '<p style="color:#cf222e">Mermaid error: ' + escapeHtml(err.message) + '</p>';
+                  c.removeAttribute('data-chart');
+                  if (--pending === 0) finalize();
+                });
+            });
+          } else {
+            finalize();
+          }
+        };
+
+        const finalize = () => {
+          // Re-highlight any code not already highlighted by the parent pass
+          if (typeof win.hljs !== 'undefined') {
+            d.querySelectorAll('pre code:not(.hljs)').forEach((el) => {
+              try { el.innerHTML = win.hljs.highlightAuto(el.textContent).value; } catch (e) {}
+            });
+          }
+          resolve();
+        };
+
+        tryRender();
+      });
+    }
+
+    function setStatus(msg, type) {
+      status.textContent = msg;
+      status.className = type || '';
+    }
+
+    // ─── Export / Print ──────────────────────────────────────────────────
+    function exportPdf() {
+      if (!editor.value.trim() || previewFrame.classList.contains('hidden')) {
+        setStatus('Nothing to export.', 'error');
+        return;
+      }
+      const o = getOptions();
+      const body = previewFrame.contentDocument.body;
+      // Preview already-rendered HTML: highlighted code, KaTeX math, Mermaid SVGs baked in.
+      const css = buildPageCss(o);
+      const w = window.open('', '_blank');
+      w.document.open();
+      const base = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
+      w.document.write(`<!DOCTYPE html><html><head>
+        <meta charset="UTF-8">
+        <title>${o.title}</title>
+        <link rel="stylesheet" href="${base}github.min.css">
+        <link rel="stylesheet" href="${base}katex.min.css">
+        <style>
+          ${css}
+          @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .mermaid-container, .mermaid-container svg { page-break-inside: avoid; }
+          }
+        </style>
+      </head><body>${body.innerHTML}</body></html>`);
+      w.document.close();
+      setTimeout(() => { w.print(); }, 500);
+    }
+
+    // ─── Event wiring ────────────────────────────────────────────────────
+    function debounce(fn, ms) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(fn, ms);
+    }
+
+    document.getElementById('btnSample').addEventListener('click', () => {
+      editor.value = sample;
+      titleInput.value = 'Capabilities Demo';
+      renderPreview();
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      editor.value = '';
+      titleInput.value = '';
+      previewFrame.classList.add('hidden');
+      placeholder.classList.remove('hidden');
+      setStatus('');
+    });
+
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        editor.value = ev.target.result;
+        titleInput.value = file.name.replace(/\.md$|\.markdown$/i, '') || 'Document';
+        renderPreview();
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    document.getElementById('btnConvert').addEventListener('click', exportPdf);
+    btnDownload.addEventListener('click', exportPdf);
+
+    document.getElementById('theme').addEventListener('change', (e) => {
+      loadHighlightCss(e.target.value === 'dark' ? 'dark' : 'light');
+      renderPreview();
+    });
+
+    editor.addEventListener('input', () => debounce(renderPreview, 600));
+    titleInput.addEventListener('input', () => debounce(renderPreview, 600));
+    document.querySelectorAll('.config-item select, .config-item input').forEach((el) => {
+      if (el.id === 'theme') return;
+      el.addEventListener(el.type === 'color' ? 'input' : 'change', () => debounce(renderPreview, 300));
+    });
+  </script>
+</body>
+</html>
