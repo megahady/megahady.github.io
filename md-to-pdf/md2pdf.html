@@ -460,9 +460,26 @@ Here is a sentence with a footnote.[^1]
       const o = getOptions();
       setStatus('Rendering…');
 
+      // ── Protect math blocks from markdown processing ────────────────────
+      // marked would convert the \\ row separators and newlines inside
+      // $...$ / $$...$$ math into <br> / single backslashes, breaking KaTeX.
+      // Extract them first, use placeholders, restore after parsing.
+      const mathHolders = [];
+      let textWithPlaceholders = text.replace(/\$\$[\s\S]*?\$\$/g, (m) => {
+        mathHolders.push(m);
+        return '\u0000MATH' + (mathHolders.length - 1) + '\u0000';
+      });
+      textWithPlaceholders = textWithPlaceholders.replace(/\$[^$\n]+\$/g, (m) => {
+        mathHolders.push(m);
+        return '\u0000MATH' + (mathHolders.length - 1) + '\u0000';
+      });
+
       // Syntax highlight via marked-highlight-style override can't use marked easily;
       // instead post-process code blocks after marked renders.
-      let html = marked.parse(text);
+      let html = marked.parse(textWithPlaceholders);
+
+      // Restore math content (placeholders become raw text KaTeX auto-render understands)
+      html = html.replace(/\u0000MATH(\d+)\u0000/g, (m, i) => mathHolders[+i]);
 
       // Append footnote definitions section
       const fnKeys = Object.keys(footnotes.defs);
