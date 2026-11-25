@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mohamed Abdelhady, Ph.D. | Test Portfolio — Robotics & Intelligent Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --green:#0f2421; --dark:#0a1514; --card:#12201e; --gold:#d9b660; --line:#8f7338;
+  --cream:#faf5e4; --muted:#dcd2b6;
+  --nav-h:70px; --gallery-h:calc((100vh - var(--nav-h)) * .8); --stage-pad:60px;
+  --gold-grad:linear-gradient(135deg,#f6e3a1 0%,#d9b660 45%,#a8812f 100%);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(90px + env(safe-area-inset-top,0px))}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--dark);color:var(--cream);font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--green);z-index:20}
+a{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+p{color:var(--muted)}
+h1,h2,h3{font-family:'Cinzel',Georgia,serif;font-weight:700}
+
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 8%;background:var(--green);border-bottom:1px solid var(--line)}
+.logo{font-family:'Great Vibes','Snell Roundhand','Brush Script MT',cursive;font-size:38px;line-height:1.1;text-decoration:none;letter-spacing:.01em;padding:0 8px 6px 2px;color:var(--gold);background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+nav div a{color:var(--cream);text-decoration:none;margin-left:20px;font-size:17px}
+nav div a:hover{color:var(--gold)}
+
+.hero{display:grid;grid-template-columns:1fr;align-items:center;padding:100px 8%;min-height:560px;background:radial-gradient(circle at 85% 30%,#1a3632,var(--dark) 65%);border-bottom:1px solid var(--line)}
+.title-line{color:var(--gold);font-size:19px;margin-bottom:14px}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:clamp(34px,5vw,62px);line-height:1.15;margin:0 0 24px;color:var(--cream);max-width:15em}
+.hero h1::after{content:"";display:block;width:110px;height:2px;margin-top:26px;background:var(--gold-grad)}
+.lead{font-size:23px;max-width:34em}
+.btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.btn{display:inline-block;padding:12px 26px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;transition:background .25s,color .25s}
+.btn:hover{background:var(--gold);color:var(--dark)}
+.btn.solid{background:var(--gold-grad);color:#1a1405;font-weight:600}
+.btn.solid:hover{background:transparent;color:var(--gold)}
+.off{display:none!important}
+section.view{min-height:70vh}
+nav div a.current{color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:3px}
+
+section{padding:85px 8%}
+.alt{background:var(--green)}
+.wrap{max-width:1050px;margin:auto}
+.view[data-view="gallery"]{display:flex;flex-direction:column;height:calc(100vh - var(--nav-h));min-height:0;padding:1vh 1.6vw}
+.view[data-view="gallery"] .wrap{display:flex;flex-direction:column;max-width:none;height:100%;min-height:0}
+body.gallery-view{overflow:hidden}
+body.gallery-view footer{display:none}
+.section-title{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:36px;letter-spacing:.02em;margin-bottom:12px;color:var(--gold);background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.section-sub{margin-bottom:40px;max-width:40em}
+h3.sub{font-size:16px;color:var(--gold);letter-spacing:.06em;margin:0 0 12px}
+
+.about-grid{display:grid;grid-template-columns:300px 1fr;gap:50px;align-items:start}
+.portrait{margin:0}
+.photo{width:100%;aspect-ratio:4/5;border:1px solid var(--gold);background:var(--card);padding:10px}
+.photo-inner{position:relative;overflow:hidden;width:100%;height:100%;background:#1d3a36 center/cover no-repeat;display:flex;align-items:center;justify-content:center}
+.photo-inner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo-inner svg{display:none;width:55%;opacity:.6}
+.photo-inner.nophoto svg{display:block}
+.portrait button{margin-top:14px;width:100%;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:8px;font:inherit;font-size:17px;cursor:pointer}
+.portrait button:hover{background:var(--gold);color:var(--dark)}
+.about-grid p+p{margin-top:16px}
+.vm{margin-top:26px;border-left:2px solid var(--gold);padding-left:20px}
+.vm p{margin:0 0 12px!important;font-size:20px}
+.vm p:last-child{margin-bottom:0!important}
+.philosophy{font-size:21px;max-width:48em;margin:0 0 46px;border-left:2px solid var(--gold);padding-left:22px}
+.tgroup{margin-bottom:42px}
+.course{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 30px;padding:16px 0;border-top:1px solid #2f3f3a}
+.course b{display:block;color:var(--cream);font-size:22px;font-weight:600;line-height:1.3}
+.course small{display:block;color:var(--muted);font-size:17px;font-style:italic;margin-top:2px;line-height:1.4}
+.course>span{color:var(--gold);font-family:'Cinzel',serif;font-size:15px;white-space:nowrap;padding-top:6px}
+.vm b{font-family:'Cinzel',serif;font-size:15px;letter-spacing:.1em;color:var(--gold);margin-right:8px}
+.interests{margin-top:28px}
+.interests ul{list-style:none;display:flex;flex-wrap:wrap;gap:10px}
+.interests li{border:1px solid var(--line);padding:4px 15px;color:var(--cream);font-size:18px}
+.interests.wide{grid-column:1/-1;margin-top:0;border-top:1px solid var(--line);padding-top:26px}
+.edu{grid-column:1/-1;border-top:1px solid var(--line);padding-top:26px}
+.edu .deg{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;padding:13px 0;border-top:1px solid #2f3f3a;color:var(--cream);line-height:1.4}
+.edu .deg span{display:inline;margin:0;color:var(--gold);font-family:'Cinzel',serif;font-size:16px;white-space:nowrap}
+.edu b{display:block;color:var(--cream);font-weight:600;line-height:1.35}
+.edu span{color:var(--muted);font-size:18px;line-height:1.4;display:block;margin-top:4px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.card{padding:28px;border:1px solid var(--line);border-top:2px solid var(--gold);background:var(--card)}
+.card h3{color:var(--gold);font-size:17px;letter-spacing:.05em;margin-bottom:12px}
+.card p,.card li{font-size:19px}
+.card ul{list-style:none}
+.card li{color:var(--muted);padding:6px 0;border-top:1px solid #2a3a35;line-height:1.4}
+.card li:first-child{border-top:0}
+.card li b{color:var(--cream);font-weight:600}
+
+.row{display:grid;grid-template-columns:170px 1fr;gap:20px;padding:20px 0;border-top:1px solid #3a4a44}
+.row:last-child{border-bottom:1px solid #3a4a44}
+.when{font-family:'Cinzel',serif;color:var(--gold);font-size:15px;line-height:1.5}
+.row h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--cream);line-height:1.3}
+.row .org{color:var(--gold);font-size:18px}
+.row p{font-size:18px;margin-top:4px}
+.row.pub{grid-template-columns:70px 1fr}
+.row.hidden{display:none}
+.badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-size:15px;padding:0 10px;margin-left:8px;vertical-align:middle;font-family:'Cormorant Garamond',serif}
+
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.filters button{background:transparent;color:var(--cream);border:1px solid var(--gold);padding:8px 18px;cursor:pointer;font:inherit;font-size:17px}
+.filters button.active,.filters button:hover{background:var(--gold);color:var(--dark)}
+.note{margin-top:20px;font-size:17px;font-style:italic}
+
+.contact-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin:30px 0}
+.contact-list b{display:block;color:var(--gold);font-family:'Cinzel',serif;font-size:15px;margin-bottom:4px}
+.contact-list a,.contact-list span{color:var(--cream)}
+
+footer{text-align:center;background:#060e0d;padding:34px 8%;border-top:1px solid var(--line)}
+footer p{font-size:17px}
+.ar{font-family:'Amiri',serif;color:var(--gold);font-size:24px}
+
+/* Mini projects – full-width horizontal list rows */
+.mini-grid{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.mini-card{position:relative;display:grid;grid-template-columns:clamp(90px,13vw,150px) 1fr;grid-template-rows:auto auto auto;column-gap:36px;align-items:start;padding:28px 36px 28px 20px;border-bottom:1px solid var(--line);border-left:3px solid transparent;background:transparent;overflow:hidden;transition:background .3s ease,border-left-color .3s ease}
+.mini-card::before{display:none}
+.mini-card:hover{background:var(--card);border-left-color:var(--gold);transform:none;box-shadow:none}
+.mini-card .num{grid-column:1;grid-row:1/4;align-self:center;font-family:'Cinzel',serif;color:var(--gold);font-size:12px;letter-spacing:.09em;line-height:1.9;text-align:center}
+.mini-card h3{grid-column:2;grid-row:1;margin:0 0 8px;font-size:21px;color:var(--cream)}
+.mini-card p{grid-column:2;grid-row:2;font-size:17px;margin:0 0 12px}
+.mini-card .tags{grid-column:2;grid-row:3;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.mini-card .tags span{border:1px solid var(--line);color:var(--gold);font-size:13px;padding:2px 10px}
+
+/* Gallery layout: collection rail + framed photo panel */
+.gallery-layout{display:grid;grid-template-columns:clamp(190px,20vw,280px) minmax(0,calc(60vw + 122px));gap:1.6vw;justify-content:center;align-items:stretch;height:100%;min-height:0}
+.gallery-sidebar{display:flex;flex-direction:column;height:100%;min-height:0;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.g-sidebar-head{padding:20px;border-bottom:1px solid var(--line)}
+.g-sidebar-title{color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-size:14px;font-family:'Cinzel',serif}
+.g-sidebar-sub{color:var(--muted);font-size:15px;margin-top:4px}
+.g-group-list{display:flex;flex-direction:column;gap:6px;padding:10px;flex:1;min-height:0;overflow-y:auto}
+.g-group{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:12px;background:transparent;text-align:left;cursor:pointer;color:var(--cream);transition:background .25s,border-color .25s}
+.g-group-num{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#1d3a36;color:var(--muted);font-size:13px;font-weight:700;font-family:'Inter',sans-serif}
+.g-group-name{font-weight:600;font-size:17px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-group-count{font-size:13px;font-weight:600;color:var(--muted);background:#1d3a36;padding:3px 9px;border-radius:999px;font-family:'Inter',sans-serif}
+.g-group:hover{background:#1d3a36}
+.g-group.active{background:#1d3a36;border-color:var(--line)}
+.g-group.active .g-group-num{background:var(--gold);color:var(--dark)}
+.g-empty{padding:12px;color:var(--muted);font-size:16px}
+
+/* Hover-expanding card slider */
+.gallery-panel{display:flex;flex-direction:column;min-height:0;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;padding:0}
+.gallery-panel-head{display:flex;flex:0 0 calc((100vh - var(--nav-h)) * .2 - 2vh);align-items:flex-end;justify-content:space-between;gap:16px;min-height:0;padding:16px 26px;border-bottom:1px solid var(--line)}
+.g-panel-kicker{display:block;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-size:13px;font-family:'Cinzel',serif}
+.gallery-panel-head h1{font-size:29px;color:var(--cream);margin-top:4px}
+.g-panel-count{flex:none;color:var(--muted);background:#1d3a36;border-radius:999px;padding:6px 14px;font-size:14px;font-family:'Inter',sans-serif}
+.gallery-stage{position:relative;display:flex;flex:0 0 var(--gallery-h);align-items:center;height:var(--gallery-h);min-height:0;padding:0 var(--stage-pad)}
+.gallery-strip{display:flex;align-items:center;gap:18px;overflow-x:auto;scroll-behavior:smooth;height:100%;width:100%;min-width:0;padding:0 6px;scrollbar-width:none}
+.gallery-strip::-webkit-scrollbar{display:none}
+.g-card{position:relative;flex:0 0 clamp(260px,26vw,420px);height:calc(var(--gallery-h) * .74);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .5s ease,box-shadow .5s ease;border:1px solid var(--line)}
+.g-card:hover{transform:scale(1.3);z-index:10;box-shadow:0 22px 50px rgba(0,0,0,.5)}
+.g-card img{width:100%;height:100%;object-fit:cover;display:block}
+.g-card::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,rgba(0,0,0,.85))}
+.g-card-content{position:absolute;z-index:2;bottom:22px;left:20px;right:16px;transform:translateY(15px);opacity:.75;transition:all .4s ease}
+.g-card:hover .g-card-content{transform:translateY(0);opacity:1}
+.g-card-content span{color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:1.8px;font-family:'Cinzel',serif}
+.g-card-content h3{font-size:23px;margin:6px 0;color:var(--cream);font-family:'Playfair Display',Georgia,serif}
+.g-card-content p{color:#ddd;font-size:14px}
+.g-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:48px;height:48px;border:1px solid var(--gold);border-radius:50%;background:rgba(6,14,13,.85);color:var(--gold);font-size:22px;cursor:pointer;transition:.3s;backdrop-filter:blur(4px)}
+.g-arrow:hover{background:var(--gold);color:var(--dark)}
+.g-arrow.prev{left:4px}
+.g-arrow.next{right:4px}
+.g-empty-card{flex:0 0 100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:17px;border:1px dashed var(--line);background:var(--card)}
+
+/* Click-to-enlarge viewer, sized to the scrolling area */
+.g-lightbox{position:absolute;inset:0 var(--stage-pad);z-index:15;display:flex;align-items:center;justify-content:center;padding:10px;background:rgba(3,10,9,.92);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.g-lightbox.is-open{opacity:1;visibility:visible}
+.g-lightbox figure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:100%;max-width:100%;margin:0}
+.g-lightbox img{max-width:100%;max-height:calc(100% - 30px);min-height:0;object-fit:contain;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.6);cursor:zoom-out}
+.g-lightbox figcaption{color:var(--gold);font-size:15px;letter-spacing:.06em;text-align:center}
+.g-lightbox-close{position:absolute;top:10px;right:10px;width:38px;height:38px;border:1px solid var(--gold);border-radius:50%;background:rgba(0,0,0,.5);color:var(--gold);font-size:22px;line-height:1;cursor:pointer}
+.g-lightbox-close:hover{background:var(--gold);color:var(--dark)}
+
+@media(max-width:800px){
+  .about-grid{grid-template-columns:1fr}
+  .edu{grid-column:auto}
+  .portrait{max-width:300px}
+  .hero{padding:64px 6%;min-height:0}
+  section{padding:60px 6%}
+  :root{--gallery-h:calc((100vh - var(--nav-h)) * .6)}
+  .view[data-view="gallery"]{padding:1vh 3vw}
+  nav{padding:14px 6%}
+  nav div a{margin:0 14px 0 0;font-size:16px}
+  .row,.row.pub{grid-template-columns:1fr;gap:4px}
+  .mini-card{grid-template-columns:1fr;padding:20px 18px 20px 16px}
+  .mini-card .num{grid-column:1;grid-row:1;align-self:auto;text-align:left;margin-bottom:6px}
+  .mini-card h3{grid-column:1;grid-row:2}
+  .mini-card p{grid-column:1;grid-row:3}
+  .mini-card .tags{grid-column:1;grid-row:4}
+  .g-card{flex-basis:250px;height:calc(var(--gallery-h) * .7)}
+  .gallery-strip{padding:0 6px}
+  .gallery-stage{--stage-pad:50px;flex:1 1 auto;height:auto}
+  .g-arrow{width:42px;height:42px;font-size:20px}
+  .g-arrow.prev{left:4px}
+  .g-arrow.next{right:4px}
+  .gallery-layout{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);justify-content:stretch}
+  .gallery-sidebar{height:auto;max-height:24vh}
+  .g-sidebar-head{display:none}
+  .g-group-list{flex-direction:row;flex-wrap:wrap;max-height:none;gap:6px}
+  .g-group{flex:1 1 190px;width:auto}
+  .gallery-panel-head{flex-basis:auto;padding:12px 18px}
+  .gallery-panel-head h1{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <a class="logo" href="#home">Mohamed Abdelhady</a>
+  <div><a href="#home">Home</a><a href="#research">Research</a><a href="#gallery">Gallery</a><a href="#experience">Experience</a><a href="#publications">Publications</a><a href="#teaching">Teaching</a><a href="#service">Academic Service</a><a href="#miniprojects">Mini Projects</a></div>
+</nav>
+
+
+<section class="alt view" data-view="home">
+  <div class="wrap about-grid">
+    <figure class="portrait">
+      <div class="photo"><div class="photo-inner" id="photo"><img src="src\me.jpg" alt="Mohamed Abdelhady" onerror="this.parentNode.classList.add('nophoto');this.remove()"><svg viewBox="0 0 100 100" fill="#c6a15b" aria-hidden="true"><circle cx="50" cy="34" r="17"/><path d="M16 92c0-20 15-32 34-32s34 12 34 32z"/></svg></div></div>
+    </figure>
+    <div>
+      <h2 class="section-title">Mohamed Abdelhady, Ph.D.</h2>
+      <p class="title-line">Assistant Professor · Robotics &amp; Intelligent Control Systems</p>
+      <p>I am an Assistant Professor of robotics and intelligent control. I work on the AI that lets prostheses, exoskeletons and smart health devices sense, understand and adapt to the people who use them, combining multimodal sensing, learned state estimation and adaptive control on reliable embedded hardware.</p>
+      <div class="vm">
+        <p><b>VISION</b>Intelligent robots that work seamlessly with people, enhancing human capability and quality of life.</p>
+        <p><b>MISSION</b>Advance robotics and intelligent control through interdisciplinary research in AI, sensing and control, turn it into reliable embedded technology for healthcare and assistive systems, and mentor the next generation of innovators.</p>
+      </div>
+    </div>
+    <div class="interests wide">
+        <h3 class="sub">Research interests</h3>
+        <ul><li>Physical AI</li><li>Prostheses and exoskeletons</li><li>Learned state estimation</li><li>Multimodal sensing</li><li>Physics-guided learning</li><li>Adaptive control</li><li>On-device machine learning</li><li>Embedded co-design</li><li>Human–robot interaction</li><li>Smart health</li></ul>
+      </div>
+    <div class="edu">
+      <h3 class="sub" style="grid-column:1/-1;margin:0">Education</h3>
+      <div class="deg"><div>Ph.D., Electrical Engineering, Cleveland State University, Cleveland, OH 44115</div></div>
+      <div class="deg"><div>M.Sc., Computers and Systems Engineering, Minia University, Minia, Egypt</div></div>
+      <div class="deg"><div>B.Sc., Electrical Engineering, South Valley University, Aswan, Egypt</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" data-view="research">
+  <div class="wrap">
+    <h2 class="section-title">Research</h2>
+    <p class="section-sub">Four connected themes, from sensing the body to controlling a device in real time.</p>
+    <div class="grid">
+      <div class="card"><h3>Assistive robotics</h3><p>AI layers for perception and control of lower-limb prostheses and pediatric exoskeletons, including deep and reinforcement learning for personalized assistance.</p></div>
+      <div class="card"><h3>State estimation and sensing</h3><p>Attention-based recurrent networks that estimate knee angle from surface EMG, and wearable systems that measure limb kinetics and kinematics.</p></div>
+      <div class="card"><h3>Adaptive control</h3><p>Physics-guided learning and Gaussian regressor-based control for exoskeleton joints under system uncertainty.</p></div>
+      <div class="card"><h3>Smart health</h3><p>Single-catheter urodynamics: estimating detrusor pressure from bladder pressure and abdominal EMG, with a published patent application.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt view" data-view="experience">
+  <div class="wrap">
+    <h2 class="section-title">Experience</h2>
+    <p class="section-sub">Academic, clinical and industry positions.</p>
+    <div id="exp"></div>
+  </div>
+</section>
+
+<section class="view" data-view="publications">
+  <div class="wrap">
+    <h2 class="section-title">Selected publications</h2>
+    <p class="section-sub">Journal articles, conference papers, chapters, preprints and patents. A dagger (†) marks first or senior authorship.</p>
+    <div class="filters" role="group" aria-label="Filter publications">
+      <button class="active" data-filter="all" aria-pressed="true">All</button>
+      <button data-filter="journal" aria-pressed="false">Journals</button>
+      <button data-filter="conf" aria-pressed="false">Conferences</button>
+      <button data-filter="other" aria-pressed="false">Chapters &amp; preprints</button>
+      <button data-filter="patent" aria-pressed="false">Patents</button>
+    </div>
+    <div id="pubs"></div>
+    <p class="note">A selection from the full CV.</p>
+  </div>
+</section>
+
+<section class="alt view" data-view="teaching">
+  <div class="wrap">
+    <h2 class="section-title">Teaching</h2>
+    <h3 class="sub">Teaching philosophy</h3>
+    <p class="philosophy">I teach engineering as something learned by building. In embedded systems and control, I pair clear theory with hands-on laboratory work, so students see how models, code and hardware come together in a working device. I ground examples in my research on assistive robotics and in industry experience, and I treat AI as a tool students learn to question and verify. Through capstone projects, research clubs and outreach, I aim to help every student, including those underrepresented in engineering, grow into an independent and responsible engineer.</p>
+    <div class="tgroup">
+      <div class="course"><div><b>Embedded Systems</b><small>Microcontroller-based design, hardware–software integration and real-time applications.</small></div><span>Minia University</span></div>
+      <div class="course"><div><b>Dynamics and Control</b><small>Modeling of dynamic systems and the design and analysis of feedback control.</small></div><span>Minia University</span></div>
+      <div class="course"><div><b>Introduction to System Analysis</b><small>Modeling and analysis of linear systems in the time and frequency domains.</small></div><span>Jazan University, 2011–2012</span></div>
+      <div class="course"><div><b>Smart Control Systems</b><small>Intelligent and adaptive control methods beyond classical design.</small></div><span>Jazan University, 2011–2012</span></div>
+      <div class="course"><div><b>Probability and Stochastic Processes (EEC 510)</b><small>Graduate course on probability models and random processes for engineers.</small></div><span>Cleveland State University</span></div>
+      <div class="course"><div><b>Electric Circuits II (EEC 311)</b><small>Frequency-domain circuit analysis and transient response.</small></div><span>Cleveland State University</span></div>
+      <div class="course"><div><b>System Programming (CIS 340)</b><small>Programming close to the operating system and hardware.</small></div><span>Cleveland State University</span></div>
+      <div class="course"><div><b>Intro to Programming (CIS 260)</b><small>Core programming concepts and problem solving.</small></div><span>Cleveland State University</span></div>
+      <div class="course"><div><b>Writing in ECE (ECE 414)</b><small>Technical writing and communication for engineers.</small></div><span>Cleveland State University</span></div>
+      <div class="course"><div><b>Electrical Circuit Design</b><small>Design and laboratory practice for electrical circuits.</small></div><span>Minia University</span></div>
+      <div class="course"><div><b>MATLAB Programming</b><small>Numerical computing and programming for engineering problems.</small></div><span>Minia University</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" data-view="service">
+  <div class="wrap">
+    <h2 class="section-title">Honors, mentoring and service</h2>
+    <p class="section-sub">Recognition, student guidance and community work.</p>
+    <div class="grid">
+      <div class="card"><h3>Honors and awards</h3><ul>
+        <li><b>IEEE SPMB Paper Award</b>, 2022</li>
+        <li><b>ICCR Paper Award</b> and Oral Presentation, 2020</li>
+        <li><b>Student Research Award</b>, Cleveland State, 2021</li>
+        <li><b>Dean/Graduate Travel Award</b>, 2017</li></ul></div>
+      <div class="card"><h3>Funding with industry</h3><ul>
+        <li><b>PI</b>, robotic coating energy optimization, United Group (EGP 200,000, completed)</li>
+        <li><b>Consultant</b>, SRS Medical, $60,000 (2024, completed)</li>
+        <li><b>Researcher</b>, NSF–Ford collaboration, 2019–2021</li></ul></div>
+      <div class="card"><h3>Fellowships and proposals</h3><ul>
+        <li><b>Cleveland Clinic postdoctoral fellowship</b>, 2022, bladder biometrics research</li>
+        <li><b>Egyptian doctoral scholarship</b>, 2014, Ph.D. study in the United States</li>
+        <li><b>Proposed PI</b>, AI neuro-controllers for personalized gait rehabilitation (2026)</li></ul></div>
+      <div class="card"><h3>Mentoring</h3><ul>
+        <li>NSF REU advisor: low-cost powered prosthetic leg prototype</li>
+        <li>Senior design co-advisor, 3 years: powered above-knee prosthesis, data rig, elder-care exoskeleton</li>
+        <li>Wireless EMG module with ESP32 and AI muscle analysis (Minia)</li>
+        <li>BioSchola research club advisor, Minia</li></ul></div>
+      <div class="card"><h3>Conference service</h3><ul>
+        <li><b>Co-chair:</b> IEEE Middle East Conf. on Communications and Networking (MECOM), 2025</li>
+        <li><b>Co-chair:</b> Int. Conf. on Computer Theory and Applications (ICCA), 2025</li>
+        <li><b>Session chair:</b> IEEE Int. Conf. on AI, Robotics and Control (AIRC), 2023</li>
+        <li><b>Session chair:</b> IEEE Int. Conf. on Telecommunications (ICT), 2024</li>
+        <li><b>Session chair:</b> Int. Middle East Power Systems Conf. (MEPCON), 2024</li>
+        <li><b>Session chair:</b> Int. Conf. on Future Telecommunications and AI (ICFTAI), 2025</li>
+        <li><b>Reviewer:</b> European Signal Processing Conf. (EUSIPCO), 2022</li>
+        <li><b>Reviewer:</b> IEEE ICASSP, 2023</li>
+        <li><b>Reviewer:</b> Int. Conf. on Engineering, Technology and Innovation (ICE/ITMC), 2023</li>
+        <li><b>Reviewer:</b> IEEE Global Engineering Education Conf. (EDUCON), 2024</li></ul></div>
+      <div class="card"><h3>Journal reviewing</h3><ul>
+        <li><b>Total:</b> 27 reviews across 5 journals</li>
+        <li><b>Expert Systems with Applications:</b> 11 reviews</li>
+        <li><b>Engineering Applications of Artificial Intelligence:</b> 11 reviews</li>
+        <li><b>Applied Soft Computing:</b> 3 reviews</li>
+        <li><b>IEEE Control Systems Letters:</b> 1 review</li>
+        <li><b>IEEE Trans. on Evolutionary Computation:</b> 1 review</li>
+        <li><b>Elsevier journals:</b> 25 reviews</li>
+        <li><b>IEEE journals:</b> 2 reviews</li>
+        <li><b>Most reviewed:</b> Expert Systems with Applications and Engineering Applications of AI</li>
+        <li><b>Topics:</b> applied AI, soft computing, control, evolutionary computation</li></ul></div>
+      <div class="card"><h3>Community</h3><ul>
+        <li><b>Judge:</b> FIRST Tech Challenge, Ohio Championship (2023–2026)</li>
+        <li><b>Judge:</b> VEX Robotics, Ohio State Championship (2024–2025)</li>
+        <li><b>Judge:</b> FIRST Robotics, Buckeye Regional (2024–2025)</li>
+        <li>Member: IEEE RAS, IEEE CSS, ISA, ASB</li></ul></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="alt view" data-view="miniprojects">
+  <div class="wrap">
+    <h2 class="section-title">Mini Projects</h2>
+    <p class="section-sub">Compact prototypes and focused studies that translate research ideas into working hardware, algorithms, and demonstrations.</p>
+    <div class="mini-grid">
+      <article class="mini-card">
+        <div class="num">01 / ASSISTIVE HARDWARE</div>
+        <h3>Low-Cost Powered Prosthetic Leg</h3>
+        <p>A lightweight prototype developed through the NSF REU mentoring program, emphasizing affordable actuation, sensing, and embedded control for lower-limb assistance.</p>
+        <div class="tags"><span>Prosthetics</span><span>Embedded</span><span>Mentoring</span></div>
+      </article>
+      <article class="mini-card">
+        <div class="num">02 / SENSING</div>
+        <h3>Wireless EMG Module with ESP32</h3>
+        <p>A compact muscle-sensing board paired with on-device analysis for real-time intent detection and AI-based muscle activity classification.</p>
+        <div class="tags"><span>EMG</span><span>ESP32</span><span>On-device AI</span></div>
+      </article>
+      <article class="mini-card">
+        <div class="num">03 / GAIT &amp; CONTROL</div>
+        <h3>Pediatric Exoskeleton Control Stack</h3>
+        <p>Sensing, estimation, and adaptive control architecture designed for a pediatric lower-limb exoskeleton, integrating deep and reinforcement learning for personalized gait assistance.</p>
+        <div class="tags"><span>Exoskeleton</span><span>Walking control</span><span>RL</span></div>
+      </article>
+      <article class="mini-card">
+        <div class="num">04 / SMART HEALTH</div>
+        <h3>Single-Catheter Urodynamics Estimator</h3>
+        <p>A signal-processing and machine-learning pipeline that estimates detrusor pressure from bladder pressure and abdominal EMG to reduce invasiveness in urodynamic studies.</p>
+        <div class="tags"><span>Biomedical</span><span>Estimation</span><span>Patent</span></div>
+      </article>
+      <article class="mini-card">
+        <div class="num">05 / INDUSTRY</div>
+        <h3>Robotic Coating Energy Optimizer</h3>
+        <p>Energy-trajectory optimization for a robotic coating system, developed as an industry-funded consultancy project with a focus on practical energy savings.</p>
+        <div class="tags"><span>Optimization</span><span>Robotics</span><span>Industry</span></div>
+      </article>
+      <article class="mini-card">
+        <div class="num">06 / IMAGING</div>
+        <h3>MR Image Reconstruction Study</h3>
+        <p>Three-dimensional reconstruction work completed during a Siemens/Festo engineering internship, connecting medical imaging with assistive robotics applications.</p>
+        <div class="tags"><span>Imaging</span><span>3D Reconstruction</span><span>Siemens</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="view" data-view="gallery">
+  <div class="wrap">
+    <div class="gallery-layout">
+      <aside class="gallery-sidebar" id="galleryGroups" aria-label="Photo groups"></aside>
+      <section class="gallery-panel">
+        <div class="gallery-panel-head">
+          <div>
+            <span class="g-panel-kicker">Now viewing</span>
+            <h1 id="galleryGroupName">Select a collection</h1>
+          </div>
+          <span class="g-panel-count" id="galleryGroupCount">0 photos</span>
+        </div>
+        <div class="gallery-stage">
+          <div class="gallery-strip" id="galleryStrip">
+            <div class="g-empty-card">Loading photo groups...</div>
+          </div>
+          <button class="g-arrow prev" type="button" aria-label="Previous image">&#8592;</button>
+          <button class="g-arrow next" type="button" aria-label="Next image">&#8594;</button>
+          <div class="g-lightbox" id="galleryLightbox" aria-hidden="true">
+            <button class="g-lightbox-close" id="galleryLightboxClose" type="button" aria-label="Close enlarged image">&times;</button>
+            <figure>
+              <img id="galleryLightboxImg" alt="">
+              <figcaption id="galleryLightboxCaption"></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Mohamed Abdelhady. All rights reserved.</p>
+</footer>
+
+<script>
+const exp=[
+["2024 – Dec 2026","Adjunct Assistant Professor","Minia University, Faculty of Engineering, Egypt","Teaches mechatronics and control courses and directs the BioSchola research club."],
+["2024 – 2025","Engineering Consultant","SRS Medical Co.; United Group Co.","Medical-device signal processing and machine learning for urodynamics; energy-trajectory optimization for a robotic coating system."],
+["2022 – 2024","Postdoctoral Fellow and Associate Investigator","National Institutes of Health, Bethesda, MD","Led deep and reinforcement learning for personalized exoskeleton control and designed the sensing, estimation and control architecture for a pediatric lower-limb exoskeleton."],
+["2021 – 2022","Postdoctoral Fellow","Cleveland Clinic, Cleveland, OH","Led data-driven estimation algorithms for single-channel bladder-pressure recordings and built the signal-processing and machine-learning pipeline."],
+["2021 – 2022","Research Collaborator","U.S. Department of Veterans Affairs, Advanced Technology Center","Co-developed pressure-sensing and reconstruction algorithms for detrusor-pressure estimation."],
+["2019 – 2021","Research Engineer, Advanced Control","Ford Motor Company, Dearborn, MI","Built a neural-network MIMO combustion-engine control framework in a funded NSF–Ford collaboration; presented at Ford’s AI and Machine Learning Conference (2020)."],
+["2015 – 2021","Ph.D. Researcher and Teaching Assistant","Cleveland State University, EECS","Learning-based models and control for lower-limb prostheses using system identification, neural networks and reinforcement learning."],
+["2011 – 2012","Lecturer","Jazan University, Saudi Arabia","Taught system analysis and control; served on the ABET accreditation committee."],
+["2011","Engineering Intern","Siemens (with Festo), Stuttgart, Germany","Augmented human-assistive robotics and 3D reconstruction of MR images."],
+["2004 – 2010","Graduate Teaching Assistant","Minia University, Egypt","Prepared syllabi and laboratory experiments for mechatronics and control courses."]];
+document.getElementById('exp').innerHTML=exp.map(e=>`<div class="row"><div class="when">${e[0]}</div><div><h3>${e[1]}</h3><div class="org">${e[2]}</div><p>${e[3]}</p></div></div>`).join('');
+
+const pubs=[
+["journal",2025,"Gaussian regressor-based adaptive control of exoskeleton joints in the presence of system uncertainty","M. Abdelhady and T. C. Bulea","Wearable Technologies, vol. 6 †"],
+["journal",2024,"Knee angle estimation from surface EMG during walking using attention-based deep recurrent neural networks: feasibility and initial demonstration in cerebral palsy","M. Abdelhady, D. L. Damiano and T. C. Bulea","Sensors, vol. 24, no. 13 †"],
+["journal",2024,"Actuator optimization and deep learning-based control of pediatric knee exoskeleton for community-based mobility assistance","S. Zhang et al., including M. Abdelhady","Mechatronics, vol. 97"],
+["journal",2019,"A high-fidelity wearable system for measuring lower-limb kinetics and kinematics","M. Abdelhady, A. J. van den Bogert and D. Simon","IEEE Sensors Journal, vol. 19, no. 24 †"],
+["journal",2025,"Next-gen neuromodulation leveraging EMG to refine stimulation paradigms","K. Peters et al., including M. Abdelhady","Continence, vol. 19"],
+["conf",2023,"Attention-based deep recurrent neural network to estimate knee angle during walking from lower-limb EMG","M. Abdelhady, D. L. Damiano and T. C. Bulea","Int. Conf. on Rehabilitation Robotics (ICORR) †"],
+["conf",2023,"Prediction accuracy and model robustness of neural network-based ground reaction force estimators","M. Abdelhady, T. C. Bulea, W. Abouelwafa and D. Simon","IEEE/ASME Int. Conf. on Advanced Intelligent Mechatronics (AIM)"],
+["conf",2022,"Detrusor pressure estimation from single channel bladder pressure recordings","M. Abdelhady, J. Han, S. J. A. Majerus, L. Brody and M. S. Damaser","IEEE Signal Processing in Medicine and Biology Symp. (SPMB) †","Best Paper Award"],
+["conf",2020,"Prosthesis controller hardware-in-the-loop simulation","M. Abdelhady and D. Simon","3rd Int. Conf. on Control and Robotics (ICCR), Tokyo †","Best Paper Award"],
+["conf",2017,"System identification and control optimization of an active prosthetic knee in swing phase","M. Abdelhady, A. Rashvand, M. Moness, H. Richter and D. Simon","American Control Conference (ACC) †"],
+["other",2026,"Event-based estimation for detrusor pressure using a single bladder catheter augmented with abdominal electromyography","M. Abdelhady, R. Burhanna, L. Brody, M. S. Damaser and S. J. A. Majerus","arXiv preprint †","Preprint"],
+["other",2024,"Real-time wavelet processing and classifier algorithms enabling single-channel diagnosis of lower urinary tract dysfunction","S. J. A. Majerus, M. Abdelhady et al.","Machine Learning Applications in Medicine and Biology, Springer","Book chapter"],
+["patent",2024,"Gait assistance systems and methods of control thereof","T. Bulea, M. Abdelhady, V. Molazadeh and D. Damiano","PCT/US2024/047743; Australian application AU2024344387A1"],
+["patent",2023,"Detrusor pressure estimation from single channel bladder pressure recordings","M. S. Damaser, S. Majerus and M. Abdelhady","U.S. Publication US20230041528A1"]];
+const box=document.getElementById('pubs');
+box.innerHTML=pubs.map(p=>`<article class="row pub" data-cat="${p[0]}"><div class="when">${p[1]}</div><div><h3>${p[2]}${p[5]?`<span class="badge">${p[5]}</span>`:''}</h3><p>${p[3].replace('M. Abdelhady','<strong style="color:#faf5e4">M. Abdelhady</strong>')}. <em style="color:#faf5e4">${p[4]}</em></p></div></article>`.replace(/,\s*\$\{p\[5\]\}/,'')).join('');
+</script>
+<!-- Offline copy of pic/groups.json. Used only when this file is opened directly from disk (file://), where browsers block fetch(). Keep in sync with pic/groups.json. -->
+<script type="application/json" id="groupsFallback">{"groups":[{"name":"AUA Conf","images":["img_0552.jpeg","img_0570.jpeg","img_0600.jpeg","img_0608.jpeg","img_0613.jpeg"]},{"name":"Cleveland Clinic Quantum Computer","images":["img_1598.jpeg","img_1599.jpeg"]},{"name":"NIH","images":["img_1257.jpeg","img_1570.jpeg"]},{"name":"Summer Fun","images":["chess.jpg","img_0695.jpeg"]}]}</script>
+<script>
+const btns=document.querySelectorAll('.filters button');
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false')});
+  b.classList.add('active');b.setAttribute('aria-pressed','true');
+  const f=b.dataset.filter;
+  document.querySelectorAll('.pub').forEach(p=>p.classList.toggle('hidden',f!=='all'&&p.dataset.cat!==f));
+}));
+
+// Page-style navigation within this single file (hash routing)
+const views=document.querySelectorAll('.view'),navLinks=document.querySelectorAll('nav div a');
+const names=['home','research','miniprojects','gallery','experience','publications','teaching','service'];
+function route(){
+  let h=location.hash.slice(1);
+  if(!names.includes(h))h='home';
+  views.forEach(v=>v.classList.toggle('off',v.dataset.view!==h));
+  navLinks.forEach(a=>a.classList.toggle('current',a.getAttribute('href')==='#'+h));
+  document.body.classList.toggle('gallery-view',h==='gallery');
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+route();
+
+// Gallery data comes from pic/groups.json; the embedded copy above is only a file:// fallback.
+const galleryStrip = document.getElementById("galleryStrip");
+const gallerySidebar = document.getElementById("galleryGroups");
+const galleryName = document.getElementById("galleryGroupName");
+const galleryCount = document.getElementById("galleryGroupCount");
+const lightbox = document.getElementById("galleryLightbox");
+const lightboxImg = document.getElementById("galleryLightboxImg");
+const lightboxCaption = document.getElementById("galleryLightboxCaption");
+let photoGroups = [];
+let activeGroup = 0;
+let activePhoto = -1;
+
+// Measure the nav so the gallery height is 80% of the space below it.
+const navEl = document.querySelector('nav');
+function syncGalleryHeight() {
+  if (navEl) document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+}
+syncGalleryHeight();
+window.addEventListener('resize', syncGalleryHeight);
+window.addEventListener('load', syncGalleryHeight);
+if (document.fonts) document.fonts.ready.then(syncGalleryHeight);
+
+function make(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+function prettyName(name) {
+  return name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
+}
+function imageSrc(groupName, file) {
+  const f = String(file);
+  if (/^(https?:)?\/\//.test(f) || f.startsWith("data:")) return f;
+  if (f.startsWith("pic/")) return f;
+  return "pic/" + encodeURIComponent(groupName) + "/" + f.split("/").map(encodeURIComponent).join("/");
+}
+async function loadGroups() {
+  let data;
+  try {
+    const res = await fetch("pic/groups.json?t=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("Cannot load pic/groups.json");
+    data = await res.json();
+  } catch (e) {
+    // Opening the HTML directly from disk blocks fetch — use the embedded copy.
+    const el = document.getElementById("groupsFallback");
+    if (!el) throw e;
+    data = JSON.parse(el.textContent);
+  }
+  const list = Array.isArray(data) ? data : (data.groups || []);
+  return list.map(g => {
+    const name = String(g.name || "Group");
+    return {
+      name,
+      images: (g.images || []).map(file => ({
+        src: imageSrc(name, file),
+        alt: prettyName(String(file).split("/").pop())
+      }))
+    };
+  });
+}
+function renderCards(group) {
+  galleryStrip.replaceChildren();
+  if (!group.images.length) {
+    galleryStrip.appendChild(make("div", "g-empty-card", "No photos in this group yet."));
+    return;
+  }
+  group.images.forEach((img, i) => {
+    const card = make("article", "g-card");
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", "Enlarge " + img.alt);
+    const image = make("img");
+    image.src = img.src;
+    image.alt = img.alt;
+    image.loading = "lazy";
+    card.appendChild(image);
+    const content = make("div", "g-card-content");
+    content.appendChild(make("span", "", String(i + 1).padStart(2, "0") + " / " + group.name));
+    content.appendChild(make("h3", "", img.alt));
+    card.appendChild(content);
+    card.addEventListener("click", () => openLightbox(i));
+    card.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(i); }
+    });
+    galleryStrip.appendChild(card);
+  });
+}
+function selectGroup(index) {
+  const group = photoGroups[index];
+  activeGroup = index;
+  closeLightbox();
+  gallerySidebar.querySelectorAll(".g-group").forEach((b, i) => b.classList.toggle("active", i === index));
+  galleryName.textContent = group.name;
+  galleryCount.textContent = group.images.length + (group.images.length === 1 ? " photo" : " photos");
+  renderCards(group);
+  galleryStrip.scrollLeft = 0;
+}
+function renderSidebar() {
+  gallerySidebar.replaceChildren();
+  const head = make("div", "g-sidebar-head");
+  head.appendChild(make("div", "g-sidebar-title", "Collections"));
+  head.appendChild(make("p", "g-sidebar-sub", "Choose a folder to browse"));
+  gallerySidebar.appendChild(head);
+  const list = make("div", "g-group-list");
+  if (!photoGroups.length) {
+    list.appendChild(make("p", "g-empty", "No groups found in pic/groups.json."));
+    gallerySidebar.appendChild(list);
+    return;
+  }
+  photoGroups.forEach((g, i) => {
+    const btn = make("button", "g-group");
+    btn.type = "button";
+    btn.appendChild(make("span", "g-group-num", String(i + 1).padStart(2, "0")));
+    btn.appendChild(make("span", "g-group-name", g.name));
+    btn.appendChild(make("small", "g-group-count", String(g.images.length)));
+    btn.addEventListener("click", () => selectGroup(i));
+    list.appendChild(btn);
+  });
+  gallerySidebar.appendChild(list);
+}
+function showLightboxPhoto(index) {
+  const photos = photoGroups[activeGroup].images;
+  activePhoto = (index + photos.length) % photos.length;
+  const photo = photos[activePhoto];
+  lightboxImg.src = photo.src;
+  lightboxImg.alt = photo.alt;
+  lightboxCaption.textContent = photo.alt + "  ·  " + (activePhoto + 1) + " / " + photos.length;
+}
+function openLightbox(index) {
+  showLightboxPhoto(index);
+  lightbox.classList.add("is-open");
+  lightbox.setAttribute("aria-hidden", "false");
+}
+function closeLightbox() {
+  activePhoto = -1;
+  lightbox.classList.remove("is-open");
+  lightbox.setAttribute("aria-hidden", "true");
+}
+function gSlide(direction) {
+  if (activePhoto >= 0) {
+    showLightboxPhoto(activePhoto + direction);
+    galleryStrip.children[activePhoto]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    return;
+  }
+  const card = galleryStrip.querySelector(".g-card");
+  const step = card ? card.getBoundingClientRect().width + 20 : 320;
+  galleryStrip.scrollBy({ left: direction * step, behavior: "smooth" });
+}
+document.querySelector(".g-arrow.prev").addEventListener("click", () => gSlide(-1));
+document.querySelector(".g-arrow.next").addEventListener("click", () => gSlide(1));
+document.getElementById("galleryLightboxClose").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", e => {
+  if (e.target === lightbox || e.target === lightboxImg) closeLightbox();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && activePhoto >= 0) closeLightbox();
+});
+
+renderSidebar();
+loadGroups().then(groups => {
+  photoGroups = groups;
+  renderSidebar();
+  if (photoGroups.length) selectGroup(0);
+}).catch(() => {
+  gallerySidebar.appendChild(make("p", "g-empty", "Could not load pic/groups.json."));
+});
+</script>
+</body>
+</html>

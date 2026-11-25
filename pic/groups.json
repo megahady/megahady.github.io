@@ -1,0 +1,35 @@
+{
+  "groups": [
+    {
+      "name": "AUA Conf",
+      "images": [
+        "img_0552.jpeg",
+        "img_0570.jpeg",
+        "img_0600.jpeg",
+        "img_0608.jpeg",
+        "img_0613.jpeg"
+      ]
+    },
+    {
+      "name": "Cleveland Clinic Quantum Computer",
+      "images": [
+        "img_1598.jpeg",
+        "img_1599.jpeg"
+      ]
+    },
+    {
+      "name": "NIH",
+      "images": [
+        "img_1257.jpeg",
+        "img_1570.jpeg"
+      ]
+    },
+    {
+      "name": "Summer Fun",
+      "images": [
+        "chess.jpg",
+        "img_0695.jpeg"
+      ]
+    }
+  ]
+}
